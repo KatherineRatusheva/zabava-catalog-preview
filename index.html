@@ -39,7 +39,7 @@
   /* light-theme icon colour: one muted slate for every icon; the active menu item is the same slate on lime */
   --icon:#36475A; /* muted slate, from the user's reference */
   --see-all-icon:var(--icon);
-  --link-hover:#8CBA3A; /* section-title links on hover: lime mixed 70/30 with graphite (user's pick) */
+  --link-hover:#5D7189; /* section-title links on hover: a lighter slate of the icon colour (user's pick) */
   --search-icon:var(--icon);
   /* logo: the cross and buttons are cut out so the page shows through; body = menu icon colour (light) / lime (dark) */
   --logo-body:var(--icon);
@@ -360,7 +360,7 @@ h1,h2,h3,p{margin:0}
 .see-all{display:inline-flex;align-items:center;gap:6px;line-height:1;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
 .see-all .sec-title{color:inherit}
 .see-all .i{position:relative;top:3px;width:30px;height:30px;flex:none;display:block;color:var(--see-all-icon);transition:color var(--t-ui) var(--ease-out),transform var(--t-ui) var(--ease-out)}
-/* section titles are links: hover only recolours the text and arrow (#8CBA3A in light, lime in dark) */
+/* section titles are links: hover only recolours the text and arrow (light slate in light, lime in dark) */
 .see-all:hover,.see-all:focus-visible{color:var(--link-hover)}
 .see-all:hover .i,.see-all:focus-visible .i{color:var(--link-hover)}
 
