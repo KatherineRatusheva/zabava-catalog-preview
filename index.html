@@ -212,7 +212,9 @@
 /* ============ base ============ */
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--head-h) + var(--s4))}
-body{margin:0;background-color:var(--bg);background-image:var(--page-bg);background-attachment:fixed;color:var(--text);font-family:var(--font);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+/* the page glow sits on its own fixed layer: background-attachment:fixed makes Safari repaint the whole screen on every scroll frame */
+body::before{content:"";position:fixed;inset:0;z-index:-1;background-color:var(--bg);background-image:var(--page-bg);pointer-events:none;transform:translateZ(0)}
+body{margin:0;background-color:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 img{max-width:100%;display:block}
@@ -302,7 +304,7 @@ h1,h2,h3,p{margin:0}
 .card:hover::after,.card:focus-visible::after{box-shadow:inset 0 0 0 1px var(--card-ring-hover)}
 /* the art sits on its own GPU layer, so hover scales a ready texture instead of redrawing the SVG every frame */
 .cover{object-fit:cover}
-.card .cover{position:absolute;inset:0;width:100%;height:100%;display:block;will-change:transform;backface-visibility:hidden;transition:transform var(--t-card) var(--ease-card)}
+.card .cover{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform var(--t-card) var(--ease-card)}
 .card-clip{position:absolute;inset:0;overflow:hidden;isolation:isolate;border-radius:inherit}
 .card-clip::before{content:"";position:absolute;inset:0;z-index:1;background:rgba(255,255,255,.04);opacity:0;pointer-events:none;transition:opacity var(--t-card) var(--ease-card)}
 .card:hover .card-clip::before,.card:focus-visible .card-clip::before{opacity:1}
@@ -310,6 +312,8 @@ h1,h2,h3,p{margin:0}
 /* hover: the whole card grows from its centre (so it doesn't climb too high) and rises above its neighbours; the art inside zooms a little more.
    It stays on top until it has shrunk back (z-index switches only at the end of the way out) */
 .card:hover,.card:focus-visible{z-index:4;transform:scale(var(--hs,1.09));box-shadow:var(--shadow-card-hover);transition:transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),z-index 0s}
+/* layers are promoted only for the card under the pointer: hundreds of always-on layers made Safari scroll stutter */
+.card:hover :is(.cover,.cap-title,.cap-body){will-change:transform}
 .card:hover .cover,.card:focus-visible .cover{transform:scale(1.1)}
 .card:active .cover{transform:scale(1.04)}
 /* an eased scrim: dense only right under the title, then it melts away, so there is no dark band */
@@ -322,7 +326,7 @@ h1,h2,h3,p{margin:0}
 .cap-icon{position:relative;width:var(--icon);height:var(--icon);border-radius:var(--r-card);overflow:hidden;opacity:0;background:rgba(255,255,255,.12);box-shadow:0 0 0 1px rgba(255,255,255,.22),0 4px 10px rgba(0,0,0,.3);transition:opacity var(--t-card) var(--ease-card)}
 .cap-icon :is(svg,img){position:absolute;inset:0;width:100%;height:100%}
 .cap-text{display:grid;grid-template-rows:auto 0fr;min-width:0;transition:grid-template-rows var(--t-card) var(--ease-card)}
-.cap-title,.cap-body{will-change:transform;transition:transform var(--t-card) var(--ease-card)}
+.cap-title,.cap-body{transition:transform var(--t-card) var(--ease-card)}
 .card:not(.is-open):hover .cap-title,.card:not(.is-open):focus-visible .cap-title,.card.is-open:hover .cap-body,.card.is-open:focus-visible .cap-body{transform:translateY(-2px)}
 .cap-title{font-size:clamp(13px,4.6cqw,17px);font-weight:700;letter-spacing:-.01em;line-height:1.2;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.35);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .is-feat .cap-title{font-size:clamp(16px,5.4cqw,24px);font-weight:800}
