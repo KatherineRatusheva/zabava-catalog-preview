@@ -262,18 +262,18 @@ h1,h2,h3,p{margin:0}
 .card:hover .play,.card:focus-visible .play{background:var(--lime);color:var(--on-lime);transform:none}
 
 /* ============ Mosaic — many small cards in the page's three shapes ============ */
-/* Seven narrow columns, no scrolling. Cards use only the page's shapes — landscape 188:126 (category rows),
+/* Six columns, no scrolling. Cards use only the page's shapes — landscape 188:126 (category rows),
    square, and a few portrait 3:5 (New & popular) — all small, so the catalogue reads as many different games
    and none stands out. Each column mixes shapes; every column is the same height, and each card takes its
    share by its natural height (flex-grow = 1 / aspect), so shapes stay within a couple of percent. */
 .mosaic{container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap);padding-top:8px}
 .mosaic>.sec-title{margin-bottom:var(--s4)}
 .m-cols{
-  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--gap);
-  --w:calc((100cqw - 6 * var(--gap)) / 7);
+  display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--gap);
+  --w:calc((100cqw - 5 * var(--gap)) / 6);
 }
 .m-col{display:flex;flex-direction:column;gap:var(--gap);min-width:0;
-  height:min(calc((var(--w) * 3.005 + var(--gap) * 2.2) * 1.0185), calc(100svh - var(--head-h) - 36px))} /* slightly taller than the natural shapes: the user's size call */
+  height:min(calc((var(--w) * 3.005 + var(--gap) * 2.2) * 1), calc(100svh - var(--head-h) - 36px))} /* slightly taller than the natural shapes: the user's size call */
 .m-col>.card{flex:calc(1 / var(--ar)) 1 0;min-height:0}
 
 /* ============ Rows ============ */
@@ -1203,7 +1203,6 @@ const M_COLS = [
   [['dino-dash', 'L'], ['craft-valley', 'L'], ['ice-tiles', 'S'], ['burger-tycoon', 'L']],
   [['stick-brawl', 'L'], ['gem-cascade', 'S'], ['hide-and-peek', 'L'], ['pool-pro', 'L']],
   [['city-rise', 'L'], ['solitaire', 'L'], ['tube-sort', 'P']],
-  [['ninja-roofs', 'L'], ['snow-buddy', 'L'], ['cloud-tower', 'L'], ['fruit-frenzy', 'S']],
 ];
 const TRENDING = [['deep-sea-dash'], ['ghost-town'], ['balloon-voyage'], ['moto-canyon'],
   ['rope-swing'], ['galaxy-raid'], ['skate-star'], ['jungle-run'], ['disco-blob'], ['letter-drop']];
