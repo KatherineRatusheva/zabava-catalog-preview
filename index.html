@@ -91,7 +91,7 @@
   --t-art:400ms;
   /* card hover: a gentler ease-out cubic, so the lift, zoom, shadow and play colour glide together */
   --ease-card:cubic-bezier(.33,1,.68,1);
-  --t-reveal:480ms;
+  --t-reveal:600ms;
   --t-theme:260ms;
 }
 @media (prefers-color-scheme:dark){
@@ -379,11 +379,9 @@ h1,h2,h3,p{margin:0}
 
 /* ============ motion: section reveal ============ */
 /* Only sections that start below the fold are prepared; everything in the first screen is visible at once. */
-/* quiet on purpose: the section only brightens from 80%, the cards rise 4px one after another */
-.will-reveal{opacity:.8}
-.will-reveal.is-in{opacity:1;transition:opacity var(--t-reveal) var(--ease-card)}
-.will-reveal .row-4>*,.will-reveal .row-6>*{opacity:.85;transform:translateY(4px)}
-.will-reveal.is-in .row-4>*,.will-reveal.is-in .row-6>*{opacity:1;transform:none;transition:opacity var(--t-reveal) var(--ease-card),transform var(--t-reveal) var(--ease-card),box-shadow var(--t-card) var(--ease-card);transition-delay:calc(var(--i,0) * 25ms)}
+/* only the cards move: they rise 10px out of a light fade, one after another; titles and the section stay put */
+.will-reveal :is(.row-4,.row-6,.cats)>*{opacity:.35;transform:translateY(10px)}
+.will-reveal.is-in :is(.row-4,.row-6,.cats)>*{opacity:1;transform:none;transition:opacity var(--t-reveal) var(--ease-card),transform var(--t-reveal) var(--ease-card),box-shadow var(--t-card) var(--ease-card);transition-delay:calc(var(--i,0) * 45ms)}
 
 /* ============ motion: theme switch ============ */
 ::view-transition-old(root),::view-transition-new(root){animation-duration:var(--t-theme);animation-timing-function:var(--ease-out)}
@@ -409,9 +407,9 @@ h1,h2,h3,p{margin:0}
 .gp{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto 1fr;gap:var(--gap);align-items:start}
 .gp-tile{min-width:0;padding:20px;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border)}
 .gp-h{margin:0 0 10px;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
-.gp-player{grid-column:1 / 11;grid-row:1;min-width:0;border-radius:var(--r-card);overflow:hidden;background:var(--tile-bg);border:1px solid var(--border)}
-/* a 2:1 stage, capped so the whole player (stage + bar) fits in the first screen */
-.gp-stage{position:relative;aspect-ratio:2/1;max-height:calc(100svh - 320px);min-height:320px;width:100%;background:var(--card-bg);isolation:isolate}
+.gp-player{grid-column:1 / 10;grid-row:1;min-width:0;border-radius:var(--r-card);overflow:hidden;background:var(--tile-bg);border:1px solid var(--border)}
+/* a 16:9 stage, capped so the whole player (stage + bar) fits in the first screen */
+.gp-stage{position:relative;aspect-ratio:16/9;max-height:calc(100svh - 240px);min-height:320px;width:100%;background:var(--card-bg);isolation:isolate}
 .gp-stage .cover{position:absolute;inset:0;width:100%;height:100%}
 .gp-stage::after{content:"";position:absolute;inset:0;background:radial-gradient(50% 60% at 50% 50%,rgba(6,14,24,.26),rgba(6,14,24,0));pointer-events:none}
 .gp-fs{position:absolute;right:24px;bottom:28px;z-index:1;display:flex;align-items:center;gap:10px;height:48px;padding:0 18px;border-radius:var(--r-ctl);background:rgba(10,12,11,.46);color:#fff;font-size:15px;font-weight:700;transition:background-color var(--t-ui) var(--ease-out)}
@@ -421,7 +419,7 @@ h1,h2,h3,p{margin:0}
 /* hover: the play button grows softly */
 .gp-launch:hover,.gp-launch:focus-visible{background:color-mix(in srgb,var(--lime) 86%,#fff);transform:scale(1.12);box-shadow:0 18px 36px -12px rgba(0,0,0,.6)}
 .gp-launch .i{width:42px;height:42px;margin-left:4px}
-.gp-side{grid-column:11 / 13;grid-row:1;min-width:0}
+.gp-side{grid-column:10 / 13;grid-row:1;min-width:0}
 /* the bar under the stage: who the game is on the left, what you can do on the right */
 .gp-bar{display:flex;align-items:center;gap:16px;padding:16px 20px}
 .gp-bar .gp-stats{margin-top:5px;gap:6px 16px}
@@ -444,11 +442,11 @@ h1,h2,h3,p{margin:0}
 .btn-icon .i{width:20px;height:20px}
 .btn-icon:hover,.btn-icon:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--tile-bg);color:var(--st-hover-fg)}
 .btn-icon[aria-pressed="true"]{background:var(--st-active-bg);color:var(--st-active-fg);border-color:transparent}
-/* same-genre wall beside the player: 2 cells across (the home mosaic's small squares), ending with the player */
+/* same-genre wall beside the player: 3 cells across (the home mosaic's small squares), ending with the player */
 .gp-similar{container-type:inline-size}
 .gp-similar .sec-head{min-height:0}
 .gp-similar .gp-wall-h{margin:0 0 12px;font-size:18px;line-height:28px}
-.gp-wall{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:calc((100cqw - var(--gap)) / 2);gap:var(--gap)}
+.gp-wall{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:calc((100cqw - 2 * var(--gap)) / 3);gap:var(--gap)}
 .gp-wall .card{min-height:0}
 /* about tile: long copy is clamped to whole lines and opens in place */
 .gp-about{grid-column:1 / -1;grid-row:2;display:flex;flex-direction:column;gap:20px}
@@ -1622,11 +1620,11 @@ if (!reduceMotion.matches && 'IntersectionObserver' in window) {
     sec.classList.add('is-in');
     reveal.unobserve(sec);
     // once revealed, hand the cards back to their normal hover transitions
-    setTimeout(() => sec.classList.remove('will-reveal', 'is-in'), 900);
+    setTimeout(() => sec.classList.remove('will-reveal', 'is-in'), 1100);
   }), { rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('.sec').forEach(sec => {
     if (sec.getBoundingClientRect().top < innerHeight) return; // already on screen: show as is
-    sec.querySelectorAll('.row-4>*,.row-6>*').forEach((c, i) => c.style.setProperty('--i', Math.min(i, 5)));
+    sec.querySelectorAll('.row-4>*,.row-6>*,.cats>*').forEach((c, i) => c.style.setProperty('--i', Math.min(i % 8, 6)));
     sec.classList.add('will-reveal');
     reveal.observe(sec);
   });
@@ -1744,16 +1742,22 @@ const HOWTO = {
 };
 const CONTROL_OF = { Action: 'move', Arcade: 'move', Adventure: 'move', Kids: 'move', Multiplayer: 'move', Racing: 'race', Shooting: 'aim', Sports: 'aim', Music: 'beat' };
 
-// same-genre wall beside the player, 2 square cells wide: a big square (2×2) or a pair of small ones (1×1).
-// Each game gets its own order, so the pages don't share one layout
+// same-genre wall beside the player, 3 square cells wide, stacked from bands ([row, col, w, h] inside a band).
+// Each game gets its own order and a band never repeats back to back, so the pages don't share one layout
+const BANDS = [
+  { h: 2, t: [[0, 0, 2, 2], [0, 2, 1, 1], [1, 2, 1, 1]] },
+  { h: 2, t: [[0, 0, 1, 1], [1, 0, 1, 1], [0, 1, 2, 2]] },
+  { h: 2, t: [[0, 0, 1, 1], [0, 1, 1, 1], [0, 2, 1, 1], [1, 0, 1, 1], [1, 1, 1, 1], [1, 2, 1, 1]] },
+  { h: 1, t: [[0, 0, 1, 1], [0, 1, 1, 1], [0, 2, 1, 1]] },
+  { h: 3, t: [[0, 0, 1, 1], [1, 0, 1, 1], [2, 0, 1, 1], [0, 1, 2, 2], [2, 1, 1, 1], [2, 2, 1, 1]] },
+];
 function wallFor(id) {
   const r = rng(hash(id + '#wall')), tiles = [], ends = [];
-  let row = 1, pairs = r() < .5 ? 1 : 0;
+  let row = 1, prev = -1;
   while (row <= 12) {
-    const big = pairs > 0 && (pairs === 2 || r() < .55);
-    if (big) { tiles.push([row, 1, 2, 2]); row += 2; pairs = 0; }
-    else { tiles.push([row, 1, 1, 1], [row, 2, 1, 1]); row += 1; pairs++; }
-    ends.push(row - 1);
+    const pick = [...BANDS.keys()].filter(i => i !== prev), i = pick[Math.floor(r() * pick.length)];
+    BANDS[i].t.forEach(([dr, dc, w, h]) => tiles.push([row + dr, dc + 1, w, h]));
+    row += BANDS[i].h; ends.push(row - 1); prev = i;
   }
   return { tiles, ends };
 }
@@ -1785,7 +1789,7 @@ function GamePage(id) {
   return crumbs([[g.g, catHref], [g.t]]) + `
     <div class="gp">
       <div class="gp-player">
-        <div class="gp-stage">${art(id, 2)}
+        <div class="gp-stage">${art(id, 16 / 9)}
           <button class="gp-launch" type="button" aria-label="Play ${g.t}">${icon('play')}</button>
           <button class="gp-fs" type="button" aria-label="Play in full screen">${icon('fullscreen')}<span>Full screen</span></button>
         </div>
@@ -1838,7 +1842,7 @@ const placeWall = () => {
   wall.style.gridAutoRows = '';
   if (side) {
     const avail = document.querySelector('.gp-player').getBoundingClientRect().bottom - wall.getBoundingClientRect().top;
-    const gap = parseFloat(getComputedStyle(wall).rowGap), cell = (wall.clientWidth - gap) / 2;
+    const gap = parseFloat(getComputedStyle(wall).rowGap), cell = (wall.clientWidth - 2 * gap) / 3;
     const fit = (avail + gap) / (cell + gap); // the band edge closest to the left column's end
     rows = WALL.ends.reduce((best, e) => Math.abs(e - fit) < Math.abs(best - fit) ? e : best);
     wall.style.gridAutoRows = `${(avail - (rows - 1) * gap) / rows}px`;
