@@ -66,8 +66,9 @@
   /* glass: a translucent sheen (brighter top-left), a light rim along the top edge and a blur of whatever is behind */
   --tile-bg:linear-gradient(160deg,rgba(255,255,255,.78),rgba(255,255,255,.36));
   --glass-rim:inset 0 1px 0 rgba(255,255,255,.95);
+  --icon-rim:rgba(255,255,255,.9);
   --glass-blur:blur(14px) saturate(140%);
-  --head-glass:rgba(241,253,244,.7);
+  --head-glass:color-mix(in srgb,var(--bg) 45%,transparent); /* the page colour itself, see-through, so the header doesn't read as a separate band */
   --panel-glass:rgba(255,255,255,.74);
   --card-ring-hover:rgba(15,30,46,.14);
   --rail-open:184px;
@@ -146,7 +147,8 @@
     --search-bg-focus:rgba(255,255,255,.09);
     --tile-bg:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.025));
     --glass-rim:inset 0 1px 0 rgba(255,255,255,.08);
-    --head-glass:rgba(18,20,19,.64);
+    --icon-rim:rgba(255,255,255,.32);
+    --head-glass:color-mix(in srgb,var(--bg) 45%,transparent);
     --panel-glass:rgba(26,29,27,.8);
     --card-ring-hover:rgba(235,245,225,.14);
     color-scheme:dark;
@@ -197,7 +199,8 @@
   --search-bg-focus:rgba(255,255,255,.09);
   --tile-bg:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.025));
   --glass-rim:inset 0 1px 0 rgba(255,255,255,.08);
-  --head-glass:rgba(18,20,19,.64);
+  --icon-rim:rgba(255,255,255,.32);
+  --head-glass:color-mix(in srgb,var(--bg) 45%,transparent);
   --panel-glass:rgba(26,29,27,.8);
   --card-ring-hover:rgba(235,245,225,.14);
   color-scheme:dark;
@@ -220,8 +223,9 @@ h1,h2,h3,p{margin:0}
 .app{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;padding-left:var(--rail-w);min-height:100vh}
 
 /* Topbar */
-.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:grid;grid-template-columns:1fr minmax(0,480px) 1fr;align-items:center;gap:var(--s6);height:var(--head-h);margin-left:calc(var(--rail-w) * -1);padding:0 var(--gutter) 0 calc((var(--rail-w) - 36px) / 2);background:var(--head-glass);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);transition:box-shadow var(--t-ui) var(--ease-out)}
-.topbar.is-stuck{box-shadow:0 1px 0 var(--border)}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:grid;grid-template-columns:1fr minmax(0,480px) 1fr;align-items:center;gap:var(--s6);height:var(--head-h);margin-left:calc(var(--rail-w) * -1);padding:0 var(--gutter) 0 calc((var(--rail-w) - 36px) / 2);background-color:transparent;-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px);transition:box-shadow var(--t-ui) var(--ease-out),background-color var(--t-ui) var(--ease-out)}
+/* at the top the header is simply the page; once content slides under it, it turns into frosted glass */
+.topbar.is-stuck{box-shadow:0 1px 0 var(--border);background-color:var(--head-glass)}
 .brand{display:flex;align-items:center;gap:10px;flex:none;justify-self:start;border-radius:var(--r-sm);white-space:nowrap}
 .brand .logo{display:block;width:36px;height:auto;flex:none}
 .brand-word{font-size:23px;font-weight:800;letter-spacing:-.035em;line-height:1}
@@ -258,7 +262,7 @@ h1,h2,h3,p{margin:0}
 
 /* Sidebar — icon rail that opens with labels on hover */
 .rail{position:fixed;left:0;top:calc(env(safe-area-inset-top,0px) + var(--head-h));bottom:0;z-index:40;display:flex;flex-direction:column;width:var(--rail-w);background:transparent;transition:width 220ms var(--ease-out),box-shadow 220ms var(--ease-out)}
-.rail:hover,.rail:focus-within{width:var(--rail-open);background:var(--head-glass);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);box-shadow:var(--shadow-rail);clip-path:inset(0 -80px 0 0);transition-delay:90ms} /* the shadow falls only to the right, never up onto the header */
+.rail:hover,.rail:focus-within{width:var(--rail-open);background:var(--head-glass);-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px);box-shadow:var(--shadow-rail);clip-path:inset(0 -80px 0 0);transition-delay:90ms} /* the shadow falls only to the right, never up onto the header */
 .rail-list{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;gap:2px;padding:8px calc((var(--rail-w) - 44px) / 2) 20px;overflow-x:hidden;overflow-y:auto;scrollbar-width:none}
 .rail-list::-webkit-scrollbar{display:none}
 .nav{display:flex;align-items:center;gap:10px;flex:none;height:40px;padding:0 9px;border-radius:var(--r-card);color:var(--st-rest);white-space:nowrap;overflow:hidden;transition:background-color var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
@@ -295,7 +299,7 @@ h1,h2,h3,p{margin:0}
 .cover text{font-family:"Lilita One","Arial Black",Impact,sans-serif}
 /* hover: the whole card grows from its centre (so it doesn't climb too high) and rises above its neighbours; the art inside zooms a little more.
    It stays on top until it has shrunk back (z-index switches only at the end of the way out) */
-.card:hover,.card:focus-visible{z-index:4;transform:scale(1.09);box-shadow:var(--shadow-card-hover);transition:transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),z-index 0s}
+.card:hover,.card:focus-visible{z-index:4;transform:scale(var(--hs,1.09));box-shadow:var(--shadow-card-hover);transition:transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),z-index 0s}
 .card:hover .cover,.card:focus-visible .cover{transform:scale(1.1)}
 .card:active .cover{transform:scale(1.04)}
 /* an eased scrim: dense only right under the title, then it melts away, so there is no dark band */
@@ -349,15 +353,15 @@ h1,h2,h3,p{margin:0}
   --peek:.4;display:grid;grid-auto-flow:column;grid-template-columns:none;
   grid-auto-columns:calc((100% - var(--n) * var(--gap)) / (var(--n) + var(--peek)));gap:var(--gap);
   overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;
-  margin:-26px -14px -28px;padding:26px 14px 28px;scroll-padding-inline:14px;
+  margin:-26px -26px -28px;padding:26px 26px 28px;scroll-padding-inline:26px;
 }
 .row-4::-webkit-scrollbar,.row-6::-webkit-scrollbar{display:none}
 .row-4>*,.row-6>*{scroll-snap-align:start}
 .row-4{--n:5}
-.row-4 .card{aspect-ratio:188/126}
+.row-4 .card{aspect-ratio:188/126;transform-origin:50% 25%} /* grow mostly downwards, clear of the row title */
 .row-6{--n:5}
 .row-6 .card{aspect-ratio:3/5;transform-origin:50% 15%} /* tall cards grow mostly downwards, clear of the row title */
-.row-6{margin-bottom:-44px;padding-bottom:44px}
+.row-6{margin-bottom:-52px;padding-bottom:52px}
 .is-dragging{scroll-snap-type:none;cursor:grabbing;user-select:none}
 .is-dragging>*{pointer-events:none}
 
@@ -626,12 +630,16 @@ h1,h2,h3,p{margin:0}
 }
 
 /* ============ glass ============ */
-.search-field,.theme,.cat,.chip,.btn-ghost,.btn-icon,.gp-tile,.gp-player,.gp-facts div,.key{box-shadow:var(--glass-rim);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur)}
+/* these sit on the flat page, so the sheen and rim do the work; a live blur is kept for what floats over moving content */
+.search-field,.theme,.cat,.chip,.btn-ghost,.btn-icon,.gp-tile,.gp-player,.gp-facts div,.key{box-shadow:var(--glass-rim)}
 .search-field{background-image:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,0) 70%)}
 .theme{background:var(--tile-bg)}
 .gp-facts div{background:var(--tile-bg)}
 .results{background:var(--panel-glass);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%)}
-.gp-fs,.play{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.gp-fs{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+/* glass icons: solid at the top, a little see-through towards the bottom, with a thin light rim on the upper edges */
+.i{-webkit-mask-image:linear-gradient(165deg,#000 35%,rgba(0,0,0,.62));mask-image:linear-gradient(165deg,#000 35%,rgba(0,0,0,.62));filter:drop-shadow(0 -.6px 0 var(--icon-rim))}
+:is(.play,.gp-launch,.btn-primary,.key,.crumbs,.ga-fs) .i{-webkit-mask-image:none;mask-image:none;filter:none}
 
 /* ============ tablet ============ */
 @media (max-width:1100px){
@@ -651,7 +659,7 @@ h1,h2,h3,p{margin:0}
   .brand .logo{width:31px}
   .brand-word{font-size:21px}
   .search{order:3;flex:1 1 100%;margin-left:0;left:0}
-  .rail,.rail:hover,.rail:focus-within{position:sticky;top:env(safe-area-inset-top,0px);bottom:auto;width:auto;flex-direction:row;border-right:0;box-shadow:0 1px 0 var(--border);background:var(--head-glass);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%)}
+  .rail,.rail:hover,.rail:focus-within{position:sticky;top:env(safe-area-inset-top,0px);bottom:auto;width:auto;flex-direction:row;border-right:0;box-shadow:0 1px 0 var(--border);background:var(--head-glass);-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px)}
   .rail-h,.nav.is-cat{display:none}
   .rail-list{flex-direction:row;padding:var(--s3) var(--gutter);overflow-x:auto;overflow-y:hidden}
   .nav{height:36px;gap:6px;padding:0 12px 0 10px;border-radius:var(--r-ctl)}
@@ -1524,6 +1532,14 @@ $('m-a').innerHTML = M_TILES.map(([id, r, c, w, h]) =>
   GameCard(id, { ar: span(w) / span(h), area: `${r} / ${c} / ${r + h} / ${c + w}` })).join('');
 
 // the rows follow the screen height, so redraw each cover for the tile's real shape instead of cropping it
+// hover growth in pixels, not percent: every card, big or small, spreads 16px past each edge so it covers the 14px gap
+const growCard = e => {
+  const c = e.target.closest && e.target.closest('.card');
+  if (!c || c.contains(e.relatedTarget)) return;
+  c.style.setProperty('--hs', Math.min(1.32, 1 + 32 / Math.min(c.offsetWidth, c.offsetHeight)).toFixed(3));
+};
+document.addEventListener('pointerover', growCard);
+document.addEventListener('focusin', growCard);
 const fitCovers = () => document.querySelectorAll('.mosaic .card, .gp-wall .card').forEach(c => {
   const { width: w, height: h } = c.getBoundingClientRect(), ar = w / h, was = +c.dataset.ar || parseFloat(c.style.getPropertyValue('--ar'));
   if (!h || Math.abs(ar / was - 1) < .06) return;
