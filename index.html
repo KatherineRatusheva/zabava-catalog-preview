@@ -270,6 +270,7 @@ h1,h2,h3,p{margin:0}
 /* ============ GameCard ============ */
 .card{position:relative;display:block;isolation:isolate;border-radius:var(--r-card);background:var(--card-bg);box-shadow:var(--shadow-rest);container-type:inline-size;transform-origin:50% 100%;transition:transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),z-index 0s linear var(--t-card)}
 .card:active{transform:scale(1.03);transition-duration:120ms}
+.card.is-top{transform-origin:50% 0}
 .card::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--card-ring);pointer-events:none;transition:box-shadow var(--t-card) var(--ease-card)}
 .card:hover::after,.card:focus-visible::after{box-shadow:inset 0 0 0 1px var(--card-ring-hover)}
 /* the art sits on its own GPU layer, so hover scales a ready texture instead of redrawing the SVG every frame */
@@ -1455,7 +1456,8 @@ function Meta(id) {
 }
 function GameCard(id, { ar, area = '', play = false, feat = false, open = false }) {
   const style = `--ar:${ar.toFixed(3)}${area ? `;grid-area:${area}` : ''}`;
-  return `<a class="card${feat ? ' is-feat' : ''}${open ? ' is-open' : ''}" href="#/game/${id}" style="${style}" aria-label="${G[id].t}">
+  // a tile in the first grid row grows downwards, so it never runs under the header
+  return `<a class="card${feat ? ' is-feat' : ''}${open ? ' is-open' : ''}${area.startsWith('1 /') ? ' is-top' : ''}" href="#/game/${id}" style="${style}" aria-label="${G[id].t}">
     <span class="card-clip">${art(id, ar)}
     <span class="cap">${open ? `<span class="cap-body"><span class="cap-icon" aria-hidden="true">${art(id, 1)}</span><span class="cap-text"><span class="cap-title">${G[id].t}</span>${Meta(id)}</span></span>` : `<span class="cap-title">${G[id].t}</span>`}${play ? `<span class="play">${icon('play')}</span>` : ''}</span></span></a>`;
 }
