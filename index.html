@@ -216,21 +216,27 @@ h1,h2,h3,p{margin:0}
 .main-in{max-width:2000px}
 
 /* ============ Badge ============ */
-.badge{position:absolute;top:10px;left:10px;z-index:2;display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 9px 0 7px;border-radius:var(--r-badge);font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;line-height:1;box-shadow:0 1px 2px rgba(0,0,0,.2)}
-.badge .i{width:13px;height:13px}
-.badge--hot{background:var(--hot);color:#fff}
-.badge--new{background:var(--lime);color:var(--on-lime)}
-.badge--top{background:var(--top);color:#fff}
+/* round, icon only, sits over the card's top-left corner; a soft sheen sweeps across it now and then */
+.badge{position:absolute;top:-8px;left:-8px;z-index:4;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;overflow:hidden;isolation:isolate;background:var(--b-bg);color:#fff;box-shadow:0 8px 16px -8px var(--b-shadow),0 2px 4px rgba(0,0,0,.18)}
+.badge .i{position:relative;z-index:2;width:21px;height:21px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.18))}
+.badge::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;background:radial-gradient(circle at 32% 24%,rgba(255,255,255,.5),rgba(255,255,255,0) 58%)}
+.badge::after{content:"";position:absolute;inset:-20%;z-index:1;background:linear-gradient(115deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 62%);transform:translateX(-110%);will-change:transform;animation:badge-sheen 4.8s var(--ease-out) var(--b-delay,0s) infinite}
+@keyframes badge-sheen{0%{transform:translateX(-110%)}34%,100%{transform:translateX(110%)}}
+.badge--hot{--b-bg:linear-gradient(145deg,#FF7AB8,#F2287E);--b-shadow:rgba(242,40,126,.75)}
+.badge--new{--b-bg:linear-gradient(145deg,#D6FF78,#9BE01F);--b-shadow:rgba(120,190,20,.7);color:var(--on-lime)}
+.badge--new .i{filter:none}
+.badge--top{--b-bg:linear-gradient(145deg,#B18CFF,#6A3BF0);--b-shadow:rgba(106,59,240,.75)}
 
 /* ============ GameCard ============ */
-.card{position:relative;display:block;overflow:hidden;isolation:isolate;border-radius:var(--r-card);background:var(--card-bg);box-shadow:var(--shadow-rest);container-type:inline-size;transition:transform var(--t-card) var(--ease-out),box-shadow var(--t-card) var(--ease-out)}
+.card{position:relative;display:block;isolation:isolate;border-radius:var(--r-card);background:var(--card-bg);box-shadow:var(--shadow-rest);container-type:inline-size;transition:transform var(--t-card) var(--ease-out),box-shadow var(--t-card) var(--ease-out)}
 .card:active{transform:translateY(-2px);transition-duration:120ms}
 .card::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--card-ring);pointer-events:none;transition:box-shadow var(--t-card) var(--ease-out)}
 .card:hover::after,.card:focus-visible::after{box-shadow:inset 0 0 0 1px var(--card-ring-hover)}
 /* the art sits on its own GPU layer, so hover scales a ready texture instead of redrawing the SVG every frame */
 .card .cover{position:absolute;inset:0;width:100%;height:100%;display:block;will-change:transform;backface-visibility:hidden;transition:transform var(--t-art) var(--ease-out)}
-.card::before{content:"";position:absolute;inset:0;z-index:1;background:rgba(255,255,255,.04);opacity:0;pointer-events:none;transition:opacity var(--t-art) var(--ease-out)}
-.card:hover::before,.card:focus-visible::before{opacity:1}
+.card-clip{position:absolute;inset:0;overflow:hidden;isolation:isolate;border-radius:inherit}
+.card-clip::before{content:"";position:absolute;inset:0;z-index:1;background:rgba(255,255,255,.04);opacity:0;pointer-events:none;transition:opacity var(--t-art) var(--ease-out)}
+.card:hover .card-clip::before,.card:focus-visible .card-clip::before{opacity:1}
 .cover text{font-family:"Lilita One","Arial Black",Impact,sans-serif}
 /* hover: the card lifts (220ms), the art inside comes alive a beat slower (320ms) */
 .card:hover,.card:focus-visible{transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
@@ -262,9 +268,10 @@ h1,h2,h3,p{margin:0}
 .card.is-open .meta{opacity:1;transform:none}
 @container (max-width:150px){.cap-icon{display:none}.card.is-open .cap-body{grid-template-columns:0px minmax(0,1fr);column-gap:0}}
 .is-feat .cap{padding:80px 20px 18px}
-.play{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;background:#fff;color:#0F1E2E;box-shadow:0 2px 6px rgba(0,0,0,.25);opacity:.82;transform:scale(.96);transition:background-color var(--t-card) var(--ease-out),opacity var(--t-card) var(--ease-out),transform var(--t-card) var(--ease-out)}
-.play .i{width:15px;height:15px;margin-left:2px}
-.card:hover .play,.card:focus-visible .play{background:var(--lime);opacity:1;transform:none}
+/* play: dark glass disc with a white triangle at rest, the lime accent on hover */
+.play{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:rgba(10,12,11,.46);color:#fff;box-shadow:0 6px 14px -8px rgba(0,0,0,.6);transform:scale(.96);transition:background-color var(--t-card) var(--ease-out),color var(--t-card) var(--ease-out),transform var(--t-card) var(--ease-out)}
+.play .i{width:18px;height:18px;margin-left:2px}
+.card:hover .play,.card:focus-visible .play{background:var(--lime);color:var(--on-lime);transform:none}
 
 /* ============ Mosaic — 3 rows, full width ============ */
 /* Rows 1–2: two featured cards — the first before a 2+1 block, the second before a pair of wide cards.
@@ -291,7 +298,7 @@ h1,h2,h3,p{margin:0}
   --peek:.4;display:grid;grid-auto-flow:column;grid-template-columns:none;
   grid-auto-columns:calc((100% - var(--n) * var(--gap)) / (var(--n) + var(--peek)));gap:var(--gap);
   overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;
-  margin:-8px 0 -28px;padding:8px 0 28px;
+  margin:-14px 0 -28px -12px;padding:14px 0 28px 12px;scroll-padding-inline-start:12px;
 }
 .row-4::-webkit-scrollbar,.row-6::-webkit-scrollbar{display:none}
 .row-4>*,.row-6>*{scroll-snap-align:start}
@@ -305,14 +312,15 @@ h1,h2,h3,p{margin:0}
 /* ============ CategoryButton ============ */
 /* categories stay a plain grid, no sideways scroll */
 .cats{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:var(--gap)}
-.cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 12px 16px;text-align:center;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-rest);color:var(--text);transition:border-color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
+.cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 12px 16px;text-align:center;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-rest);color:var(--text);transition:background-color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
 .cat-badge{display:grid;place-items:center;width:48px;height:48px;flex:none}
 .cat-badge .i{width:48px;height:48px;color:var(--lime-ink);opacity:.8;transition:opacity var(--t-ui) var(--ease-out)}
 .cat:hover .cat-badge .i,.cat:focus-visible .cat-badge .i{opacity:1}
 .cat-text{min-width:0;max-width:100%;display:flex;flex-direction:column;gap:1px}
 .cat-name{font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cat-name{font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cat:hover,.cat:focus-visible{border-color:var(--border-strong);box-shadow:var(--shadow-hover)}
+/* hover: the tile lightens with a faint tint of the accent */
+.cat:hover,.cat:focus-visible{background:color-mix(in srgb,var(--lime) 7%,var(--surface));border-color:color-mix(in srgb,var(--lime) 14%,var(--border));box-shadow:var(--shadow-hover)}
 
 /* ============ Section ============ */
 .sec{margin-top:36px}
@@ -347,7 +355,8 @@ h1,h2,h3,p{margin:0}
   :root{--gutter:20px}
   .cats{grid-template-columns:repeat(4,minmax(0,1fr))}
   .cap{padding:28px 10px 10px}
-  .play{width:28px;height:28px}
+  .play{width:30px;height:30px}
+  .play .i{width:16px;height:16px}
 }
 
 /* ============ mobile ============ */
@@ -375,7 +384,7 @@ h1,h2,h3,p{margin:0}
   .is-feat .cap{padding:48px 14px 14px}
   .sec{margin-top:28px}
   .sec-title{font-size:20px;margin-bottom:12px}
-  .row-4,.row-6{margin:-8px calc(var(--gutter) * -1) -28px;padding:8px var(--gutter) 28px;scroll-padding-inline:var(--gutter)}
+  .row-4,.row-6{margin:-14px calc(var(--gutter) * -1) -28px;padding:14px var(--gutter) 28px;scroll-padding-inline:var(--gutter)}
   .row-4{grid-auto-columns:76%}
   .row-6{grid-auto-columns:42%}
   .cats{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
@@ -387,7 +396,7 @@ h1,h2,h3,p{margin:0}
 
 @media (hover:none){
   .card:hover{transform:none}
-  .play{opacity:1;transform:none}
+  .play{transform:none}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -1176,9 +1185,10 @@ function art(id, ar) {
 }
 
 /* ---------- components ---------- */
-const Badge = kind => {
-  const m = { hot: ['fire', 'Hot'], new: ['star', 'New'], top: ['star', 'Top'] }[kind];
-  return `<span class="badge badge--${kind}">${icon(m[0])}${m[1]}</span>`;
+// each badge's sheen starts at its own moment, so they never flash in sync
+const Badge = (kind, id) => {
+  const [ic, label] = { hot: ['fire', 'Hot'], new: ['sparkle', 'New'], top: ['trophy', 'Top'] }[kind];
+  return `<span class="badge badge--${kind}" title="${label}" style="--b-delay:${(hash(id + kind) % 48) / 10}s">${icon(ic)}</span>`;
 };
 // likes for the open caption, stable per game
 const compact = n => {
@@ -1192,8 +1202,8 @@ function Meta(id) {
 function GameCard(id, { ar, area = '', badge = '', play = false, feat = false, open = false }) {
   const style = `--ar:${ar.toFixed(3)}${area ? `;grid-area:${area}` : ''}`;
   return `<a class="card${feat ? ' is-feat' : ''}${open ? ' is-open' : ''}" href="#${id}" style="${style}" aria-label="${G[id].t}">
-    ${art(id, ar)}${badge ? Badge(badge) : ''}
-    <span class="cap">${open ? `<span class="cap-body"><span class="cap-icon" aria-hidden="true">${art(id, 1)}</span><span class="cap-text"><span class="cap-title">${G[id].t}</span>${Meta(id)}</span></span>` : `<span class="cap-title">${G[id].t}</span>`}${play ? `<span class="play">${icon('play')}</span>` : ''}</span></a>`;
+    <span class="card-clip">${art(id, ar)}
+    <span class="cap">${open ? `<span class="cap-body"><span class="cap-icon" aria-hidden="true">${art(id, 1)}</span><span class="cap-text"><span class="cap-title">${G[id].t}</span>${Meta(id)}</span></span>` : `<span class="cap-title">${G[id].t}</span>`}${play ? `<span class="play">${icon('play')}</span>` : ''}</span></span>${badge ? Badge(badge, id) : ''}</a>`;
 }
 const CategoryButton = ({ name, ic }) =>
   `<a class="cat" href="#${catId(name)}"><span class="cat-badge">${icon(ic)}</span><span class="cat-text"><span class="cat-name">${name}</span></span></a>`;
