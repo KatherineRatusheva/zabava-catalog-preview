@@ -59,6 +59,7 @@
   --nav-active-ring:none;
   --search-bg:rgba(255,255,255,.28);
   --search-bg-focus:rgba(255,255,255,.5);
+  --tile-bg:rgba(255,255,255,.6); /* category tiles: between white and the translucent search */
   --card-ring-hover:rgba(15,30,46,.14);
   --rail-open:184px;
   --content-gap:8px;
@@ -131,6 +132,7 @@
     --nav-active-ring:none;
     --search-bg:rgba(255,255,255,.06);
     --search-bg-focus:rgba(255,255,255,.09);
+    --tile-bg:var(--search-bg);
     --card-ring-hover:rgba(235,245,225,.14);
     color-scheme:dark;
   }
@@ -177,6 +179,7 @@
   --nav-active-ring:none;
   --search-bg:rgba(255,255,255,.06);
   --search-bg-focus:rgba(255,255,255,.09);
+  --tile-bg:var(--search-bg);
   --card-ring-hover:rgba(235,245,225,.14);
   color-scheme:dark;
 }
@@ -336,9 +339,9 @@ h1,h2,h3,p{margin:0}
 .is-dragging>*{pointer-events:none}
 
 /* ============ CategoryButton ============ */
-/* categories stay a plain grid, no sideways scroll; tiles are translucent like the search field */
+/* categories stay a plain grid, no sideways scroll; tiles are half-translucent white (between white and the search) */
 .cats{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:var(--gap)}
-.cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 12px 16px;text-align:center;border-radius:var(--r-card);background:var(--search-bg);border:1px solid var(--border);color:var(--text);transition:background-color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
+.cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 12px 16px;text-align:center;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border);color:var(--text);transition:background-color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
 .cat-badge{display:grid;place-items:center;width:48px;height:48px;flex:none}
 .cat-badge .i{width:48px;height:48px;color:var(--st-rest);transition:color var(--t-ui) var(--ease-out)}
 .cat:hover .cat-badge .i,.cat:focus-visible .cat-badge .i{color:var(--st-hover-fg)}
@@ -346,13 +349,13 @@ h1,h2,h3,p{margin:0}
 .cat-name{font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cat-name{font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* hover: the tile lightens with a faint tint of the accent */
-.cat:hover,.cat:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--search-bg)}
+.cat:hover,.cat:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--tile-bg)}
 
 /* ============ Section ============ */
-.sec{margin-top:36px}
-.sec-cats{margin-top:32px}
-.sec-title{margin-bottom:var(--s4);font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
-.sec-head{display:flex;align-items:center;margin-bottom:var(--s4)}
+.sec{margin-top:24px}
+.sec-cats{margin-top:24px}
+.sec-title{margin-bottom:var(--s3);font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.sec-head{display:flex;align-items:center;margin-bottom:var(--s3)}
 .sec-head .sec-title{margin-bottom:0}
 .see-all{display:inline-flex;align-items:center;gap:6px;line-height:1;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
 .see-all .sec-title{color:inherit}
@@ -409,8 +412,8 @@ h1,h2,h3,p{margin:0}
   .mosaic .card{aspect-ratio:var(--ar);margin-bottom:var(--gap);break-inside:avoid}
   .mosaic .card.is-feat{column-span:all}
   .is-feat .cap{padding:48px 14px 14px}
-  .sec{margin-top:28px}
-  .sec-title{font-size:20px;margin-bottom:12px}
+  .sec{margin-top:20px}
+  .sec-title{font-size:20px;margin-bottom:10px}
   .row-4,.row-6{margin:-8px calc(var(--gutter) * -1) -28px;padding:8px var(--gutter) 28px;scroll-padding-inline:var(--gutter)}
   .row-4{grid-auto-columns:76%}
   .row-6{grid-auto-columns:42%}
