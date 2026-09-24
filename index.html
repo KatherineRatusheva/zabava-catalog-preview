@@ -447,13 +447,13 @@ h1,h2,h3,p{margin:0}
 .gp-similar .gp-wall-h{margin:0 0 12px;font-size:18px;line-height:28px}
 .gp-wall{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:calc((100cqw - var(--gap)) / 2);gap:var(--gap)}
 .gp-wall .card{min-height:0}
-/* about tile: long copy is clamped with a soft fade and opens in place */
+/* about tile: long copy is clamped to whole lines and opens in place */
 .gp-about{grid-column:1 / -1;grid-row:2;display:flex;flex-direction:column;gap:20px}
 .gp-about>*+section{padding-top:20px;border-top:1px solid var(--border)}
 .gp-desc{font-size:14px;line-height:1.65;color:var(--text-2)}
 .gp-desc p{margin:0 0 10px}
 .gp-desc p:last-child{margin-bottom:0}
-.gp-desc.is-clamped{max-height:calc(1.65em * 4);overflow:hidden;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+.gp-desc.is-clamped{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5;overflow:hidden} /* whole lines, no fade */
 .gp-more{margin-top:8px;font-size:14px;font-weight:700;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
 .gp-more:hover,.gp-more:focus-visible{color:var(--link-hover)}
 /* key facts as four equal cells: label over value */
@@ -1733,6 +1733,14 @@ const CONTROLS = {
   point: [[['Mouse'], 'Pick and move pieces'], [['Click'], 'Select'], [['Tap'], 'On phones, tap and drag']],
   beat: [[['Space'], 'Hit the beat'], [['←', '→'], 'Switch lanes'], [['Tap'], 'On phones, tap in rhythm']],
 };
+// how-to-play arrives from the admin panel as plain text, so the page shows it as a paragraph
+const HOWTO = {
+  move: 'Use the left and right arrow keys to move and Space to jump or act. On phones, tap and swipe.',
+  race: 'Press up to speed up and down to brake, left and right to steer. On phones, tap the sides of the screen.',
+  aim: 'Aim with the mouse and click to shoot or throw. On phones, tap where you aim.',
+  point: 'Use the mouse to pick and move pieces and click to select. On phones, tap and drag.',
+  beat: 'Press Space to hit the beat and the arrow keys to switch lanes. On phones, tap in rhythm.',
+};
 const CONTROL_OF = { Action: 'move', Arcade: 'move', Adventure: 'move', Kids: 'move', Multiplayer: 'move', Racing: 'race', Shooting: 'aim', Sports: 'aim', Music: 'beat' };
 
 // same-genre wall beside the player, 2 square cells wide: a big square (2×2) or a pair of small ones (1×1).
@@ -1815,7 +1823,7 @@ function GamePage(id) {
         </dl>
         <section>
           <h2 class="gp-h">How to play</h2>
-          <ul class="gp-controls">${controls.map(([keys, what]) => `<li><span class="gp-keys">${keys.map(keycap).join('')}</span>${what}</li>`).join('')}</ul>
+          <p class="gp-desc" style="margin:0">${HOWTO[CONTROL_OF[g.g] || 'point']}</p>
         </section>
         <section>
           <h2 class="gp-h">Tags</h2>
