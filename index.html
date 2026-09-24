@@ -261,21 +261,18 @@ h1,h2,h3,p{margin:0}
 .play .i{width:18px;height:18px;margin-left:2px}
 .card:hover .play,.card:focus-visible .play{background:var(--lime);color:var(--on-lime);transform:none}
 
-/* ============ Mosaic — squares and rectangles of mixed sizes ============ */
-/* A 10×4 grid of near-square cells (about 10% taller than wide). Tiles are 1×1 and 2×2 squares, 2×1 and 1×2 rectangles, interleaved so the
-   composition keeps moving and no single game dominates. The height is capped to fit one screen. */
+/* ============ Mosaic — the site's own card shapes, mixed ============ */
+/* Three shapes only, the same as elsewhere on the page: landscape 188:126 (Trending rows), portrait 3:5
+   (New & popular) and square. Each row keeps every card's shape and fills the width, so rows land at
+   different heights and the sizes vary without any single game taking over. On short screens the rows
+   give up a little height so the grid still fits one screen. */
 .mosaic{
   container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap);
-  --room:calc(100svh - var(--head-h) - 36px);
+  --room:calc(100svh - var(--head-h) - 36px - 2 * var(--gap));
   padding-top:8px; /* room for the hover lift under the sticky header */
 }
 .mosaic>.sec-title{margin-bottom:var(--s4)}
-.m-sq{
-  display:grid;gap:var(--gap);
-  --col:calc((100cqw - 9 * var(--gap)) / 10);
-  grid-template-columns:repeat(10,minmax(0,1fr));
-  grid-template-rows:repeat(4,min(calc(var(--col) * 1.1025), calc((var(--room) - 3 * var(--gap)) / 4)));
-}
+.m-jrow{display:grid;gap:var(--gap);grid-auto-rows:min(calc((100cqw - (var(--n) - 1) * var(--gap)) / var(--sum)), calc(var(--room) * var(--share)))}
 
 /* ============ Rows ============ */
 /* every row below the mosaic scrolls sideways (trackpad, shift+wheel, mouse drag, swipe):
@@ -364,7 +361,7 @@ h1,h2,h3,p{margin:0}
   .main-in{max-width:none}
   /* mosaic becomes a 2-column masonry, every tile keeps its proportions */
   .mosaic{display:block;columns:2;column-gap:var(--gap)}
-  .m-sq{display:contents}
+  .m-jrow{display:contents}
   .mosaic .card{aspect-ratio:var(--ar);margin-bottom:var(--gap);break-inside:avoid}
   .mosaic .card.is-feat{column-span:all}
   .is-feat .cap{padding:48px 14px 14px}
@@ -428,7 +425,7 @@ h1,h2,h3,p{margin:0}
 
       <section class="mosaic" id="top" aria-labelledby="h-top">
         <h2 class="sr-only" id="h-top">Featured games</h2>
-        <div class="m-sq" id="m-a"></div>
+        <div id="m-a" style="display:contents"></div>
       </section>
 
       <section class="sec" id="trending" aria-labelledby="h-trending">
@@ -1195,15 +1192,13 @@ const NavCategory = ({ name, ic }) =>
 const K = 1; // mosaic keeps the reference proportions
 const m = (w, h) => w / (h * K);
 // [id, grid-area, reference w, h, featured]
-// [id, row, col, width, height] in grid cells, listed row by row
-const M_TILES = [
-  ['crown-chaos', 1, 1, 2, 2], ['neon-drift', 1, 3, 2, 1], ['ninja-roofs', 1, 5, 1, 2], ['chick-flap', 1, 6, 1, 1],
-  ['dino-dash', 1, 7, 2, 2], ['tube-sort', 1, 9, 1, 2], ['ice-tiles', 1, 10, 1, 1],
-  ['bubble-buddies', 2, 3, 1, 1], ['mind-spark', 2, 4, 1, 1], ['knight-quest', 2, 6, 1, 2], ['cloud-tower', 2, 10, 1, 2],
-  ['rocket-rescue', 3, 1, 1, 2], ['farm-friends', 3, 2, 2, 1], ['paw-pals', 3, 4, 2, 2], ['gem-cascade', 3, 7, 1, 1], ['sky-pilot', 3, 8, 2, 1],
-  ['swamp-zombies', 4, 2, 1, 1], ['cat-cafe', 4, 3, 1, 1], ['goal-rush', 4, 6, 2, 1], ['burger-tycoon', 4, 8, 2, 1], ['fruit-frenzy', 4, 10, 1, 1],
+// the page's three card shapes: L landscape (Trending), P portrait (New & popular), S square
+const SHAPE = { L: 188 / 126, P: 3 / 5, S: 1 };
+const M_ROWS = [
+  [['neon-drift', 'L'], ['ninja-roofs', 'P'], ['crown-chaos', 'S'], ['farm-friends', 'L'], ['ice-tiles', 'S'], ['tube-sort', 'P']],
+  [['chick-flap', 'S'], ['dino-dash', 'L'], ['knight-quest', 'P'], ['sky-pilot', 'L'], ['bubble-buddies', 'S'], ['goal-rush', 'L']],
+  [['rocket-rescue', 'P'], ['paw-pals', 'S'], ['burger-tycoon', 'L'], ['cloud-tower', 'P'], ['craft-valley', 'L'], ['gem-cascade', 'S']],
 ];
-const cellSpan = n => n * 125 + (n - 1) * 10, cellSpanV = n => n * 138 + (n - 1) * 10;
 const TRENDING = [['deep-sea-dash'], ['ghost-town'], ['balloon-voyage'], ['moto-canyon'],
   ['rope-swing'], ['galaxy-raid'], ['skate-star'], ['jungle-run'], ['disco-blob'], ['letter-drop']];
 const NEW = [['berry-merge'], ['mahjong-friends'], ['night-racer'], ['monster-mash'], ['castle-crafters'], ['cube-drop'],
@@ -1220,8 +1215,11 @@ const MORE_CATS = [{ name: 'Casual', ic: 'smiley', count: 134 }, { name: 'Merge'
   { name: 'Word', ic: 'text-aa', count: 54 }, { name: 'Cards', ic: 'cards', count: 41 }, { name: 'Music', ic: 'music-notes', count: 36 }];
 const $ = id => document.getElementById(id);
 const RA = 188 / 126, PA = 3 / 5;
-$('m-a').innerHTML = M_TILES.map(([id, r, c, w, h]) =>
-  GameCard(id, { ar: cellSpan(w) / cellSpanV(h), area: `${r} / ${c} / ${r + h} / ${c + w}` })).join('');
+// each row's height is what makes its cards fill the width at their own shape; the share caps it on short screens
+const rowSums = M_ROWS.map(row => row.reduce((a, [, k]) => a + SHAPE[k], 0));
+const invTotal = rowSums.reduce((a, v) => a + 1 / v, 0);
+$('m-a').innerHTML = M_ROWS.map((row, i) =>
+  `<div class="m-jrow" style="--n:${row.length};--sum:${rowSums[i].toFixed(4)};--share:${(1 / rowSums[i] / invTotal).toFixed(4)};grid-template-columns:${row.map(([, k]) => SHAPE[k].toFixed(4) + 'fr').join(' ')}">${row.map(([id, k]) => GameCard(id, { ar: SHAPE[k] })).join('')}</div>`).join('');
 
 // the rows follow the screen height, so redraw each cover for the tile's real shape instead of cropping it
 const fitCovers = () => document.querySelectorAll('.mosaic .card').forEach(c => {
