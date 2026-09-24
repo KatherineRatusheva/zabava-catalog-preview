@@ -1493,17 +1493,20 @@ const blobOf = uri => { const [h, b] = uri.split(','), bin = atob(b), u = new Ui
   for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
   return URL.createObjectURL(new Blob([u], { type: h.slice(5, h.indexOf(';')) })); };
 Object.values(PHOTOS).forEach(set => Object.keys(set).forEach(k => { set[k] = blobOf(set[k]); }));
-// square (and, for now, wide) tiles draw from a larger set: each genre has a few scenes that suit it
+// square tiles draw from a larger set: each genre has a few scenes that suit it
 const MORE_OF = { Adventure: ['diver', 'pirate', 'dino', 'detective', 'pilot'], Casual: ['cake', 'doctor', 'restaurant', 'fashion', 'clinic'],
   Sports: ['snowboard', 'football'], Kids: ['dino', 'firefighter', 'doctor', 'clinic'], Word: ['wizard', 'detective'], Puzzle: ['wizard', 'detective', 'railway'],
   Cards: ['wizard'], Simulation: ['train', 'cake', 'firefighter', 'city', 'restaurant', 'builder', 'railway'], Music: ['dancer', 'singer'],
   Multiplayer: ['dancer', 'football'], Strategy: ['pirate', 'city', 'builder'], Action: ['firefighter'], Arcade: ['snowboard', 'diver', 'pilot'],
   Racing: ['train', 'pilot'], Merge: ['cake', 'city'], Shooting: ['pilot'] };
 const baseOf = id => PHOTO_OF[G[id].g] || 'jungle';
-const shapeOf = ar => ar < .85 ? 'v' : ar > 1.2 && Object.keys(PHOTOS.h).length ? 'h' : 'sq';
+const shapeOf = ar => ar < .85 ? 'v' : ar > 1.2 ? 'h' : 'sq';
 const sceneFor = (id, shape) => { const pool = shape === 'sq' ? [baseOf(id), ...(MORE_OF[G[id].g] || [])] : [baseOf(id)]; return pool[hash(id + '#scene') % pool.length]; };
 function art(id, ar, scene) {
-  const shape = shapeOf(ar), set = PHOTOS[shape], n = scene && set[scene] ? scene : set[sceneFor(id, shape)] ? sceneFor(id, shape) : baseOf(id);
+  const shape = shapeOf(ar), set = PHOTOS[shape];
+  // wide tiles only ever show wide scenes; until those exist they keep the drawn cover
+  if (!Object.keys(set).length) { const [W, H] = ar >= 1 ? [Math.round(200 * ar), 200] : [200, Math.round(200 / ar)]; return cover(G[id], W, H, false); }
+  const n = scene && set[scene] ? scene : set[sceneFor(id, shape)] ? sceneFor(id, shape) : baseOf(id);
   return `<img class="cover" data-shape="${shape}" data-scene="${n}" src="${set[n]}" alt="" decoding="async" draggable="false">`;
 }
 // no two touching cards share a scene: each card keeps its genre's scene unless a neighbour (side, above,
@@ -1514,7 +1517,9 @@ function dedupeArt() {
     root.querySelectorAll(':scope > .card').forEach(c => {
       const r = c.getBoundingClientRect();
       if (!r.width) return;
-      const id = c.getAttribute('href').replace('#/game/', ''), main = c.querySelector('.card-clip > img.cover'), own = main.dataset.scene;
+      const id = c.getAttribute('href').replace('#/game/', ''), main = c.querySelector('.card-clip > img.cover');
+      if (!main) return; // a drawn cover, nothing to swap
+      const own = main.dataset.scene;
       const near = new Set(done.filter(d => Math.max(d.r.left - r.right, r.left - d.r.right) < 24 && Math.max(d.r.top - r.bottom, r.top - d.r.bottom) < 24).map(d => d.n));
       const n = [own, ...Object.keys(PHOTOS[main.dataset.shape]).filter(x => x !== own).sort((a, b) => hash(id + a) - hash(id + b))].find(x => !near.has(x)) || own;
       if (n !== own) {
