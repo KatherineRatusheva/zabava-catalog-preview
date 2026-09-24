@@ -38,8 +38,8 @@
   --nav-active-bg:var(--lime);
   --nav-active-fg:var(--on-lime);
   --nav-active-ring:none;
-  --search-bg:#FBFDFC;
-  --search-bg-focus:#FFFFFF;
+  --search-bg:rgba(255,255,255,.55);
+  --search-bg-focus:rgba(255,255,255,.8);
   --card-ring-hover:rgba(15,30,46,.14);
   --rail-open:184px;
   --content-gap:8px;
@@ -98,8 +98,8 @@
     --nav-active-bg:rgba(180,240,60,.12);
     --nav-active-fg:#B4F03C;
     --nav-active-ring:none;
-    --search-bg:#25282D;
-    --search-bg-focus:#2B2F34;
+    --search-bg:rgba(255,255,255,.06);
+    --search-bg-focus:rgba(255,255,255,.09);
     --card-ring-hover:rgba(235,245,225,.14);
     color-scheme:dark;
   }
@@ -132,8 +132,8 @@
   --nav-active-bg:rgba(180,240,60,.12);
   --nav-active-fg:#B4F03C;
   --nav-active-ring:none;
-  --search-bg:#25282D;
-  --search-bg-focus:#2B2F34;
+  --search-bg:rgba(255,255,255,.06);
+  --search-bg-focus:rgba(255,255,255,.09);
   --card-ring-hover:rgba(235,245,225,.14);
   color-scheme:dark;
 }
@@ -166,7 +166,7 @@ h1,h2,h3,p{margin:0}
 .search{position:relative;flex:0 1 480px;min-width:0;margin-left:16px}
 .search-field{display:flex;align-items:center;gap:10px;height:44px;padding:0 10px 0 16px;border-radius:999px;background:var(--search-bg);border:1px solid var(--border);box-shadow:var(--shadow-rest);cursor:text;transition:border-color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out),background-color var(--t-ui) var(--ease-out)}
 .search-field:hover{border-color:var(--border-strong)}
-.search-field:focus-within{border-color:var(--border-strong);background:var(--search-bg-focus);box-shadow:0 0 0 3px var(--lime-ring)}
+.search-field:focus-within{border-color:var(--border-strong);background:var(--search-bg-focus)}
 .search-field .i{transition:color var(--t-ui) var(--ease-out)}
 .search-field:focus-within .i{color:var(--text-2)}
 .search-field .i{width:18px;height:18px;color:var(--text-3)}
@@ -216,16 +216,6 @@ h1,h2,h3,p{margin:0}
 .main-in{max-width:2000px}
 
 /* ============ Badge ============ */
-/* round, icon only, sits over the card's top-left corner; a soft sheen sweeps across it now and then */
-.badge{position:absolute;top:-6px;left:-6px;z-index:4;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;overflow:hidden;isolation:isolate;background:var(--b-bg);color:#fff;box-shadow:0 8px 16px -8px var(--b-shadow),0 2px 4px rgba(0,0,0,.18)}
-.badge .i{position:relative;z-index:2;width:16px;height:16px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.18))}
-.badge::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;background:radial-gradient(circle at 32% 24%,rgba(255,255,255,.28),rgba(255,255,255,0) 58%)}
-.badge::after{content:"";position:absolute;inset:-20%;z-index:1;background:linear-gradient(115deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.35) 50%,rgba(255,255,255,0) 62%);transform:translateX(-110%);will-change:transform;animation:badge-sheen 4.8s var(--ease-out) var(--b-delay,0s) infinite}
-@keyframes badge-sheen{0%{transform:translateX(-110%)}34%,100%{transform:translateX(110%)}}
-.badge--hot{--b-bg:linear-gradient(145deg,#EE86B0,#D65C8E);--b-shadow:rgba(150,40,90,.5)}
-.badge--new{--b-bg:linear-gradient(145deg,#CDEB86,#A5CF4E);--b-shadow:rgba(80,120,20,.5);color:var(--on-lime)}
-.badge--new .i{filter:none}
-.badge--top{--b-bg:linear-gradient(145deg,#A594E6,#7A63CF);--b-shadow:rgba(70,50,150,.5)}
 
 /* ============ GameCard ============ */
 .card{position:relative;display:block;isolation:isolate;border-radius:var(--r-card);background:var(--card-bg);box-shadow:var(--shadow-rest);container-type:inline-size;transition:transform var(--t-card) var(--ease-out),box-shadow var(--t-card) var(--ease-out)}
@@ -242,8 +232,6 @@ h1,h2,h3,p{margin:0}
 .card:hover,.card:focus-visible{transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
 .card:hover .cover,.card:focus-visible .cover{transform:scale(1.035)}
 .card:active .cover{transform:scale(1.025)}
-.card .badge{transition:filter var(--t-card) var(--ease-out)}
-.card:hover .badge,.card:focus-visible .badge{filter:brightness(1.06)}
 .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s2);padding:36px 12px 12px;background:linear-gradient(to top,var(--scrim),rgba(6,14,24,0))}
 /* open caption (New & popular): deeper scrim, square game icon next to the title, likes under it */
 .cap::after{content:"";position:absolute;inset:-24px 0 0;z-index:-1;background:linear-gradient(to top,rgba(6,14,24,.34),rgba(6,14,24,0));opacity:0;pointer-events:none;transition:opacity var(--t-card) var(--ease-out)}
@@ -279,8 +267,8 @@ h1,h2,h3,p{margin:0}
    the height is capped so the whole grid fits one screen under the header. */
 .mosaic{
   container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap);
-  --fit:max(.5px, calc((100svh - var(--head-h) - 40px - 2 * var(--gap)) / 518));
-  padding-top:12px; /* room for the corner badge and the hover lift under the sticky header */
+  --fit:max(.5px, calc((100svh - var(--head-h) - 36px - 2 * var(--gap)) / 518));
+  padding-top:8px; /* room for the hover lift under the sticky header */
 }
 .mosaic>.sec-title{margin-bottom:var(--s4)}
 .m-a,.m-r3{display:grid;gap:var(--gap)}
@@ -299,7 +287,7 @@ h1,h2,h3,p{margin:0}
   --peek:.4;display:grid;grid-auto-flow:column;grid-template-columns:none;
   grid-auto-columns:calc((100% - var(--n) * var(--gap)) / (var(--n) + var(--peek)));gap:var(--gap);
   overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;
-  margin:-14px 0 -28px -12px;padding:14px 0 28px 12px;scroll-padding-inline-start:12px;
+  margin:-8px 0 -28px;padding:8px 0 28px;
 }
 .row-4::-webkit-scrollbar,.row-6::-webkit-scrollbar{display:none}
 .row-4>*,.row-6>*{scroll-snap-align:start}
@@ -385,7 +373,7 @@ h1,h2,h3,p{margin:0}
   .is-feat .cap{padding:48px 14px 14px}
   .sec{margin-top:28px}
   .sec-title{font-size:20px;margin-bottom:12px}
-  .row-4,.row-6{margin:-14px calc(var(--gutter) * -1) -28px;padding:14px var(--gutter) 28px;scroll-padding-inline:var(--gutter)}
+  .row-4,.row-6{margin:-8px calc(var(--gutter) * -1) -28px;padding:8px var(--gutter) 28px;scroll-padding-inline:var(--gutter)}
   .row-4{grid-auto-columns:76%}
   .row-6{grid-auto-columns:42%}
   .cats{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
@@ -1186,11 +1174,6 @@ function art(id, ar) {
 }
 
 /* ---------- components ---------- */
-// each badge's sheen starts at its own moment, so they never flash in sync
-const Badge = (kind, id) => {
-  const [ic, label] = { hot: ['fire', 'Hot'], new: ['sparkle', 'New'], top: ['trophy', 'Top'] }[kind];
-  return `<span class="badge badge--${kind}" title="${label}" style="--b-delay:${(hash(id + kind) % 48) / 10}s">${icon(ic)}</span>`;
-};
 // likes for the open caption, stable per game
 const compact = n => {
   const f = (v, u) => (v < 10 ? v.toFixed(1).replace('.0', '') : Math.round(v)) + u;
@@ -1200,11 +1183,11 @@ function Meta(id) {
   const r = rng(hash(id + '#stats')), plays = Math.round(Math.exp(Math.log(6e4) + r() * (Math.log(3e7) - Math.log(6e4)))), likes = plays * (.002 + r() * .004);
   return `<span class="meta" aria-hidden="true"><span class="m">${icon('thumbs-up')}${compact(likes)}</span></span>`;
 }
-function GameCard(id, { ar, area = '', badge = '', play = false, feat = false, open = false }) {
+function GameCard(id, { ar, area = '', play = false, feat = false, open = false }) {
   const style = `--ar:${ar.toFixed(3)}${area ? `;grid-area:${area}` : ''}`;
   return `<a class="card${feat ? ' is-feat' : ''}${open ? ' is-open' : ''}" href="#${id}" style="${style}" aria-label="${G[id].t}">
     <span class="card-clip">${art(id, ar)}
-    <span class="cap">${open ? `<span class="cap-body"><span class="cap-icon" aria-hidden="true">${art(id, 1)}</span><span class="cap-text"><span class="cap-title">${G[id].t}</span>${Meta(id)}</span></span>` : `<span class="cap-title">${G[id].t}</span>`}${play ? `<span class="play">${icon('play')}</span>` : ''}</span></span>${badge ? Badge(badge, id) : ''}</a>`;
+    <span class="cap">${open ? `<span class="cap-body"><span class="cap-icon" aria-hidden="true">${art(id, 1)}</span><span class="cap-text"><span class="cap-title">${G[id].t}</span>${Meta(id)}</span></span>` : `<span class="cap-title">${G[id].t}</span>`}${play ? `<span class="play">${icon('play')}</span>` : ''}</span></span></a>`;
 }
 const CategoryButton = ({ name, ic }) =>
   `<a class="cat" href="#${catId(name)}"><span class="cat-badge">${icon(ic)}</span><span class="cat-text"><span class="cat-name">${name}</span></span></a>`;
@@ -1215,20 +1198,20 @@ const NavCategory = ({ name, ic }) =>
 /* ---------- page ---------- */
 const K = 1; // mosaic keeps the reference proportions
 const m = (w, h) => w / (h * K);
-// [id, grid-area, reference w, h, badge, featured]
+// [id, grid-area, reference w, h, featured]
 const A = [
-  ['crown-chaos', 'f', 288, 374, '', true], ['craft-valley', 't', 225, 199, 'new'], ['neon-drift', 'w', 240, 199, 'hot'],
-  ['chick-flap', 'b', 110, 165, 'new'], ['ice-tiles', 'm', 105, 165], ['goal-rush', 'p', 240, 165],
-  ['dino-dash', 'g', 260, 374, 'hot', true], ['sky-pilot', 'W', 240, 199, 'top'], ['farm-friends', 'P', 240, 165, 'new'],
+  ['crown-chaos', 'f', 288, 374, true], ['craft-valley', 't', 225, 199], ['neon-drift', 'w', 240, 199],
+  ['chick-flap', 'b', 110, 165], ['ice-tiles', 'm', 105, 165], ['goal-rush', 'p', 240, 165],
+  ['dino-dash', 'g', 260, 374, true], ['sky-pilot', 'W', 240, 199], ['farm-friends', 'P', 240, 165],
 ];
-const R3 = [['paw-pals', 147], ['bubble-buddies', 136, 'hot'], ['burger-tycoon', 182], ['gem-cascade', 122], ['swamp-zombies', 130],
-  ['ninja-roofs', 147], ['hide-and-peek', 136, 'new'], ['knight-quest', 182]];
-const TRENDING = [['deep-sea-dash', 'hot'], ['ghost-town', 'hot'], ['balloon-voyage', 'top'], ['moto-canyon', 'new'],
-  ['rope-swing', 'hot'], ['galaxy-raid'], ['skate-star', 'new'], ['jungle-run'], ['disco-blob', 'top'], ['letter-drop']];
-const NEW = [['berry-merge', 'hot'], ['mahjong-friends', 'new'], ['night-racer', 'top'], ['monster-mash', 'hot'], ['castle-crafters'], ['cube-drop'],
-  ['snow-buddy', 'new'], ['ocean-merge'], ['stick-duel', 'hot'], ['cat-cafe'], ['spider-cards', 'new'], ['melody-pop']];
-const TOP = [['robo-arena', 'top'], ['island-life', 'hot'], ['hoop-kings'], ['reef-friends', 'new'],
-  ['sky-arena', 'top'], ['city-rise'], ['pixel-knight', 'hot'], ['poker-pals'], ['bullseye'], ['word-hunt', 'new']];
+const R3 = [['paw-pals', 147], ['bubble-buddies', 136], ['burger-tycoon', 182], ['gem-cascade', 122], ['swamp-zombies', 130],
+  ['ninja-roofs', 147], ['hide-and-peek', 136], ['knight-quest', 182]];
+const TRENDING = [['deep-sea-dash'], ['ghost-town'], ['balloon-voyage'], ['moto-canyon'],
+  ['rope-swing'], ['galaxy-raid'], ['skate-star'], ['jungle-run'], ['disco-blob'], ['letter-drop']];
+const NEW = [['berry-merge'], ['mahjong-friends'], ['night-racer'], ['monster-mash'], ['castle-crafters'], ['cube-drop'],
+  ['snow-buddy'], ['ocean-merge'], ['stick-duel'], ['cat-cafe'], ['spider-cards'], ['melody-pop']];
+const TOP = [['robo-arena'], ['island-life'], ['hoop-kings'], ['reef-friends'],
+  ['sky-arena'], ['city-rise'], ['pixel-knight'], ['poker-pals'], ['bullseye'], ['word-hunt']];
 const CATS = [
   { name: 'Action', ic: 'sword', count: 245 }, { name: 'Puzzle', ic: 'puzzle-piece', count: 180 }, { name: 'Arcade', ic: 'joystick', count: 156 },
   { name: 'Strategy', ic: 'castle-turret', count: 98 }, { name: 'Simulation', ic: 'buildings', count: 124 }, { name: 'Sports', ic: 'soccer-ball', count: 89 },
@@ -1239,8 +1222,8 @@ const MORE_CATS = [{ name: 'Casual', ic: 'smiley', count: 134 }, { name: 'Merge'
   { name: 'Word', ic: 'text-aa', count: 54 }, { name: 'Cards', ic: 'cards', count: 41 }, { name: 'Music', ic: 'music-notes', count: 36 }];
 const $ = id => document.getElementById(id);
 const RA = 188 / 126, PA = 3 / 5;
-$('m-a').innerHTML = A.map(([id, area, w, h, badge, feat]) => GameCard(id, { ar: m(w, h), area, badge, feat })).join('');
-$('m-r3').innerHTML = R3.map(([id, w, badge]) => GameCard(id, { ar: m(w, 150), badge })).join('');
+$('m-a').innerHTML = A.map(([id, area, w, h, feat]) => GameCard(id, { ar: m(w, h), area, feat })).join('');
+$('m-r3').innerHTML = R3.map(([id, w]) => GameCard(id, { ar: m(w, 150) })).join('');
 
 // the rows follow the screen height, so redraw each cover for the tile's real shape instead of cropping it
 const fitCovers = () => document.querySelectorAll('.mosaic .card').forEach(c => {
@@ -1252,9 +1235,9 @@ const fitCovers = () => document.querySelectorAll('.mosaic .card').forEach(c => 
 let coverRaf = 0;
 addEventListener('resize', () => { cancelAnimationFrame(coverRaf); coverRaf = requestAnimationFrame(fitCovers); });
 fitCovers();
-$('trend-row').innerHTML = TRENDING.map(([id, badge]) => GameCard(id, { ar: RA, badge, play: true })).join('');
-$('new-row').innerHTML = NEW.map(([id, badge]) => GameCard(id, { ar: PA, badge, open: true })).join('');
-$('top-row').innerHTML = TOP.map(([id, badge]) => GameCard(id, { ar: RA, badge, play: true })).join('');
+$('trend-row').innerHTML = TRENDING.map(([id]) => GameCard(id, { ar: RA, play: true })).join('');
+$('new-row').innerHTML = NEW.map(([id]) => GameCard(id, { ar: PA, open: true })).join('');
+$('top-row').innerHTML = TOP.map(([id]) => GameCard(id, { ar: RA, play: true })).join('');
 $('cats').innerHTML = [...CATS, ...MORE_CATS].map(CategoryButton).join('');
 $('rail-list').insertAdjacentHTML('beforeend', [...CATS, ...MORE_CATS].map(NavCategory).join(''));
 
