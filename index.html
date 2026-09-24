@@ -87,8 +87,10 @@
   /* one motion language: a single ease, short micro-interactions, slightly longer reveals and theme changes */
   --ease-out:cubic-bezier(.22,1,.36,1);
   --t-ui:180ms;
-  --t-card:220ms;
-  --t-art:320ms;
+  --t-card:400ms;
+  --t-art:400ms;
+  /* card hover: a gentler ease-out cubic, so the lift, zoom, shadow and play colour glide together */
+  --ease-card:cubic-bezier(.33,1,.68,1);
   --t-reveal:320ms;
   --t-theme:260ms;
 }
@@ -266,34 +268,34 @@ h1,h2,h3,p{margin:0}
 /* ============ Badge ============ */
 
 /* ============ GameCard ============ */
-.card{position:relative;display:block;isolation:isolate;border-radius:var(--r-card);background:var(--card-bg);box-shadow:var(--shadow-rest);container-type:inline-size;transition:transform var(--t-card) var(--ease-out),box-shadow var(--t-card) var(--ease-out)}
+.card{position:relative;display:block;isolation:isolate;border-radius:var(--r-card);background:var(--card-bg);box-shadow:var(--shadow-rest);container-type:inline-size;transition:transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card)}
 .card:active{transform:translateY(-2px);transition-duration:120ms}
-.card::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--card-ring);pointer-events:none;transition:box-shadow var(--t-card) var(--ease-out)}
+.card::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--card-ring);pointer-events:none;transition:box-shadow var(--t-card) var(--ease-card)}
 .card:hover::after,.card:focus-visible::after{box-shadow:inset 0 0 0 1px var(--card-ring-hover)}
 /* the art sits on its own GPU layer, so hover scales a ready texture instead of redrawing the SVG every frame */
-.card .cover{position:absolute;inset:0;width:100%;height:100%;display:block;will-change:transform;backface-visibility:hidden;transition:transform var(--t-art) var(--ease-out)}
+.card .cover{position:absolute;inset:0;width:100%;height:100%;display:block;will-change:transform;backface-visibility:hidden;transition:transform var(--t-card) var(--ease-card)}
 .card-clip{position:absolute;inset:0;overflow:hidden;isolation:isolate;border-radius:inherit}
-.card-clip::before{content:"";position:absolute;inset:0;z-index:1;background:rgba(255,255,255,.04);opacity:0;pointer-events:none;transition:opacity var(--t-art) var(--ease-out)}
+.card-clip::before{content:"";position:absolute;inset:0;z-index:1;background:rgba(255,255,255,.04);opacity:0;pointer-events:none;transition:opacity var(--t-card) var(--ease-card)}
 .card:hover .card-clip::before,.card:focus-visible .card-clip::before{opacity:1}
 .cover text{font-family:"Lilita One","Arial Black",Impact,sans-serif}
 /* hover: the card lifts (220ms), the art inside comes alive a beat slower (320ms) */
 .card:hover,.card:focus-visible{transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
-.card:hover .cover,.card:focus-visible .cover{transform:scale(1.035)}
-.card:active .cover{transform:scale(1.025)}
+.card:hover .cover,.card:focus-visible .cover{transform:scale(1.08)}
+.card:active .cover{transform:scale(1.06)}
 .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s2);padding:36px 12px 12px;background:linear-gradient(to top,var(--scrim),rgba(6,14,24,0))}
 /* open caption (New & popular): deeper scrim, square game icon next to the title, likes under it */
-.cap::after{content:"";position:absolute;inset:-24px 0 0;z-index:-1;background:linear-gradient(to top,rgba(6,14,24,.34),rgba(6,14,24,0));opacity:0;pointer-events:none;transition:opacity var(--t-card) var(--ease-out)}
+.cap::after{content:"";position:absolute;inset:-24px 0 0;z-index:-1;background:linear-gradient(to top,rgba(6,14,24,.34),rgba(6,14,24,0));opacity:0;pointer-events:none;transition:opacity var(--t-card) var(--ease-card)}
 .card:hover .cap::after,.card:focus-visible .cap::after{opacity:1}
-.cap::before{content:"";position:absolute;inset:-40px 0 0;z-index:-1;background:linear-gradient(to top,rgba(6,14,24,.6),rgba(6,14,24,0));opacity:0;transition:opacity var(--t-card) var(--ease-out)}
-.cap-body{--icon:clamp(34px,15cqw,52px);flex:1;min-width:0;display:grid;grid-template-columns:0px minmax(0,1fr);column-gap:0;align-items:end;transition:grid-template-columns var(--t-card) var(--ease-out),column-gap var(--t-card) var(--ease-out)}
-.cap-icon{position:relative;width:var(--icon);height:var(--icon);border-radius:var(--r-card);overflow:hidden;opacity:0;background:rgba(255,255,255,.12);box-shadow:0 0 0 1px rgba(255,255,255,.22),0 4px 10px rgba(0,0,0,.3);transition:opacity var(--t-card) var(--ease-out)}
+.cap::before{content:"";position:absolute;inset:-40px 0 0;z-index:-1;background:linear-gradient(to top,rgba(6,14,24,.6),rgba(6,14,24,0));opacity:0;transition:opacity var(--t-card) var(--ease-card)}
+.cap-body{--icon:clamp(34px,15cqw,52px);flex:1;min-width:0;display:grid;grid-template-columns:0px minmax(0,1fr);column-gap:0;align-items:end;transition:grid-template-columns var(--t-card) var(--ease-card),column-gap var(--t-card) var(--ease-card)}
+.cap-icon{position:relative;width:var(--icon);height:var(--icon);border-radius:var(--r-card);overflow:hidden;opacity:0;background:rgba(255,255,255,.12);box-shadow:0 0 0 1px rgba(255,255,255,.22),0 4px 10px rgba(0,0,0,.3);transition:opacity var(--t-card) var(--ease-card)}
 .cap-icon svg{position:absolute;inset:0;width:100%;height:100%}
-.cap-text{display:grid;grid-template-rows:auto 0fr;min-width:0;transition:grid-template-rows var(--t-card) var(--ease-out)}
-.cap-title,.cap-body{will-change:transform;transition:transform var(--t-card) var(--ease-out)}
+.cap-text{display:grid;grid-template-rows:auto 0fr;min-width:0;transition:grid-template-rows var(--t-card) var(--ease-card)}
+.cap-title,.cap-body{will-change:transform;transition:transform var(--t-card) var(--ease-card)}
 .card:not(.is-open):hover .cap-title,.card:not(.is-open):focus-visible .cap-title,.card.is-open:hover .cap-body,.card.is-open:focus-visible .cap-body{transform:translateY(-2px)}
 .cap-title{font-size:clamp(13px,4.6cqw,17px);font-weight:700;letter-spacing:-.01em;line-height:1.2;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.35);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .is-feat .cap-title{font-size:clamp(16px,5.4cqw,24px);font-weight:800}
-.meta{display:flex;align-items:center;gap:10px;min-height:0;overflow:hidden;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.9);white-space:nowrap;font-variant-numeric:tabular-nums;opacity:0;transform:translateY(4px);transition:opacity var(--t-card) var(--ease-out),transform var(--t-card) var(--ease-out)}
+.meta{display:flex;align-items:center;gap:10px;min-height:0;overflow:hidden;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.9);white-space:nowrap;font-variant-numeric:tabular-nums;opacity:0;transform:translateY(4px);transition:opacity var(--t-card) var(--ease-card),transform var(--t-card) var(--ease-card)}
 .meta .m{display:inline-flex;align-items:center;gap:5px;margin-top:4px}
 .meta .i{width:14px;height:14px}
 .card.is-open .cap::before{opacity:1}
@@ -305,9 +307,9 @@ h1,h2,h3,p{margin:0}
 @container (max-width:150px){.card:not(.is-open) .cap-title{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.cap-icon{display:none}.card.is-open .cap-body{grid-template-columns:0px minmax(0,1fr);column-gap:0}}
 .is-feat .cap{padding:80px 20px 18px}
 /* play: dark glass disc with a white triangle at rest, the lime accent on hover */
-.play{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:rgba(10,12,11,.46);color:#fff;box-shadow:0 6px 14px -8px rgba(0,0,0,.6);transform:scale(.96);transition:background-color var(--t-card) var(--ease-out),color var(--t-card) var(--ease-out),transform var(--t-card) var(--ease-out)}
+.play{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:rgba(10,12,11,.46);color:#fff;box-shadow:0 6px 14px -8px rgba(0,0,0,.6);transition:background-color var(--t-card) var(--ease-card),color var(--t-card) var(--ease-card)}
 .play .i{width:18px;height:18px;margin-left:2px}
-.card:hover .play,.card:focus-visible .play{background:var(--lime);color:var(--on-lime);transform:none}
+.card:hover .play,.card:focus-visible .play{background:var(--lime);color:var(--on-lime)}
 
 /* ============ Mosaic — a dense catalogue wall on a square-cell grid ============ */
 /* 12 columns × 5 rows of square cells. Tiles use the page's shapes: small squares (1×1), squares (2×2),
@@ -651,7 +653,6 @@ h1,h2,h3,p{margin:0}
 
 @media (hover:none){
   .card:hover{transform:none}
-  .play{transform:none}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
