@@ -1,3 +1,6 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zabava Catalog</title>
 <meta name="description" content="Zabava — free browser games catalog, light and dark themes">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -394,52 +397,36 @@ h1,h2,h3,p{margin:0}
 .btn-ghost .i{width:20px;height:20px}
 .btn-ghost:hover,.btn-ghost:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--tile-bg);color:var(--st-hover-fg)}
 .btn-ghost[aria-pressed="true"]{background:var(--st-active-bg);color:var(--st-active-fg);border-color:transparent}
-/* game page: a 12-column grid with two bands of equal height —
-   [stage 8 | info 4] and [about 8 | similar 4] — so every edge lines up */
+/* game page: a 12-column grid, two bands of equal height —
+   [player 8 | more games 4] and [about 8 | details 4]; every edge lines up */
 .gp{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap)}
-.gp-stage{grid-column:span 8;position:relative;aspect-ratio:16/9;border-radius:var(--r-card);overflow:hidden;background:var(--card-bg);isolation:isolate}
+.gp-tile{min-width:0;padding:20px;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border)}
+.gp-h{margin:0 0 12px;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+/* player: the stage and its toolbar are one unit */
+.gp-player{grid-column:span 8;display:flex;flex-direction:column;border-radius:var(--r-card);overflow:hidden;background:var(--tile-bg);border:1px solid var(--border)}
+.gp-stage{position:relative;aspect-ratio:16/9;background:var(--card-bg);isolation:isolate}
 .gp-stage .cover{position:absolute;inset:0;width:100%;height:100%}
-.gp-stage::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--card-ring);background:radial-gradient(60% 60% at 50% 50%,rgba(6,14,24,.28),rgba(6,14,24,0));pointer-events:none}
+.gp-stage::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 60% at 50% 50%,rgba(6,14,24,.28),rgba(6,14,24,0));pointer-events:none}
 .gp-launch{position:absolute;left:50%;top:50%;z-index:1;display:grid;place-items:center;width:88px;height:88px;margin:-44px 0 0 -44px;border-radius:50%;background:var(--lime);color:var(--on-lime);box-shadow:0 14px 30px -12px rgba(0,0,0,.55);transition:background-color var(--t-ui) var(--ease-out)}
 .gp-launch:hover,.gp-launch:focus-visible{background:color-mix(in srgb,var(--lime) 86%,#fff)}
 .gp-launch .i{width:42px;height:42px;margin-left:4px}
-.gp-tile{min-width:0;padding:20px;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border)}
-.gp-h{margin:0 0 12px;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
-/* info: identity at the top, facts in a 2×2 grid, actions pinned to the bottom edge of the stage */
-.gp-info{grid-column:span 4;display:flex;flex-direction:column;gap:var(--s4)}
-.gp-id{display:flex;align-items:center;gap:14px;min-width:0}
-.gp-icon{position:relative;flex:none;width:64px;height:64px;border-radius:14px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--card-ring)}
+.gp-bar{display:flex;align-items:center;gap:14px;padding:14px 16px;border-top:1px solid var(--border)}
+.gp-icon{position:relative;flex:none;width:52px;height:52px;border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--card-ring)}
 .gp-icon svg{position:absolute;inset:0;width:100%;height:100%}
-.gp-title{margin:0;font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
-.gp-genre{display:inline-block;margin-top:4px;font-size:14px;font-weight:600;color:var(--text-2);transition:color var(--t-ui) var(--ease-out)}
-.gp-genre:hover,.gp-genre:focus-visible{color:var(--link-hover)}
-.gp-facts{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin:0}
-.gp-facts div{padding:12px 14px;border-radius:var(--r-ctl);background:var(--search-bg);border:1px solid var(--border)}
-.gp-facts dt{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text-2)}
-.gp-facts dt .i{width:14px;height:14px;color:var(--st-rest)}
-.gp-facts dd{margin:4px 0 0;font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
-.gp-cta{display:flex;flex-direction:column;gap:var(--s2);margin-top:auto}
-.gp-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
-/* about: copy, controls and tags, each on its own row */
-.gp-about{grid-column:span 8;display:flex;flex-direction:column}
-.gp-about>section+section{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
-.gp-desc{font-size:14px;line-height:1.65;color:var(--text-2)}
-.gp-desc p{margin:0 0 10px}
-.gp-desc p:last-child{margin-bottom:0}
-.gp-desc.is-clamped{max-height:calc(1.65em * 4);overflow:hidden;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
-.gp-more{margin-top:8px;font-size:14px;font-weight:700;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
-.gp-more:hover,.gp-more:focus-visible{color:var(--link-hover)}
-.gp-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin:0;padding:0;list-style:none}
-.gp-controls li{display:flex;flex-direction:column;gap:10px;padding:12px 14px;border-radius:var(--r-ctl);background:var(--search-bg);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--text-2)}
-.gp-keys{display:flex;gap:6px}
-.key{display:grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:7px;border:1px solid var(--border-strong);background:var(--tile-bg);color:var(--text);font-size:12px;font-weight:800;line-height:1}
-.key .i{width:16px;height:16px}
-.key--up .i{transform:rotate(-90deg)}
-.key--down .i{transform:rotate(90deg)}
-.key--left .i{transform:rotate(180deg)}
-.gp-tags{display:flex;flex-wrap:wrap;gap:var(--s2)}
-.gp-tags .chip{display:inline-flex;align-items:center;height:32px;padding:0 14px;font-size:13px}
-/* similar: a tidy list — thumbnail, title, genre and rating */
+.gp-name{flex:1;min-width:0}
+.gp-title{margin:0;font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gp-meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin-top:4px;font-size:13px;font-weight:600;color:var(--text-2);font-variant-numeric:tabular-nums}
+.gp-meta span,.gp-meta a{display:inline-flex;align-items:center;gap:5px}
+.gp-meta a{transition:color var(--t-ui) var(--ease-out)}
+.gp-meta a:hover,.gp-meta a:focus-visible{color:var(--link-hover)}
+.gp-meta .i{width:15px;height:15px;color:var(--st-rest)}
+.gp-tools{display:flex;align-items:center;gap:var(--s2);flex:none}
+.btn-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:var(--r-ctl);border:1px solid var(--border);background:var(--tile-bg);color:var(--st-rest);transition:background var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out)}
+.btn-icon .i{width:20px;height:20px}
+.btn-icon:hover,.btn-icon:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--tile-bg);color:var(--st-hover-fg)}
+.btn-icon[aria-pressed="true"]{background:var(--st-active-bg);color:var(--st-active-fg);border-color:transparent}
+.gp-tools .btn-primary{height:44px;padding:0 22px}
+/* more games: a tidy list beside the player */
 .gp-similar{grid-column:span 4;display:flex;flex-direction:column}
 .gp-similar .sec-head{margin-bottom:8px}
 .gp-list{display:flex;flex-direction:column;gap:2px;margin:0 -8px}
@@ -450,6 +437,36 @@ h1,h2,h3,p{margin:0}
 .gp-item b{display:block;font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gp-item small{display:flex;align-items:center;gap:4px;margin-top:2px;font-size:12px;font-weight:600;color:var(--text-2)}
 .gp-item small .i{width:13px;height:13px;color:var(--st-rest)}
+/* about: copy, controls, tags */
+.gp-about{grid-column:span 8}
+.gp-about>section+section{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+.gp-desc{max-width:760px;font-size:14px;line-height:1.65;color:var(--text-2)}
+.gp-desc p{margin:0 0 10px}
+.gp-desc p:last-child{margin-bottom:0}
+.gp-desc.is-clamped{max-height:calc(1.65em * 4);overflow:hidden;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+.gp-more{margin-top:8px;font-size:14px;font-weight:700;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
+.gp-more:hover,.gp-more:focus-visible{color:var(--link-hover)}
+.gp-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin:0;padding:0;list-style:none}
+.gp-controls li{display:flex;flex-direction:column;gap:10px;padding:12px 14px;border-radius:var(--r-ctl);background:var(--search-bg);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--text-2)}
+.gp-keys{display:flex;gap:6px}
+.key{display:grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:7px;font-family:inherit;border:1px solid var(--border-strong);background:var(--tile-bg);color:var(--text);font-size:12px;font-weight:800;line-height:1}
+.key .i{width:16px;height:16px}
+.key--up .i{transform:rotate(-90deg)}
+.key--down .i{transform:rotate(90deg)}
+.key--left .i{transform:rotate(180deg)}
+.gp-tags{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.gp-tags .chip{display:inline-flex;align-items:center;height:32px;padding:0 14px;font-size:13px}
+/* details: a plain key–value list */
+.gp-details{grid-column:span 4}
+.gp-dl{margin:0}
+.gp-dl div{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px}
+.gp-dl div:first-child{padding-top:0}
+.gp-dl div:last-child{border-bottom:0;padding-bottom:0}
+.gp-dl dt{display:flex;align-items:center;gap:8px;color:var(--text-2);font-weight:600}
+.gp-dl dt .i{width:16px;height:16px;color:var(--st-rest)}
+.gp-dl dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-align:right}
+.gp-dl a{transition:color var(--t-ui) var(--ease-out)}
+.gp-dl a:hover,.gp-dl a:focus-visible{color:var(--link-hover)}
 /* category page: header, sort chips, a grid of the same landscape cards, other categories */
 /* page titles sit one step above section titles (24px); body copy is the site's 14px */
 .cp-head{margin-bottom:var(--s4)}
@@ -462,12 +479,15 @@ h1,h2,h3,p{margin:0}
 .cp-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--gap)}
 .cp-grid .card{aspect-ratio:188/126}
 @media (max-width:1100px){
-  .gp-stage,.gp-info,.gp-about,.gp-similar{grid-column:1 / -1}
+  .gp-player,.gp-similar,.gp-about,.gp-details{grid-column:1 / -1}
   .cp-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (max-width:720px){
-  .gp-title{font-size:22px}
+  .gp-title{font-size:18px}
   .gp-controls{grid-template-columns:1fr}
+  .gp-bar{flex-wrap:wrap}
+  .gp-tools{width:100%}
+  .gp-tools .btn-primary{flex:1}
   .gp-launch{width:68px;height:68px;margin:-34px 0 0 -34px}
   .gp-launch .i{width:32px;height:32px}
   .cp-title{font-size:22px}
@@ -1619,26 +1639,28 @@ function GamePage(id) {
   ];
   const KEY = { '←': 'left', '→': 'right', '↑': 'up', '↓': 'down' };
   const keycap = k => KEY[k] ? `<kbd class="key key--${KEY[k]}" aria-label="${KEY[k]} arrow">${icon('caret-right')}</kbd>` : `<kbd class="key">${k}</kbd>`;
-  const similar = more.slice(0, 6).map(x => `<a class="gp-item" href="#/game/${x}"><span class="gp-thumb">${art(x, RA)}</span><span style="min-width:0"><b>${G[x].t}</b><small>${G[x].g} · ${icon('star')}${statsOf(x).rating}</small></span></a>`).join('');
+  const similar = more.slice(0, 7).map(x => `<a class="gp-item" href="#/game/${x}"><span class="gp-thumb">${art(x, RA)}</span><span style="min-width:0"><b>${G[x].t}</b><small>${G[x].g} · ${icon('star')}${statsOf(x).rating}</small></span></a>`).join('');
   return crumbs([[g.g, catHref], [g.t]]) + `
     <div class="gp">
-      <div class="gp-stage">${art(id, 16 / 9)}<button class="gp-launch" type="button" aria-label="Play ${g.t}">${icon('play')}</button></div>
-      <aside class="gp-info gp-tile">
-        <div class="gp-id"><span class="gp-icon">${art(id, 1)}</span><div style="min-width:0"><h1 class="gp-title">${g.t}</h1><a class="gp-genre" href="${catHref}">${g.g}</a></div></div>
-        <dl class="gp-facts">
-          <div><dt>${icon('star')}Rating</dt><dd>${st.rating}</dd></div>
-          <div><dt>${icon('thumbs-up')}Likes</dt><dd>${compact(st.likes)}</dd></div>
-          <div><dt>${icon('play')}Plays</dt><dd>${compact(st.plays)}</dd></div>
-          <div><dt>Released</dt><dd>${st.released}</dd></div>
-        </dl>
-        <div class="gp-cta">
-          <button class="btn-primary" type="button">${icon('play')}Play now</button>
-          <div class="gp-actions">
-            <button class="btn-ghost" type="button" aria-pressed="false" data-toggle>${icon('heart')}Favorite</button>
-            <button class="btn-ghost" type="button">${icon('share')}Share</button>
+      <div class="gp-player">
+        <div class="gp-stage">${art(id, 16 / 9)}<button class="gp-launch" type="button" aria-label="Play ${g.t}">${icon('play')}</button></div>
+        <div class="gp-bar">
+          <span class="gp-icon">${art(id, 1)}</span>
+          <div class="gp-name">
+            <h1 class="gp-title">${g.t}</h1>
+            <div class="gp-meta"><a href="${catHref}">${g.g}</a><span>${icon('star')}${st.rating}</span><span>${icon('play')}${compact(st.plays)} plays</span></div>
+          </div>
+          <div class="gp-tools">
+            <button class="btn-icon" type="button" aria-pressed="false" aria-label="Add to favorites" title="Add to favorites" data-toggle>${icon('heart')}</button>
+            <button class="btn-icon" type="button" aria-label="Share" title="Share">${icon('share')}</button>
+            <button class="btn-primary" type="button">${icon('play')}Play now</button>
           </div>
         </div>
-      </aside>
+      </div>
+      <section class="gp-similar gp-tile">
+        <div class="sec-head"><a class="see-all" href="${catHref}"><h2 class="sec-title" style="font-size:18px">More ${g.g} games</h2>${icon('caret-right')}</a></div>
+        <div class="gp-list">${similar}</div>
+      </section>
       <div class="gp-about gp-tile">
         <section>
           <h2 class="gp-h">About ${g.t}</h2>
@@ -1651,12 +1673,19 @@ function GamePage(id) {
         </section>
         <section>
           <h2 class="gp-h">Tags</h2>
-          <div class="gp-tags"><a class="chip" href="${catHref}">${g.g}</a>${subs.map(t => `<a class="chip" href="${catHref}">${t}</a>`).join('')}<span class="chip" style="pointer-events:none">Desktop and mobile</span></div>
+          <div class="gp-tags"><a class="chip" href="${catHref}">${g.g}</a>${subs.map(t => `<a class="chip" href="${catHref}">${t}</a>`).join('')}</div>
         </section>
       </div>
-      <section class="gp-similar gp-tile">
-        <div class="sec-head"><a class="see-all" href="${catHref}"><h2 class="sec-title" style="font-size:18px">More ${g.g} games</h2>${icon('caret-right')}</a></div>
-        <div class="gp-list">${similar}</div>
+      <section class="gp-details gp-tile">
+        <h2 class="gp-h">Details</h2>
+        <dl class="gp-dl">
+          <div><dt>${icon('star')}Rating</dt><dd>${st.rating} / 5</dd></div>
+          <div><dt>${icon('thumbs-up')}Likes</dt><dd>${compact(st.likes)}</dd></div>
+          <div><dt>${icon('play')}Plays</dt><dd>${compact(st.plays)}</dd></div>
+          <div><dt>${icon('clock-counter-clockwise')}Released</dt><dd>${st.released}</dd></div>
+          <div><dt>${icon('game-controller')}Genre</dt><dd><a href="${catHref}">${g.g}</a></dd></div>
+          <div><dt>${icon('users-three')}Works on</dt><dd>Desktop, mobile</dd></div>
+        </dl>
       </section>
     </div>` + cardRow('You may also like', also);
 }
