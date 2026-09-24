@@ -380,6 +380,69 @@ h1,h2,h3,p{margin:0}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:var(--t-theme);animation-timing-function:var(--ease-out)}
 .theme-fading,.theme-fading *:not(.cover):not(.cover *){transition:background-color var(--t-theme) var(--ease-out),border-color var(--t-theme) var(--ease-out),color var(--t-theme) var(--ease-out),box-shadow var(--t-theme) var(--ease-out),fill var(--t-theme) var(--ease-out)!important}
 
+/* ============ Pages: game and category ============ */
+/* Built only from the home page's parts: the same tiles, cards, rows, tokens and rest/hover/active states. */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:6px 0 var(--s4);font-size:13px;font-weight:600;color:var(--text-2)}
+.crumbs a{color:var(--text-2);transition:color var(--t-ui) var(--ease-out)}
+.crumbs a:hover,.crumbs a:focus-visible{color:var(--link-hover)}
+.crumbs .i{width:16px;height:16px;color:var(--text-3)}
+.crumbs [aria-current]{color:var(--text)}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:var(--r-ctl);background:var(--lime);color:var(--on-lime);font-size:15px;font-weight:800;transition:background-color var(--t-ui) var(--ease-out)}
+.btn-primary:hover,.btn-primary:focus-visible{background:color-mix(in srgb,var(--lime) 86%,#fff)}
+.btn-primary .i{width:20px;height:20px}
+.btn-ghost{display:flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 16px;border-radius:var(--r-ctl);border:1px solid var(--border);background:var(--tile-bg);color:var(--st-rest);font-size:14px;font-weight:700;transition:background var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out)}
+.btn-ghost .i{width:20px;height:20px}
+.btn-ghost:hover,.btn-ghost:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--tile-bg);color:var(--st-hover-fg)}
+.btn-ghost[aria-pressed="true"]{background:var(--st-active-bg);color:var(--st-active-fg);border-color:transparent}
+/* game page: the stage on the left, one info tile on the right */
+.gp{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(300px,1fr);gap:var(--gap);align-items:start}
+.gp-stage{position:relative;aspect-ratio:16/9;border-radius:var(--r-card);overflow:hidden;background:var(--card-bg);isolation:isolate}
+.gp-stage .cover{position:absolute;inset:0;width:100%;height:100%}
+.gp-stage::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--card-ring);background:radial-gradient(60% 60% at 50% 50%,rgba(6,14,24,.28),rgba(6,14,24,0));pointer-events:none}
+.gp-launch{position:absolute;left:50%;top:50%;z-index:1;display:grid;place-items:center;width:88px;height:88px;margin:-44px 0 0 -44px;border-radius:50%;background:var(--lime);color:var(--on-lime);box-shadow:0 14px 30px -12px rgba(0,0,0,.55);transition:background-color var(--t-ui) var(--ease-out)}
+.gp-launch:hover,.gp-launch:focus-visible{background:color-mix(in srgb,var(--lime) 86%,#fff)}
+.gp-launch .i{width:42px;height:42px;margin-left:4px}
+.gp-info{display:flex;flex-direction:column;gap:var(--s4);padding:20px;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border)}
+.gp-id{display:flex;align-items:center;gap:14px;min-width:0}
+.gp-icon{position:relative;flex:none;width:64px;height:64px;border-radius:14px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--card-ring)}
+.gp-icon svg{position:absolute;inset:0;width:100%;height:100%}
+.gp-title{margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.gp-genre{display:inline-block;margin-top:4px;font-size:14px;font-weight:600;color:var(--text-2);transition:color var(--t-ui) var(--ease-out)}
+.gp-genre:hover,.gp-genre:focus-visible{color:var(--link-hover)}
+.gp-stats{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;font-weight:700;color:var(--text-2);font-variant-numeric:tabular-nums}
+.gp-stats span{display:inline-flex;align-items:center;gap:6px}
+.gp-stats .i{width:18px;height:18px;color:var(--st-rest)}
+.gp-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
+.gp-desc{margin:0;font-size:14px;line-height:1.6;color:var(--text-2)}
+.gp-facts{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0;padding-top:var(--s4);border-top:1px solid var(--border);font-size:13px}
+.gp-facts dt{color:var(--text-2);font-weight:600}
+.gp-facts dd{margin:0;font-weight:700}
+.gp-facts a{transition:color var(--t-ui) var(--ease-out)}
+.gp-facts a:hover,.gp-facts a:focus-visible{color:var(--link-hover)}
+/* category page: header, sort chips, a grid of the same landscape cards, other categories */
+.cp-head{display:flex;align-items:center;gap:16px;margin-bottom:var(--s4)}
+.cp-head .i{width:52px;height:52px;flex:none;color:var(--st-rest)}
+.cp-title{margin:0;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.cp-sub{margin-top:4px;font-size:14px;font-weight:600;color:var(--text-2)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--s2);margin-bottom:var(--s4)}
+.chip{height:36px;padding:0 16px;border-radius:999px;border:1px solid var(--border);background:var(--tile-bg);color:var(--st-rest);font-size:14px;font-weight:700;transition:background var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out)}
+.chip:hover,.chip:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--tile-bg);color:var(--st-hover-fg)}
+.chip[aria-pressed="true"]{background:var(--st-active-bg);color:var(--st-active-fg);border-color:transparent}
+.cp-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--gap)}
+.cp-grid .card{aspect-ratio:188/126}
+@media (max-width:1100px){
+  .gp{grid-template-columns:minmax(0,1fr)}
+  .cp-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:720px){
+  .gp-title{font-size:22px}
+  .gp-launch{width:68px;height:68px;margin:-34px 0 0 -34px}
+  .gp-launch .i{width:32px;height:32px}
+  .cp-title{font-size:24px}
+  .cp-head .i{width:40px;height:40px}
+  .cp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 /* ============ tablet ============ */
 @media (max-width:1100px){
   :root{--gutter:20px}
@@ -470,6 +533,7 @@ h1,h2,h3,p{margin:0}
     <div class="main-in">
       <h1 class="sr-only">Zabava — free games in your browser</h1>
 
+      <div id="view-home">
       <section class="mosaic" id="top" aria-labelledby="h-top">
         <h2 class="sr-only" id="h-top">Featured games</h2>
         <div class="m-cells" id="m-a"></div>
@@ -500,6 +564,8 @@ h1,h2,h3,p{margin:0}
       </section>
 
       <div id="cat-sections"></div>
+      </div>
+      <div id="view-page" hidden></div>
 
       <footer class="foot">
         <span>© 2026 Zabava · Free games, no downloads</span>
@@ -510,7 +576,7 @@ h1,h2,h3,p{margin:0}
 </div>
 
 <script>
-const PH={"magnifying-glass":"<path d=\"M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z\"/>","sun":"<path d=\"M338.5-338.5Q280-397 280-480t58.5-141.5Q397-680 480-680t141.5 58.5Q680-563 680-480t-58.5 141.5Q563-280 480-280t-141.5-58.5ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z\"/>","moon":"<path d=\"M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z\"/>","house":"<path d=\"M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z\"/>","fire":"<path d=\"M160-400q0-105 50-187t110-138q60-56 110-85.5l50-29.5v132q0 37 25 58.5t56 21.5q17 0 32.5-7t28.5-23l18-22q72 42 116 116.5T800-400q0 88-43 160.5T644-125q17-24 26.5-52.5T680-238q0-40-15-75.5T622-377L480-516 339-377q-29 29-44 64t-15 75q0 32 9.5 60.5T316-125q-70-42-113-114.5T160-400Zm320-4 85 83q17 17 26 38t9 45q0 49-35 83.5T480-120q-50 0-85-34.5T360-238q0-23 9-44.5t26-38.5l85-83Z\"/>","sparkle":"<path d=\"m760-600-50-110-110-50 110-50 50-110 50 110 110 50-110 50-50 110Zm0 560-50-110-110-50 110-50 50-110 50 110 110 50-110 50-50 110ZM360-160 260-380 40-480l220-100 100-220 100 220 220 100-220 100-100 220Z\"/>","trophy":"<path d=\"M280-120v-80h160v-124q-49-11-87.5-41.5T296-442q-75-9-125.5-65.5T120-640v-120h160v-80h400v80h160v120q0 76-50.5 132.5T664-442q-18 46-56.5 76.5T520-324v124h160v80H280Zm0-408v-152h-80v40q0 38 22 68.5t58 43.5Zm400 0q36-13 58-43.5t22-68.5v-40h-80v152Z\"/>","heart":"<path d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z\"/>","clock-counter-clockwise":"<path d=\"M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z\"/>","sword":"<path d=\"M762-96 645-212l-88 88-28-28q-23-23-23-57t23-57l169-169q23-23 57-23t57 23l28 28-88 88 116 117q12 12 12 28t-12 28l-50 50q-12 12-28 12t-28-12Zm118-628L426-270l5 4q23 23 23 57t-23 57l-28 28-88-88L198-96q-12 12-28 12t-28-12l-50-50q-12-12-12-28t12-28l116-117-88-88 28-28q23-23 57-23t57 23l4 5 454-454h160v160ZM278-526 80-724v-160h160l198 198-160 160Z\"/>","puzzle-piece":"<path d=\"M120-120v-232q48 0 84-30.5t36-77.5q0-46-36-76t-84-32v-232h202q7-51 46-85.5t92-34.5q52 0 91 34.5t47 85.5h202v214q36 18 58 52t22 74q0 41-22 75t-58 51v214H120Z\"/>","joystick":"<path d=\"m65-200 78-560h674l78 560H736L616-320H344L224-200H65Zm643.5-251.5Q720-463 720-480t-11.5-28.5Q697-520 680-520t-28.5 11.5Q640-497 640-480t11.5 28.5Q663-440 680-440t28.5-11.5ZM600-560q17 0 28.5-11.5T640-600q0-17-11.5-28.5T600-640q-17 0-28.5 11.5T560-600q0 17 11.5 28.5T600-560ZM310-440h60v-70h70v-60h-70v-70h-60v70h-70v60h70v70Z\"/>","castle-turret":"<path d=\"M40-120v-480h80v80h80v-320h80v80h80v-80h80v80h80v-80h80v80h80v-80h80v320h80v-80h80v480H560v-200H400v200H40Zm320-360h80v-120h-80v120Zm160 0h80v-120h-80v120Z\"/>","buildings":"<path d=\"M120-120v-560h160v-160h400v320h160v400H520v-160h-80v160H120Zm80-80h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 320h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 480h80v-80h-80v80Zm0-160h80v-80h-80v80Z\"/>","soccer-ball":"<path d=\"M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm200-500 54-18 16-54q-32-48-77-82.5T574-786l-54 38v56l160 112Zm-400 0 160-112v-56l-54-38q-54 17-99 51.5T210-652l16 54 54 18Zm-42 308 46-4 30-54-58-174-56-20-40 30q0 65 18 118.5T238-272Zm293 108q25-4 49-12l28-60-26-44H378l-26 44 28 60q24 8 49 12t51 4q26 0 51-4ZM390-360h180l56-160-146-102-144 102 54 160Zm332 88q42-50 60-103.5T800-494l-40-28-56 18-58 174 30 54 46 4Z\"/>","flag-checkered":"<path d=\"M200-120v-680h360l16 80h224v400H520l-16-80H280v280h-80Z\"/>","compass":"<path d=\"m300-300 280-80 80-280-280 80-80 280Zm180-120q-25 0-42.5-17.5T420-480q0-25 17.5-42.5T480-540q25 0 42.5 17.5T540-480q0 25-17.5 42.5T480-420Zm0 340q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z\"/>","users-three":"<path d=\"M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM247-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47Zm466 0q-47 47-113 47-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113q0 66-47 113Z\"/>","balloon":"<path d=\"m80-80 200-560 360 360L80-80Zm502-378-42-42 301-301 101 101-42 42-59-59-259 259ZM422-618l-42-42 58-58-60-60 42-42 102 102-100 100Zm80 80-42-42 179-179-99-99 42-42 141 141-221 221Zm160 160-42-42 141-141 141 141-42 42-99-99-99 99Z\"/>","smiley":"<path d=\"M620-520q25 0 42.5-17.5T680-580q0-25-17.5-42.5T620-640q-25 0-42.5 17.5T560-580q0 25 17.5 42.5T620-520Zm-280 0q25 0 42.5-17.5T400-580q0-25-17.5-42.5T340-640q-25 0-42.5 17.5T280-580q0 25 17.5 42.5T340-520Zm263.5 221.5Q659-337 684-400h-66q-22 37-58.5 58.5T480-320q-43 0-79.5-21.5T342-400h-66q25 63 80.5 101.5T480-260q68 0 123.5-38.5ZM324-111.5Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5Z\"/>","arrows-merge":"<path d=\"m256-120-56-56 240-241v-270l-64 63-56-56 160-160 160 160-56 56-64-63v270l240 241-56 56-224-224-224 224Z\"/>","crosshair":"<path d=\"M324-111.5Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5ZM707-253q93-93 93-227t-93-227q-93-93-227-93t-227 93q-93 93-93 227t93 227q93 93 227 93t227-93Zm-397-57q-70-70-70-170t70-170q70-70 170-70t170 70q70 70 70 170t-70 170q-70 70-170 70t-170-70Zm283-57q47-47 47-113t-47-113q-47-47-113-47t-113 47q-47 47-47 113t47 113q47 47 113 47t113-47Zm-169.5-56.5Q400-447 400-480t23.5-56.5Q447-560 480-560t56.5 23.5Q560-513 560-480t-23.5 56.5Q513-400 480-400t-56.5-23.5Z\"/>","text-aa":"<path d=\"M280-160v-520H80v-120h520v120H400v520H280Zm360 0v-320H520v-120h360v120H760v320H640Z\"/>","cards":"<path d=\"M159-168 51-212l108-234v278Zm80-232L354-80H239v-320ZM449-56 215-698l454-166 234 642L449-56Zm18.5-515.5Q479-583 479-600t-11.5-28.5Q456-640 439-640t-28.5 11.5Q399-617 399-600t11.5 28.5Q422-560 439-560t28.5-11.5Z\"/>","music-notes":"<path d=\"M287-167q-47-47-47-113t47-113q47-47 113-47 23 0 42.5 5.5T480-418v-422h240v160H560v400q0 66-47 113t-113 47q-66 0-113-47Z\"/>","caret-right":"<path d=\"M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z\"/>","caret-left":"<path d=\"M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z\"/>","star":"<path d=\"m233-120 65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z\"/>","thumbs-up":"<path d=\"M320-120v-520l280-280 74 74-52 206h298v176L774-120H320Zm-240 0v-520h160v520H80Z\"/>","play":"<path d=\"M320-200v-560l440 280-440 280Z\"/>","dots-three":"<path d=\"M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z\"/>","x":"<path d=\"m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z\"/>","arrow-right":"<path d=\"M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z\"/>","game-controller":"<path d=\"M189-160q-60 0-102.5-43T42-307q0-9 1-18t3-18l84-336q14-54 57-87.5t98-33.5h390q55 0 98 33.5t57 87.5l84 336q2 9 3.5 18.5T919-306q0 61-43.5 103.5T771-160q-42 0-78-22t-54-60l-28-58q-5-10-15-15t-21-5H385q-11 0-21 5t-15 15l-28 58q-18 38-54 60t-78 22Zm379.5-371.5Q580-543 580-560t-11.5-28.5Q557-600 540-600t-28.5 11.5Q500-577 500-560t11.5 28.5Q523-520 540-520t28.5-11.5Zm80-80Q660-623 660-640t-11.5-28.5Q637-680 620-680t-28.5 11.5Q580-657 580-640t11.5 28.5Q603-600 620-600t28.5-11.5Zm0 160Q660-463 660-480t-11.5-28.5Q637-520 620-520t-28.5 11.5Q580-497 580-480t11.5 28.5Q603-440 620-440t28.5-11.5Zm80-80Q740-543 740-560t-11.5-28.5Q717-600 700-600t-28.5 11.5Q660-577 660-560t11.5 28.5Q683-520 700-520t28.5-11.5Zm-367 63Q370-477 370-490v-40h40q13 0 21.5-8.5T440-560q0-13-8.5-21.5T410-590h-40v-40q0-13-8.5-21.5T340-660q-13 0-21.5 8.5T310-630v40h-40q-13 0-21.5 8.5T240-560q0 13 8.5 21.5T270-530h40v40q0 13 8.5 21.5T340-460q13 0 21.5-8.5Z\"/>"};
+const PH={"magnifying-glass":"<path d=\"M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z\"/>","sun":"<path d=\"M338.5-338.5Q280-397 280-480t58.5-141.5Q397-680 480-680t141.5 58.5Q680-563 680-480t-58.5 141.5Q563-280 480-280t-141.5-58.5ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z\"/>","moon":"<path d=\"M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z\"/>","house":"<path d=\"M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z\"/>","fire":"<path d=\"M160-400q0-105 50-187t110-138q60-56 110-85.5l50-29.5v132q0 37 25 58.5t56 21.5q17 0 32.5-7t28.5-23l18-22q72 42 116 116.5T800-400q0 88-43 160.5T644-125q17-24 26.5-52.5T680-238q0-40-15-75.5T622-377L480-516 339-377q-29 29-44 64t-15 75q0 32 9.5 60.5T316-125q-70-42-113-114.5T160-400Zm320-4 85 83q17 17 26 38t9 45q0 49-35 83.5T480-120q-50 0-85-34.5T360-238q0-23 9-44.5t26-38.5l85-83Z\"/>","sparkle":"<path d=\"m760-600-50-110-110-50 110-50 50-110 50 110 110 50-110 50-50 110Zm0 560-50-110-110-50 110-50 50-110 50 110 110 50-110 50-50 110ZM360-160 260-380 40-480l220-100 100-220 100 220 220 100-220 100-100 220Z\"/>","trophy":"<path d=\"M280-120v-80h160v-124q-49-11-87.5-41.5T296-442q-75-9-125.5-65.5T120-640v-120h160v-80h400v80h160v120q0 76-50.5 132.5T664-442q-18 46-56.5 76.5T520-324v124h160v80H280Zm0-408v-152h-80v40q0 38 22 68.5t58 43.5Zm400 0q36-13 58-43.5t22-68.5v-40h-80v152Z\"/>","heart":"<path d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z\"/>","clock-counter-clockwise":"<path d=\"M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z\"/>","sword":"<path d=\"M762-96 645-212l-88 88-28-28q-23-23-23-57t23-57l169-169q23-23 57-23t57 23l28 28-88 88 116 117q12 12 12 28t-12 28l-50 50q-12 12-28 12t-28-12Zm118-628L426-270l5 4q23 23 23 57t-23 57l-28 28-88-88L198-96q-12 12-28 12t-28-12l-50-50q-12-12-12-28t12-28l116-117-88-88 28-28q23-23 57-23t57 23l4 5 454-454h160v160ZM278-526 80-724v-160h160l198 198-160 160Z\"/>","puzzle-piece":"<path d=\"M120-120v-232q48 0 84-30.5t36-77.5q0-46-36-76t-84-32v-232h202q7-51 46-85.5t92-34.5q52 0 91 34.5t47 85.5h202v214q36 18 58 52t22 74q0 41-22 75t-58 51v214H120Z\"/>","joystick":"<path d=\"m65-200 78-560h674l78 560H736L616-320H344L224-200H65Zm643.5-251.5Q720-463 720-480t-11.5-28.5Q697-520 680-520t-28.5 11.5Q640-497 640-480t11.5 28.5Q663-440 680-440t28.5-11.5ZM600-560q17 0 28.5-11.5T640-600q0-17-11.5-28.5T600-640q-17 0-28.5 11.5T560-600q0 17 11.5 28.5T600-560ZM310-440h60v-70h70v-60h-70v-70h-60v70h-70v60h70v70Z\"/>","castle-turret":"<path d=\"M40-120v-480h80v80h80v-320h80v80h80v-80h80v80h80v-80h80v80h80v-80h80v320h80v-80h80v480H560v-200H400v200H40Zm320-360h80v-120h-80v120Zm160 0h80v-120h-80v120Z\"/>","buildings":"<path d=\"M120-120v-560h160v-160h400v320h160v400H520v-160h-80v160H120Zm80-80h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 320h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 480h80v-80h-80v80Zm0-160h80v-80h-80v80Z\"/>","soccer-ball":"<path d=\"M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm200-500 54-18 16-54q-32-48-77-82.5T574-786l-54 38v56l160 112Zm-400 0 160-112v-56l-54-38q-54 17-99 51.5T210-652l16 54 54 18Zm-42 308 46-4 30-54-58-174-56-20-40 30q0 65 18 118.5T238-272Zm293 108q25-4 49-12l28-60-26-44H378l-26 44 28 60q24 8 49 12t51 4q26 0 51-4ZM390-360h180l56-160-146-102-144 102 54 160Zm332 88q42-50 60-103.5T800-494l-40-28-56 18-58 174 30 54 46 4Z\"/>","flag-checkered":"<path d=\"M200-120v-680h360l16 80h224v400H520l-16-80H280v280h-80Z\"/>","compass":"<path d=\"m300-300 280-80 80-280-280 80-80 280Zm180-120q-25 0-42.5-17.5T420-480q0-25 17.5-42.5T480-540q25 0 42.5 17.5T540-480q0 25-17.5 42.5T480-420Zm0 340q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z\"/>","users-three":"<path d=\"M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM247-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47Zm466 0q-47 47-113 47-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113q0 66-47 113Z\"/>","balloon":"<path d=\"m80-80 200-560 360 360L80-80Zm502-378-42-42 301-301 101 101-42 42-59-59-259 259ZM422-618l-42-42 58-58-60-60 42-42 102 102-100 100Zm80 80-42-42 179-179-99-99 42-42 141 141-221 221Zm160 160-42-42 141-141 141 141-42 42-99-99-99 99Z\"/>","smiley":"<path d=\"M620-520q25 0 42.5-17.5T680-580q0-25-17.5-42.5T620-640q-25 0-42.5 17.5T560-580q0 25 17.5 42.5T620-520Zm-280 0q25 0 42.5-17.5T400-580q0-25-17.5-42.5T340-640q-25 0-42.5 17.5T280-580q0 25 17.5 42.5T340-520Zm263.5 221.5Q659-337 684-400h-66q-22 37-58.5 58.5T480-320q-43 0-79.5-21.5T342-400h-66q25 63 80.5 101.5T480-260q68 0 123.5-38.5ZM324-111.5Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5Z\"/>","arrows-merge":"<path d=\"m256-120-56-56 240-241v-270l-64 63-56-56 160-160 160 160-56 56-64-63v270l240 241-56 56-224-224-224 224Z\"/>","crosshair":"<path d=\"M324-111.5Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5ZM707-253q93-93 93-227t-93-227q-93-93-227-93t-227 93q-93 93-93 227t93 227q93 93 227 93t227-93Zm-397-57q-70-70-70-170t70-170q70-70 170-70t170 70q70 70 70 170t-70 170q-70 70-170 70t-170-70Zm283-57q47-47 47-113t-47-113q-47-47-113-47t-113 47q-47 47-47 113t47 113q47 47 113 47t113-47Zm-169.5-56.5Q400-447 400-480t23.5-56.5Q447-560 480-560t56.5 23.5Q560-513 560-480t-23.5 56.5Q513-400 480-400t-56.5-23.5Z\"/>","text-aa":"<path d=\"M280-160v-520H80v-120h520v120H400v520H280Zm360 0v-320H520v-120h360v120H760v320H640Z\"/>","cards":"<path d=\"M159-168 51-212l108-234v278Zm80-232L354-80H239v-320ZM449-56 215-698l454-166 234 642L449-56Zm18.5-515.5Q479-583 479-600t-11.5-28.5Q456-640 439-640t-28.5 11.5Q399-617 399-600t11.5 28.5Q422-560 439-560t28.5-11.5Z\"/>","music-notes":"<path d=\"M287-167q-47-47-47-113t47-113q47-47 113-47 23 0 42.5 5.5T480-418v-422h240v160H560v400q0 66-47 113t-113 47q-66 0-113-47Z\"/>","caret-right":"<path d=\"M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z\"/>","caret-left":"<path d=\"M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z\"/>","star":"<path d=\"m233-120 65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z\"/>","thumbs-up":"<path d=\"M320-120v-520l280-280 74 74-52 206h298v176L774-120H320Zm-240 0v-520h160v520H80Z\"/>","share":"<path d=\"M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Z\"/>","play":"<path d=\"M320-200v-560l440 280-440 280Z\"/>","dots-three":"<path d=\"M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z\"/>","x":"<path d=\"m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z\"/>","arrow-right":"<path d=\"M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z\"/>","game-controller":"<path d=\"M189-160q-60 0-102.5-43T42-307q0-9 1-18t3-18l84-336q14-54 57-87.5t98-33.5h390q55 0 98 33.5t57 87.5l84 336q2 9 3.5 18.5T919-306q0 61-43.5 103.5T771-160q-42 0-78-22t-54-60l-28-58q-5-10-15-15t-21-5H385q-11 0-21 5t-15 15l-28 58q-18 38-54 60t-78 22Zm379.5-371.5Q580-543 580-560t-11.5-28.5Q557-600 540-600t-28.5 11.5Q500-577 500-560t11.5 28.5Q523-520 540-520t28.5-11.5Zm80-80Q660-623 660-640t-11.5-28.5Q637-680 620-680t-28.5 11.5Q580-657 580-640t11.5 28.5Q603-600 620-600t28.5-11.5Zm0 160Q660-463 660-480t-11.5-28.5Q637-520 620-520t-28.5 11.5Q580-497 580-480t11.5 28.5Q603-440 620-440t28.5-11.5Zm80-80Q740-543 740-560t-11.5-28.5Q717-600 700-600t-28.5 11.5Q660-577 660-560t11.5 28.5Q683-520 700-520t28.5-11.5Zm-367 63Q370-477 370-490v-40h40q13 0 21.5-8.5T440-560q0-13-8.5-21.5T410-590h-40v-40q0-13-8.5-21.5T340-660q-13 0-21.5 8.5T310-630v40h-40q-13 0-21.5 8.5T240-560q0 13 8.5 21.5T270-530h40v40q0 13 8.5 21.5T340-460q13 0 21.5-8.5Z\"/>"};
 /* ================= helpers ================= */
 const t=(s,...v)=>s.reduce((a,x,i)=>a+x+(i<v.length?(typeof v[i]==='number'?Math.round(v[i]*10)/10:v[i]):''),'');
 let _id=0;const uid=()=>'z'+(++_id).toString(36);
@@ -1225,15 +1291,15 @@ function Meta(id) {
 }
 function GameCard(id, { ar, area = '', play = false, feat = false, open = false }) {
   const style = `--ar:${ar.toFixed(3)}${area ? `;grid-area:${area}` : ''}`;
-  return `<a class="card${feat ? ' is-feat' : ''}${open ? ' is-open' : ''}" href="#${id}" style="${style}" aria-label="${G[id].t}">
+  return `<a class="card${feat ? ' is-feat' : ''}${open ? ' is-open' : ''}" href="#/game/${id}" style="${style}" aria-label="${G[id].t}">
     <span class="card-clip">${art(id, ar)}
     <span class="cap">${open ? `<span class="cap-body"><span class="cap-icon" aria-hidden="true">${art(id, 1)}</span><span class="cap-text"><span class="cap-title">${G[id].t}</span>${Meta(id)}</span></span>` : `<span class="cap-title">${G[id].t}</span>`}${play ? `<span class="play">${icon('play')}</span>` : ''}</span></span></a>`;
 }
 const CategoryButton = ({ name, ic }) =>
-  `<a class="cat" href="#${catId(name)}"><span class="cat-badge">${icon(ic)}</span><span class="cat-text"><span class="cat-name">${name}</span></span></a>`;
+  `<a class="cat" href="#/category/${name}"><span class="cat-badge">${icon(ic)}</span><span class="cat-text"><span class="cat-name">${name}</span></span></a>`;
 const catId = name => 'cat-' + name.toLowerCase();
 const NavCategory = ({ name, ic }) =>
-  `<a class="nav is-cat" href="#${catId(name)}">${icon(ic)}<span class="nav-label">${name}</span></a>`;
+  `<a class="nav is-cat" href="#/category/${name}">${icon(ic)}<span class="nav-label">${name}</span></a>`;
 
 /* ---------- page ---------- */
 const K = 1; // mosaic keeps the reference proportions
@@ -1302,24 +1368,30 @@ const CAT_GAMES = {
   Cards: ['solitaire', 'spider-cards', 'mahjong-classic', 'poker-pals'],
   Music: ['beat-buddy', 'dj-bot', 'rhythm-orbs', 'disco-blob', 'piano-blocks', 'melody-pop'],
 };
-// each row gets 10 games so there is something to scroll to: its own list, then the genre, then the rest
+// a category's games: its own list, then the genre, then the rest of the catalogue
 const ALL_IDS = Object.keys(G);
-$('cat-sections').innerHTML = [...CATS, ...MORE_CATS].map(({ name }, ci) => {
-  const ids = [...CAT_GAMES[name]];
-  const add = id => { if (ids.length < 10 && !ids.includes(id)) ids.push(id); };
+const ALL_CATS = [...CATS, ...MORE_CATS];
+const gamesFor = (name, n) => {
+  const ci = ALL_CATS.findIndex(c => c.name === name);
+  const ids = [...(CAT_GAMES[name] || [])];
+  const add = id => { if (ids.length < n && !ids.includes(id)) ids.push(id); };
   ALL_IDS.filter(id => G[id].g === name).forEach(add);
   ALL_IDS.forEach((_, i) => add(ALL_IDS[(i + ci * 5) % ALL_IDS.length]));
-  const cards = ids.map(id => GameCard(id, { ar: RA, play: true })).join('');
+  return ids;
+};
+// each row gets 10 games so there is something to scroll to
+$('cat-sections').innerHTML = ALL_CATS.map(({ name }) => {
+  const cards = gamesFor(name, 10).map(id => GameCard(id, { ar: RA, play: true })).join('');
   return `<section class="sec" id="${catId(name)}" aria-labelledby="h-${catId(name)}">
-    <div class="sec-head"><a class="see-all" href="#" aria-label="See all ${name} games"><h2 class="sec-title" id="h-${catId(name)}">${name}</h2>${icon('caret-right')}</a></div>
+    <div class="sec-head"><a class="see-all" href="#/category/${name}" aria-label="See all ${name} games"><h2 class="sec-title" id="h-${catId(name)}">${name}</h2>${icon('caret-right')}</a></div>
     <div class="row-4">${cards}</div></section>`;
 }).join('');
 document.querySelectorAll('[data-i]').forEach(el => { el.outerHTML = icon(el.dataset.i); });
 
-// game links are placeholders in this prototype
+// "#/…" links are pages (game, category); other anchors without a target are placeholders in this prototype
 document.addEventListener('click', e => {
   const a = e.target.closest('a[href^="#"]');
-  if (a && !document.getElementById(a.hash.slice(1))) e.preventDefault();
+  if (a && !a.hash.startsWith('#/') && !document.getElementById(a.hash.slice(1))) e.preventDefault();
 });
 
 /* ---------- theme ---------- */
@@ -1349,7 +1421,7 @@ new MutationObserver(syncTheme).observe(root, { attributes: true, attributeFilte
 syncTheme();
 
 /* ---------- scrolling rows ---------- */
-document.querySelectorAll('.row-4,.row-6').forEach(row => {
+const wireRow = row => {
   // a mouse can drag the row; a drag never counts as a click on the card under it
   let startX = 0, startLeft = 0, moved = false;
   row.addEventListener('pointerdown', e => {
@@ -1376,7 +1448,8 @@ document.querySelectorAll('.row-4,.row-6').forEach(row => {
     addEventListener('pointermove', move);
     addEventListener('pointerup', up);
   });
-});
+};
+document.querySelectorAll('.row-4,.row-6').forEach(wireRow);
 
 /* ---------- section reveals ---------- */
 if (!reduceMotion.matches && 'IntersectionObserver' in window) {
@@ -1422,7 +1495,7 @@ function renderResults() {
   active = hits.length ? 0 : -1;
   box.innerHTML = hits.length
     ? `<div class="results-label">Games</div>` + hits.map((s, i) =>
-        `<a class="res${i === active ? ' is-active' : ''}" role="option" href="#${s}" data-n="${i}"><span class="res-thumb">${art(s, 16 / 9)}</span><span><b>${G[s].t}</b><small>${G[s].g}</small></span></a>`).join('')
+        `<a class="res${i === active ? ' is-active' : ''}" role="option" href="#/game/${s}" data-n="${i}"><span class="res-thumb">${art(s, 16 / 9)}</span><span><b>${G[s].t}</b><small>${G[s].g}</small></span></a>`).join('')
     : `<div class="res-empty">No games match “${q.value.trim().replace(/[<>&]/g, '')}”. Try a genre like Puzzle or Racing.</div>`;
   box.hidden = false; q.setAttribute('aria-expanded', 'true');
 }
@@ -1436,15 +1509,114 @@ q.addEventListener('focus', renderResults);
 q.addEventListener('keydown', e => {
   if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
   else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
-  else if (e.key === 'Enter' && active > -1) { e.preventDefault(); q.value = G[hits[active]].t; box.hidden = true; }
+  else if (e.key === 'Enter' && active > -1) { e.preventDefault(); location.hash = '#/game/' + hits[active]; q.value = ''; box.hidden = true; q.blur(); }
   else if (e.key === 'Escape') { box.hidden = true; q.blur(); }
 });
 box.addEventListener('mousedown', e => {
   const r = e.target.closest('.res'); if (!r) return;
-  e.preventDefault(); q.value = G[hits[Number(r.dataset.n)]].t; box.hidden = true;
+  e.preventDefault(); location.hash = '#/game/' + hits[Number(r.dataset.n)]; q.value = ''; box.hidden = true; q.blur();
 });
 q.addEventListener('blur', () => setTimeout(() => { box.hidden = true; q.setAttribute('aria-expanded', 'false'); }, 120));
 addEventListener('keydown', e => {
   if (e.key === '/' && document.activeElement !== q && !/input|textarea/i.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
 });
+
+/* ---------- pages: game and category ---------- */
+// short, genre-flavoured copy for the game page
+const ABOUT = {
+  Action: 'Quick rounds, sharp reflexes and big moments.', Puzzle: 'Clever levels that start easy and get trickier the further you go.',
+  Arcade: 'Pick-up-and-play fun built for one more try.', Strategy: 'Plan ahead, build smart and outthink every wave.',
+  Simulation: 'Build, grow and run things your own way.', Sports: 'Short matches with easy controls and real competition.',
+  Racing: 'Tight tracks, fast cars and a finish line worth chasing.', Adventure: 'Explore new places and discover what is around the corner.',
+  Multiplayer: 'Jump in with other players and see who comes out on top.', Kids: 'Friendly, colourful and easy to play for younger gamers.',
+  Casual: 'Relaxed play for a few minutes or a whole evening.', Merge: 'Combine matching pieces and watch your world level up.',
+  Shooting: 'Aim, fire and clear the stage before time runs out.', Word: 'Find the words, beat the clock and grow your vocabulary.',
+  Cards: 'Classic card play with a clean, modern table.', Music: 'Tap to the beat and keep the rhythm going.',
+};
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const statsOf = id => {
+  const r = rng(hash(id + '#stats')), plays = Math.round(Math.exp(Math.log(6e4) + r() * (Math.log(3e7) - Math.log(6e4)))), likes = plays * (.002 + r() * .004);
+  const q = rng(hash(id + '#info'));
+  return { plays, likes, rating: (4.2 + q() * .7).toFixed(1), released: MONTHS[Math.floor(q() * 12)] + ' ' + (2025 + Math.floor(q() * 2)) };
+};
+const crumbs = items => `<nav class="crumbs" aria-label="Breadcrumb"><a href="#top">Home</a>${items.map(([label, href]) =>
+  icon('caret-right') + (href ? `<a href="${href}">${label}</a>` : `<span aria-current="page">${label}</span>`)).join('')}</nav>`;
+const cardRow = (title, ids, href) => `<section class="sec">${href
+  ? `<div class="sec-head"><a class="see-all" href="${href}"><h2 class="sec-title">${title}</h2>${icon('caret-right')}</a></div>`
+  : `<h2 class="sec-title">${title}</h2>`}<div class="row-4">${ids.map(g => GameCard(g, { ar: RA, play: true })).join('')}</div></section>`;
+
+function GamePage(id) {
+  const g = G[id], st = statsOf(id), catHref = `#/category/${g.g}`;
+  const more = gamesFor(g.g, 11).filter(x => x !== id).slice(0, 10);
+  const also = ALL_IDS.filter(x => x !== id && !more.includes(x)).sort((a, b) => hash(id + a) - hash(id + b)).slice(0, 10);
+  return crumbs([[g.g, catHref], [g.t]]) + `
+    <div class="gp">
+      <div class="gp-stage">${art(id, 16 / 9)}<button class="gp-launch" type="button" aria-label="Play ${g.t}">${icon('play')}</button></div>
+      <aside class="gp-info">
+        <div class="gp-id"><span class="gp-icon">${art(id, 1)}</span><div><h1 class="gp-title">${g.t}</h1><a class="gp-genre" href="${catHref}">${g.g}</a></div></div>
+        <div class="gp-stats"><span>${icon('star')}${st.rating}</span><span>${icon('thumbs-up')}${compact(st.likes)}</span><span>${icon('play')}${compact(st.plays)} plays</span></div>
+        <button class="btn-primary" type="button">${icon('play')}Play now</button>
+        <div class="gp-actions">
+          <button class="btn-ghost" type="button" aria-pressed="false" data-toggle>${icon('heart')}Favorite</button>
+          <button class="btn-ghost" type="button">${icon('share')}Share</button>
+        </div>
+        <p class="gp-desc">${g.t} is a free ${g.g.toLowerCase()} game you can play right in your browser — no downloads, no sign-up. ${ABOUT[g.g] || ''}</p>
+        <dl class="gp-facts">
+          <dt>Genre</dt><dd><a href="${catHref}">${g.g}</a></dd>
+          <dt>Rating</dt><dd>${st.rating} / 5</dd>
+          <dt>Plays</dt><dd>${compact(st.plays)}</dd>
+          <dt>Released</dt><dd>${st.released}</dd>
+          <dt>Works on</dt><dd>Desktop and mobile</dd>
+        </dl>
+      </aside>
+    </div>` + cardRow(`More ${g.g} games`, more, catHref) + cardRow('You may also like', also);
+}
+
+// the three sort orders are stable per category, so switching back and forth is predictable
+const sortGames = (ids, by) => by === 0 ? ids : [...ids].sort((a, b) => hash(a + '#' + by) - hash(b + '#' + by));
+function CategoryPage(name) {
+  const c = ALL_CATS.find(x => x.name === name);
+  return crumbs([['Categories', '#categories'], [name]]) + `
+    <header class="cp-head">${icon(c.ic)}<div><h1 class="cp-title">${name}</h1><div class="cp-sub">${c.count} games</div></div></header>
+    <div class="chips" role="group" aria-label="Sort games">${['Popular', 'New', 'Top rated'].map((l, i) =>
+      `<button class="chip" type="button" data-sort="${i}" aria-pressed="${i === 0}">${l}</button>`).join('')}</div>
+    <div class="cp-grid" data-cat="${name}">${gamesFor(name, 20).map(g => GameCard(g, { ar: RA, play: true })).join('')}</div>
+    <section class="sec sec-cats"><h2 class="sec-title">Other categories</h2><div class="cats">${ALL_CATS.filter(x => x.name !== name).map(CategoryButton).join('')}</div></section>`;
+}
+
+const homeView = $('view-home'), pageView = $('view-page');
+const markRail = name => document.querySelectorAll('.rail .nav').forEach(n =>
+  (name !== null && n.getAttribute('href') === `#/category/${name}`) ? n.setAttribute('aria-current', 'true') : name !== null && n.removeAttribute('aria-current'));
+function route() {
+  const h = decodeURIComponent(location.hash), gm = h.match(/^#\/game\/(.+)$/), cm = h.match(/^#\/category\/(.+)$/);
+  const html = gm && G[gm[1]] ? GamePage(gm[1]) : cm && ALL_CATS.some(x => x.name === cm[1]) ? CategoryPage(cm[1]) : null;
+  if (html === null) {
+    if (!pageView.hidden) {
+      pageView.hidden = true; pageView.innerHTML = ''; homeView.hidden = false;
+      const t = h.length > 1 && document.getElementById(h.slice(1));
+      t ? t.scrollIntoView({ behavior: 'instant' }) : scrollTo({ top: 0, behavior: 'instant' }); // a page switch jumps, it does not glide
+      // back on the home page the menu follows the section in view again, starting from the one we landed on
+      const spyId = t && spyLinks.some(l => l.dataset.spy === t.id) ? t.id : 'top';
+      document.querySelectorAll('.rail .nav').forEach(n => n.dataset.spy === spyId ? n.setAttribute('aria-current', 'true') : n.removeAttribute('aria-current'));
+    }
+    return;
+  }
+  pageView.innerHTML = html;
+  pageView.hidden = false; homeView.hidden = true;
+  pageView.querySelectorAll('.row-4').forEach(wireRow);
+  markRail(cm ? cm[1] : '');
+  scrollTo({ top: 0, behavior: 'instant' });
+}
+pageView.addEventListener('click', e => {
+  const t = e.target.closest('[data-toggle]');
+  if (t) t.setAttribute('aria-pressed', String(t.getAttribute('aria-pressed') !== 'true'));
+  const chip = e.target.closest('.chip');
+  if (chip) {
+    const grid = pageView.querySelector('.cp-grid'), by = Number(chip.dataset.sort);
+    pageView.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+    grid.innerHTML = sortGames(gamesFor(grid.dataset.cat, 20), by).map(g => GameCard(g, { ar: RA, play: true })).join('');
+  }
+});
+addEventListener('hashchange', route);
+route();
 </script>
