@@ -255,17 +255,21 @@ h1,h2,h3,p{margin:0}
 
 /* ============ Mosaic — the reference composition, full width ============ */
 /* Card proportions are the reference's 1:1: featured + 2+1 block, a row of 5, a row of 6. */
-.mosaic{container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap)}
+.mosaic{
+  container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap);
+  /* rows keep the reference ratio 199:165:154:139 but the whole grid fits one screen under the header */
+  --fit:max(.7px, calc((100svh - var(--head-h) - 83px - 3 * var(--gap)) / 657));
+}
 .mosaic>.sec-title{margin-bottom:var(--s4)}
 .m-a,.m-r3,.m-r6{display:grid;gap:var(--gap)}
 .m-a{
   --u:calc((100cqw - 3 * var(--gap)) / 743);
   grid-template-columns:288fr 110fr 105fr 240fr;
-  grid-template-rows:calc(var(--u) * 199) calc(var(--u) * 165);
+  grid-template-rows:calc(min(var(--u), var(--fit)) * 199) calc(min(var(--u), var(--fit)) * 165);
   grid-template-areas:"f t t w" "f b m p";
 }
-.m-r3{grid-template-columns:151fr 140fr 186fr 126fr 134fr;grid-auto-rows:calc((100cqw - 4 * var(--gap)) / 737 * 154)}
-.m-r6{grid-template-columns:118fr 119fr 118fr 121fr 125fr 128fr;grid-auto-rows:calc((100cqw - 5 * var(--gap)) / 729 * 139)}
+.m-r3{grid-template-columns:151fr 140fr 186fr 126fr 134fr;grid-auto-rows:min(calc((100cqw - 4 * var(--gap)) / 737 * 154), calc(var(--fit) * 154))}
+.m-r6{grid-template-columns:118fr 119fr 118fr 121fr 125fr 128fr;grid-auto-rows:min(calc((100cqw - 5 * var(--gap)) / 729 * 139), calc(var(--fit) * 139))}
 
 /* ============ Rows ============ */
 .row-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
@@ -1201,6 +1205,17 @@ const RA = 188 / 126, PA = 121 / 183;
 $('m-a').innerHTML = A.map(([id, area, ar, badge, feat]) => GameCard(id, { ar, area, badge, feat })).join('');
 $('m-r3').innerHTML = R3.map(([id, w, badge]) => GameCard(id, { ar: m(w, 150), badge })).join('');
 $('m-r6').innerHTML = R6.map(([id, w]) => GameCard(id, { ar: m(w, 139) })).join('');
+
+// the rows follow the screen height, so redraw each cover for the tile's real shape instead of cropping it
+const fitCovers = () => document.querySelectorAll('.mosaic .card').forEach(c => {
+  const { width: w, height: h } = c.getBoundingClientRect(), ar = w / h, was = +c.dataset.ar || parseFloat(c.style.getPropertyValue('--ar'));
+  if (!h || Math.abs(ar / was - 1) < .06) return;
+  c.dataset.ar = ar;
+  c.querySelector('.cover').outerHTML = art(c.getAttribute('href').slice(1), ar);
+});
+let coverRaf = 0;
+addEventListener('resize', () => { cancelAnimationFrame(coverRaf); coverRaf = requestAnimationFrame(fitCovers); });
+fitCovers();
 $('trend-row').innerHTML = TRENDING.map(([id, badge]) => GameCard(id, { ar: RA, badge, play: true })).join('');
 $('new-row').innerHTML = NEW.map(([id, badge]) => GameCard(id, { ar: PA, badge, open: true })).join('');
 $('top-row').innerHTML = TOP.map(([id, badge]) => GameCard(id, { ar: RA, badge, play: true })).join('');
