@@ -39,6 +39,7 @@
   /* light-theme icon colour: one muted slate for every icon; the active menu item is the same slate on lime */
   --icon:#36475A; /* muted slate, from the user's reference */
   --see-all-icon:var(--icon);
+  --link-hover:var(--icon); /* section-title links turn the icon slate on hover */
   --search-icon:var(--icon);
   /* logo: the cross and buttons are cut out so the page shows through; body = menu icon colour (light) / lime (dark) */
   --logo-body:var(--icon);
@@ -124,6 +125,7 @@
     --st-active-bg:rgba(180,240,60,.14);
     --st-active-fg:var(--lime);
     --see-all-icon:var(--text);
+    --link-hover:var(--lime);
     --search-icon:var(--text-3);
     --cat-icon-o:.8;
     --nav-active-ring:none;
@@ -169,6 +171,7 @@
   --st-active-bg:rgba(180,240,60,.14);
   --st-active-fg:var(--lime);
   --see-all-icon:var(--text);
+  --link-hover:var(--lime);
   --search-icon:var(--text-3);
   --cat-icon-o:.8;
   --nav-active-ring:none;
@@ -354,9 +357,9 @@ h1,h2,h3,p{margin:0}
 .see-all{display:inline-flex;align-items:center;gap:6px;line-height:1;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
 .see-all .sec-title{color:inherit}
 .see-all .i{position:relative;top:3px;width:30px;height:30px;flex:none;display:block;color:var(--see-all-icon);transition:color var(--t-ui) var(--ease-out),transform var(--t-ui) var(--ease-out)}
-/* section titles are links: hover only recolours the text and arrow (lime in dark, deep lime in light) */
-.see-all:hover,.see-all:focus-visible{color:var(--lime-ink)}
-.see-all:hover .i,.see-all:focus-visible .i{color:var(--lime-ink)}
+/* section titles are links: hover only recolours the text and arrow (slate in light, lime in dark) */
+.see-all:hover,.see-all:focus-visible{color:var(--link-hover)}
+.see-all:hover .i,.see-all:focus-visible .i{color:var(--link-hover)}
 
 /* ============ Footer ============ */
 .foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s3) var(--s6);margin-top:56px;padding-block:var(--s6) var(--s8);border-top:1px solid var(--border);font-size:13px;color:var(--text-2)}
