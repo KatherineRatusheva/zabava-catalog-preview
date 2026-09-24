@@ -414,9 +414,9 @@ h1,h2,h3,p{margin:0}
 
 /* ============ motion: section reveal ============ */
 /* Only sections that start below the fold are prepared; everything in the first screen is visible at once. */
-/* only the cards move, barely: they rise 6px out of a light fade, one after another; titles and the section stay put.
+/* only the cards move, barely: they rise 6px out of a faint 90% fade (a deeper fade read as darkening), one after another; titles and the section stay put.
    The rise uses `translate`, not `transform`, so hovering a card mid-reveal scales it straight away instead of sticking */
-.will-reveal :is(.row-4,.row-6,.cats)>*{opacity:.6;translate:0 6px}
+.will-reveal :is(.row-4,.row-6,.cats)>*{opacity:.9;translate:0 6px}
 .will-reveal.is-in :is(.row-4,.row-6,.cats)>*{--d:calc(var(--i,0) * 30ms);opacity:1;translate:none;
   transition:opacity var(--t-reveal) var(--ease-card) var(--d),translate var(--t-reveal) var(--ease-card) var(--d),transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),background-color var(--t-ui) var(--ease-out)}
 
