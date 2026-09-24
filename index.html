@@ -152,7 +152,7 @@ h1,h2,h3,p{margin:0}
 .app{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;padding-left:var(--rail-w);min-height:100vh}
 
 /* Topbar */
-.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:var(--s6);height:var(--head-h);margin-left:calc(var(--rail-w) * -1);padding:0 var(--gutter) 0 calc((var(--rail-w) - 36px) / 2);background-color:var(--bg);background-image:var(--page-bg);background-attachment:fixed;transition:box-shadow var(--t-ui) var(--ease-out)}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:var(--s6);height:var(--head-h);margin-left:calc(var(--rail-w) * -1);padding:0 var(--gutter) 0 12px;background-color:var(--bg);background-image:var(--page-bg);background-attachment:fixed;transition:box-shadow var(--t-ui) var(--ease-out)}
 .topbar.is-stuck{box-shadow:0 1px 0 var(--border)}
 .brand{display:flex;align-items:center;gap:10px;flex:none;border-radius:var(--r-sm);white-space:nowrap}
 .brand .i{width:36px;height:36px}
@@ -192,7 +192,8 @@ h1,h2,h3,p{margin:0}
 /* Sidebar — icon rail that opens with labels on hover */
 .rail{position:fixed;left:0;top:calc(env(safe-area-inset-top,0px) + var(--head-h));bottom:0;z-index:40;display:flex;flex-direction:column;width:var(--rail-w);border-top-right-radius:var(--r-card);background:transparent;transition:width 220ms var(--ease-out),box-shadow 220ms var(--ease-out)}
 .rail:hover,.rail:focus-within{width:var(--rail-open);background-color:var(--bg);background-image:var(--page-bg);background-attachment:fixed;box-shadow:var(--shadow-rail);transition-delay:90ms}
-.rail-list{flex:1;min-height:0;display:flex;flex-direction:column;gap:2px;padding:8px calc((var(--rail-w) - 44px) / 2) 20px;overflow-x:hidden;overflow-y:auto;scrollbar-width:none}
+.rail-list{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;gap:2px;padding:8px 20px 20px 8px;overflow-x:hidden;overflow-y:auto;scrollbar-width:none}
+.rail-pill{position:absolute;right:0;top:0;width:3px;border-radius:2px 0 0 2px;background:var(--lime-ink);opacity:0;transition:transform 220ms var(--ease-out),height 220ms var(--ease-out),opacity 160ms var(--ease-out);pointer-events:none}
 .rail-list::-webkit-scrollbar{display:none}
 .nav{display:flex;align-items:center;gap:10px;flex:none;height:40px;padding:0 11px;border-radius:var(--r-card);color:var(--nav-fg);white-space:nowrap;overflow:hidden;transition:background-color var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
 .nav .i{width:26px;height:26px}
@@ -298,12 +299,13 @@ h1,h2,h3,p{margin:0}
 .sec{margin-top:36px}
 .sec-cats{margin-top:32px}
 .sec-title{margin-bottom:var(--s4);font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
-.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:var(--s4)}
+.sec-head{display:flex;align-items:center;margin-bottom:var(--s4)}
 .sec-head .sec-title{margin-bottom:0}
-.see-all{display:grid;place-items:center;flex:none;width:30px;height:30px;margin-top:2px;border-radius:50%;color:var(--text-2);transition:background-color var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out)}
-.see-all .i{width:16px;height:16px;transition:transform var(--t-ui) var(--ease-out)}
-.see-all:hover{background:var(--surface-2);color:var(--text)}
-.see-all:hover .i{transform:translateX(2px)}
+.see-all{display:inline-flex;align-items:center;gap:6px;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
+.see-all .sec-title{color:inherit}
+.see-all .i{width:20px;height:20px;flex:none;color:var(--text-3);transition:color var(--t-ui) var(--ease-out),transform var(--t-ui) var(--ease-out)}
+.see-all:hover,.see-all:focus-visible{color:var(--lime-ink)}
+.see-all:hover .i,.see-all:focus-visible .i{color:var(--lime-ink);transform:translateX(2px)}
 
 /* ============ Footer ============ */
 .foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s3) var(--s6);margin-top:56px;padding-block:var(--s6) var(--s8);border-top:1px solid var(--border);font-size:13px;color:var(--text-2)}
@@ -339,7 +341,7 @@ h1,h2,h3,p{margin:0}
   .brand-word{font-size:21px}
   .search{order:3;flex:1 1 100%;margin-left:0}
   .rail,.rail:hover,.rail:focus-within{position:sticky;top:env(safe-area-inset-top,0px);bottom:auto;width:auto;flex-direction:row;border-right:0;box-shadow:0 1px 0 var(--border);background-color:var(--bg);background-image:var(--page-bg);background-attachment:fixed}
-  .rail-h,.nav.is-cat{display:none}
+  .rail-h,.nav.is-cat,.rail-pill{display:none}
   .rail-list{flex-direction:row;padding:var(--s3) var(--gutter);overflow-x:auto;overflow-y:hidden}
   .nav{height:36px;gap:6px;padding:0 12px 0 10px;border-radius:var(--r-ctl)}
   .nav .i{width:18px;height:18px}
@@ -397,6 +399,7 @@ h1,h2,h3,p{margin:0}
 
   <nav class="rail" aria-label="Main">
     <div class="rail-list" id="rail-list">
+      <div class="rail-pill" id="rail-pill" aria-hidden="true"></div>
       <a class="nav" href="#top" data-spy="top" aria-current="true"><span data-i="house"></span><span class="nav-label">Home</span></a>
       <a class="nav" href="#trending" data-spy="trending"><span data-i="fire"></span><span class="nav-label">Trending now</span></a>
       <a class="nav" href="#new" data-spy="new"><span data-i="sparkle"></span><span class="nav-label">New &amp; popular</span></a>
@@ -419,8 +422,7 @@ h1,h2,h3,p{margin:0}
 
       <section class="sec" id="trending" aria-labelledby="h-trending">
         <div class="sec-head">
-          <h2 class="sec-title" id="h-trending">Trending now</h2>
-          <a class="see-all" href="#" aria-label="See all trending games"><span data-i="caret-right"></span></a>
+          <a class="see-all" href="#" aria-label="See all trending games"><h2 class="sec-title" id="h-trending">Trending now</h2><span data-i="caret-right"></span></a>
         </div>
         <div class="row-4" id="trend-row"></div>
       </section>
@@ -432,16 +434,14 @@ h1,h2,h3,p{margin:0}
 
       <section class="sec sec-cats" id="categories" aria-labelledby="h-cats">
         <div class="sec-head">
-          <h2 class="sec-title" id="h-cats">Categories</h2>
-          <a class="see-all" href="#" aria-label="All categories"><span data-i="caret-right"></span></a>
+          <a class="see-all" href="#" aria-label="All categories"><h2 class="sec-title" id="h-cats">Categories</h2><span data-i="caret-right"></span></a>
         </div>
         <div class="cats" id="cats"></div>
       </section>
 
       <section class="sec" id="top-games" aria-labelledby="h-topg">
         <div class="sec-head">
-          <h2 class="sec-title" id="h-topg">Top games</h2>
-          <a class="see-all" href="#" aria-label="See all top games"><span data-i="caret-right"></span></a>
+          <a class="see-all" href="#" aria-label="See all top games"><h2 class="sec-title" id="h-topg">Top games</h2><span data-i="caret-right"></span></a>
         </div>
         <div class="row-4" id="top-row"></div>
       </section>
@@ -1246,7 +1246,7 @@ const CAT_GAMES = {
 $('cat-sections').innerHTML = [...CATS, ...MORE_CATS].map(({ name }) => {
   const cards = CAT_GAMES[name].slice(0, 4).map(id => GameCard(id, { ar: RA, play: true })).join('');
   return `<section class="sec" id="${catId(name)}" aria-labelledby="h-${catId(name)}">
-    <div class="sec-head"><h2 class="sec-title" id="h-${catId(name)}">${name}</h2><a class="see-all" href="#" aria-label="See all ${name} games">${icon('caret-right')}</a></div>
+    <div class="sec-head"><a class="see-all" href="#" aria-label="See all ${name} games"><h2 class="sec-title" id="h-${catId(name)}">${name}</h2>${icon('caret-right')}</a></div>
     <div class="row-4">${cards}</div></section>`;
 }).join('');
 document.querySelectorAll('[data-i]').forEach(el => { el.outerHTML = icon(el.dataset.i); });
@@ -1315,6 +1315,19 @@ const spy = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-45% 0px -50% 0px' });
 spyLinks.forEach(l => { const s = $(l.dataset.spy); if (s) spy.observe(s); });
+
+/* ---------- rail active-item indicator ---------- */
+const railPill = $('rail-pill');
+function movePill() {
+  const active = document.querySelector('#rail-list .nav[aria-current="true"]');
+  if (!active) { railPill.style.opacity = '0'; return; }
+  railPill.style.transform = `translateY(${active.offsetTop}px)`;
+  railPill.style.height = active.offsetHeight + 'px';
+  railPill.style.opacity = '1';
+}
+movePill();
+new MutationObserver(movePill).observe($('rail-list'), { attributes: true, attributeFilter: ['aria-current'], subtree: true });
+addEventListener('resize', movePill);
 
 /* ---------- search ---------- */
 const q = $('q');
