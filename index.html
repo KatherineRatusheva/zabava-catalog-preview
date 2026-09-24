@@ -261,24 +261,22 @@ h1,h2,h3,p{margin:0}
 .play .i{width:18px;height:18px;margin-left:2px}
 .card:hover .play,.card:focus-visible .play{background:var(--lime);color:var(--on-lime);transform:none}
 
-/* ============ Mosaic — 3 rows, full width ============ */
-/* Rows 1–2: a pair of wide cards, the first featured card, a 2+1 block, the second featured card at the far edge.
-   Row 3: 8 cards. Sizes in reference px;
-   the height is capped so the whole grid fits one screen under the header. */
+/* ============ Mosaic — one 3-row grid, full width ============ */
+/* The two featured cards interlock across rows: Crown Chaos spans rows 1–2, Dino Dash spans rows 2–3 on the right,
+   so no row is a strip of equal cards. Sizes in reference px; the height is capped to fit one screen. */
 .mosaic{
   container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap);
-  --fit:max(.5px, calc((100svh - var(--head-h) - 36px - 2 * var(--gap)) / 518));
+  --fit:max(.5px, calc((100svh - var(--head-h) - 36px - 2 * var(--gap)) / 559));
   padding-top:8px; /* room for the hover lift under the sticky header */
 }
 .mosaic>.sec-title{margin-bottom:var(--s4)}
-.m-a,.m-r3{display:grid;gap:var(--gap)}
 .m-a{
-  --u:min(calc((100cqw - 5 * var(--gap)) / 1243), var(--fit));
-  grid-template-columns:240fr 288fr 110fr 105fr 240fr 260fr;
-  grid-template-rows:calc(var(--u) * 199) calc(var(--u) * 165);
-  grid-template-areas:"W f t t w g" "P f b m p g";
+  display:grid;gap:var(--gap);
+  --u:min(calc((100cqw - 6 * var(--gap)) / 1243), var(--fit));
+  grid-template-columns:240fr 140fr 148fr 110fr 105fr 240fr 260fr;
+  grid-template-rows:calc(var(--u) * 215) calc(var(--u) * 178) calc(var(--u) * 166);
+  grid-template-areas:"W f f t t w x" "P f f b m g g" "y q s r r g g";
 }
-.m-r3{grid-template-columns:186fr 126fr 151fr 140fr 134fr 186fr 140fr 151fr;grid-auto-rows:min(calc((100cqw - 7 * var(--gap)) / 1214 * 154), calc(var(--fit) * 154))}
 
 /* ============ Rows ============ */
 /* every row below the mosaic scrolls sideways (trackpad, shift+wheel, mouse drag, swipe):
@@ -367,7 +365,7 @@ h1,h2,h3,p{margin:0}
   .main-in{max-width:none}
   /* mosaic becomes a 2-column masonry, every tile keeps its proportions */
   .mosaic{display:block;columns:2;column-gap:var(--gap)}
-  .m-a,.m-r3{display:contents}
+  .m-a{display:contents}
   .mosaic .card{aspect-ratio:var(--ar);margin-bottom:var(--gap);break-inside:avoid}
   .mosaic .card.is-feat{column-span:all}
   .is-feat .cap{padding:48px 14px 14px}
@@ -432,7 +430,6 @@ h1,h2,h3,p{margin:0}
       <section class="mosaic" id="top" aria-labelledby="h-top">
         <h2 class="sr-only" id="h-top">Featured games</h2>
         <div class="m-a" id="m-a"></div>
-        <div class="m-r3" id="m-r3"></div>
       </section>
 
       <section class="sec" id="trending" aria-labelledby="h-trending">
@@ -1200,14 +1197,12 @@ const K = 1; // mosaic keeps the reference proportions
 const m = (w, h) => w / (h * K);
 // [id, grid-area, reference w, h, featured]
 const A = [
-  ['sky-pilot', 'W', 240, 199], ['farm-friends', 'P', 240, 165],
-  ['crown-chaos', 'f', 288, 374, true],
-  ['craft-valley', 't', 225, 199], ['neon-drift', 'w', 240, 199],
-  ['chick-flap', 'b', 110, 165], ['ice-tiles', 'm', 105, 165], ['goal-rush', 'p', 240, 165],
-  ['dino-dash', 'g', 260, 374, true],
+  ['sky-pilot', 'W', 240, 215], ['farm-friends', 'P', 240, 178], ['knight-quest', 'y', 240, 166],
+  ['crown-chaos', 'f', 288, 393, true], ['gem-cascade', 'q', 140, 166], ['paw-pals', 's', 148, 166],
+  ['craft-valley', 't', 215, 215], ['chick-flap', 'b', 110, 178], ['ice-tiles', 'm', 105, 178], ['burger-tycoon', 'r', 215, 166],
+  ['neon-drift', 'w', 240, 215], ['ninja-roofs', 'x', 260, 215],
+  ['dino-dash', 'g', 500, 344, true],
 ];
-const R3 = [['knight-quest', 186], ['gem-cascade', 126], ['paw-pals', 151], ['ninja-roofs', 140], ['swamp-zombies', 134],
-  ['burger-tycoon', 186], ['hide-and-peek', 140], ['bubble-buddies', 151]];
 const TRENDING = [['deep-sea-dash'], ['ghost-town'], ['balloon-voyage'], ['moto-canyon'],
   ['rope-swing'], ['galaxy-raid'], ['skate-star'], ['jungle-run'], ['disco-blob'], ['letter-drop']];
 const NEW = [['berry-merge'], ['mahjong-friends'], ['night-racer'], ['monster-mash'], ['castle-crafters'], ['cube-drop'],
@@ -1225,7 +1220,6 @@ const MORE_CATS = [{ name: 'Casual', ic: 'smiley', count: 134 }, { name: 'Merge'
 const $ = id => document.getElementById(id);
 const RA = 188 / 126, PA = 3 / 5;
 $('m-a').innerHTML = A.map(([id, area, w, h, feat]) => GameCard(id, { ar: m(w, h), area, feat })).join('');
-$('m-r3').innerHTML = R3.map(([id, w]) => GameCard(id, { ar: m(w, 150) })).join('');
 
 // the rows follow the screen height, so redraw each cover for the tile's real shape instead of cropping it
 const fitCovers = () => document.querySelectorAll('.mosaic .card').forEach(c => {
