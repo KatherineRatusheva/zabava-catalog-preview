@@ -272,13 +272,29 @@ h1,h2,h3,p{margin:0}
 .m-r6{grid-template-columns:118fr 119fr 118fr 121fr 125fr 128fr;grid-auto-rows:min(calc((100cqw - 5 * var(--gap)) / 729 * 139), calc(var(--fit) * 139))}
 
 /* ============ Rows ============ */
-.row-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+/* every row below the mosaic scrolls sideways (trackpad, shift+wheel, mouse drag, swipe):
+   the next card peeks in at the right edge and the edge fades while there is more to see */
+.row-4,.row-6,.cats{
+  --peek:.4;display:grid;grid-auto-flow:column;grid-template-columns:none;
+  grid-auto-columns:calc((100% - var(--n) * var(--gap)) / (var(--n) + var(--peek)));gap:var(--gap);
+  overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;
+  margin:-6px 0 -10px;padding:6px 0 10px;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 var(--fade-l,0px),#000 calc(100% - var(--fade-r,0px)),transparent 100%);
+  mask-image:linear-gradient(to right,transparent 0,#000 var(--fade-l,0px),#000 calc(100% - var(--fade-r,0px)),transparent 100%);
+}
+.row-4::-webkit-scrollbar,.row-6::-webkit-scrollbar,.cats::-webkit-scrollbar{display:none}
+.row-4>*,.row-6>*,.cats>*{scroll-snap-align:start}
+.is-more-l{--fade-l:40px}
+.is-more-r{--fade-r:56px}
+.row-4{--n:4}
 .row-4 .card{aspect-ratio:188/126}
-.row-6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--gap)}
+.row-6{--n:6}
 .row-6 .card{aspect-ratio:121/183}
+.is-dragging{scroll-snap-type:none;cursor:grabbing;user-select:none}
+.is-dragging>*{pointer-events:none}
 
 /* ============ CategoryButton ============ */
-.cats{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:var(--gap)}
+.cats{--n:8}
 .cat{position:relative;display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-rest);color:var(--text);transition:border-color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
 .cat-badge{display:grid;place-items:center;width:22px;height:22px;flex:none}
 .cat-badge .i{width:22px;height:22px;color:var(--nav-fg)}
@@ -321,7 +337,7 @@ h1,h2,h3,p{margin:0}
 /* ============ tablet ============ */
 @media (max-width:1100px){
   :root{--gutter:20px}
-  .cats{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .cats{--n:4}
   .cap{padding:28px 10px 10px}
   .play{width:28px;height:28px}
 }
@@ -351,12 +367,10 @@ h1,h2,h3,p{margin:0}
   .is-feat .cap{padding:48px 14px 14px}
   .sec{margin-top:28px}
   .sec-title{font-size:20px;margin-bottom:12px}
-  .row-4,.row-6{grid-template-columns:none;grid-auto-flow:column;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;margin:-6px calc(var(--gutter) * -1) -10px;padding:6px var(--gutter) 10px;scroll-padding-inline:var(--gutter)}
+  .row-4,.row-6,.cats{margin:-6px calc(var(--gutter) * -1) -10px;padding:6px var(--gutter) 10px;scroll-padding-inline:var(--gutter);-webkit-mask-image:none;mask-image:none}
   .row-4{grid-auto-columns:76%}
   .row-6{grid-auto-columns:42%}
-  .row-4::-webkit-scrollbar,.row-6::-webkit-scrollbar{display:none}
-  .row-4>*,.row-6>*{scroll-snap-align:start}
-  .cats{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
+  .cats{grid-auto-columns:42%;gap:var(--s2)}
   .cat{padding:12px}
   .cat-badge{width:20px;height:20px}
   .cat-badge .i{width:20px;height:20px}
@@ -1190,16 +1204,20 @@ const A = [
 ];
 const R3 = [['paw-pals', 147], ['swamp-zombies', 136, 'hot'], ['burger-tycoon', 182], ['gem-cascade', 122], ['ninja-roofs', 130]];
 const R6 = [['sunset-rally', 118], ['word-wood', 119], ['cloud-tower', 118], ['fruit-frenzy', 121], ['tube-sort', 125], ['galaxy-raid', 128]];
-const TRENDING = [['deep-sea-dash', 'hot'], ['ghost-town', 'hot'], ['balloon-voyage', 'top'], ['moto-canyon', 'new']];
-const NEW = [['berry-merge', 'hot'], ['mahjong-friends', 'new'], ['night-racer', 'top'], ['monster-mash', 'hot'], ['castle-crafters'], ['cube-drop']];
-const TOP = [['robo-arena', 'top'], ['island-life', 'hot'], ['hoop-kings'], ['reef-friends', 'new']];
+const TRENDING = [['deep-sea-dash', 'hot'], ['ghost-town', 'hot'], ['balloon-voyage', 'top'], ['moto-canyon', 'new'],
+  ['rope-swing', 'hot'], ['galaxy-raid'], ['skate-star', 'new'], ['jungle-run'], ['disco-blob', 'top'], ['letter-drop']];
+const NEW = [['berry-merge', 'hot'], ['mahjong-friends', 'new'], ['night-racer', 'top'], ['monster-mash', 'hot'], ['castle-crafters'], ['cube-drop'],
+  ['snow-buddy', 'new'], ['ocean-merge'], ['stick-duel', 'hot'], ['cat-cafe'], ['spider-cards', 'new'], ['melody-pop']];
+const TOP = [['robo-arena', 'top'], ['island-life', 'hot'], ['hoop-kings'], ['reef-friends', 'new'],
+  ['sky-arena', 'top'], ['city-rise'], ['pixel-knight', 'hot'], ['poker-pals'], ['bullseye'], ['word-hunt', 'new']];
 const CATS = [
   { name: 'Action', ic: 'sword', count: 245 }, { name: 'Puzzle', ic: 'puzzle-piece', count: 180 }, { name: 'Arcade', ic: 'joystick', count: 156 },
   { name: 'Strategy', ic: 'castle-turret', count: 98 }, { name: 'Simulation', ic: 'buildings', count: 124 }, { name: 'Sports', ic: 'soccer-ball', count: 89 },
   { name: 'Racing', ic: 'flag-checkered', count: 120 }, { name: 'Adventure', ic: 'compass', count: 96 }, { name: 'Multiplayer', ic: 'users-three', count: 78 },
   { name: 'Kids', ic: 'balloon', count: 112 },
 ];
-const MORE_CATS = [{ name: 'Casual', ic: 'smiley' }, { name: 'Merge', ic: 'arrows-merge' }, { name: 'Shooting', ic: 'crosshair' }, { name: 'Word', ic: 'text-aa' }, { name: 'Cards', ic: 'cards' }, { name: 'Music', ic: 'music-notes' }];
+const MORE_CATS = [{ name: 'Casual', ic: 'smiley', count: 134 }, { name: 'Merge', ic: 'arrows-merge', count: 67 }, { name: 'Shooting', ic: 'crosshair', count: 88 },
+  { name: 'Word', ic: 'text-aa', count: 54 }, { name: 'Cards', ic: 'cards', count: 41 }, { name: 'Music', ic: 'music-notes', count: 36 }];
 const $ = id => document.getElementById(id);
 const RA = 188 / 126, PA = 121 / 183;
 $('m-a').innerHTML = A.map(([id, area, ar, badge, feat]) => GameCard(id, { ar, area, badge, feat })).join('');
@@ -1219,7 +1237,7 @@ fitCovers();
 $('trend-row').innerHTML = TRENDING.map(([id, badge]) => GameCard(id, { ar: RA, badge, play: true })).join('');
 $('new-row').innerHTML = NEW.map(([id, badge]) => GameCard(id, { ar: PA, badge, open: true })).join('');
 $('top-row').innerHTML = TOP.map(([id, badge]) => GameCard(id, { ar: RA, badge, play: true })).join('');
-$('cats').innerHTML = CATS.map(CategoryButton).join('');
+$('cats').innerHTML = [...CATS, ...MORE_CATS].map(CategoryButton).join('');
 $('rail-list').insertAdjacentHTML('beforeend', [...CATS, ...MORE_CATS].map(NavCategory).join(''));
 
 // one section per menu category, all in the same landscape x4 row
@@ -1241,8 +1259,14 @@ const CAT_GAMES = {
   Cards: ['solitaire', 'spider-cards', 'mahjong-classic', 'poker-pals'],
   Music: ['beat-buddy', 'dj-bot', 'rhythm-orbs', 'disco-blob', 'piano-blocks', 'melody-pop'],
 };
-$('cat-sections').innerHTML = [...CATS, ...MORE_CATS].map(({ name }) => {
-  const cards = CAT_GAMES[name].slice(0, 4).map(id => GameCard(id, { ar: RA, play: true })).join('');
+// each row gets 10 games so there is something to scroll to: its own list, then the genre, then the rest
+const ALL_IDS = Object.keys(G);
+$('cat-sections').innerHTML = [...CATS, ...MORE_CATS].map(({ name }, ci) => {
+  const ids = [...CAT_GAMES[name]];
+  const add = id => { if (ids.length < 10 && !ids.includes(id)) ids.push(id); };
+  ALL_IDS.filter(id => G[id].g === name).forEach(add);
+  ALL_IDS.forEach((_, i) => add(ALL_IDS[(i + ci * 5) % ALL_IDS.length]));
+  const cards = ids.map(id => GameCard(id, { ar: RA, play: true })).join('');
   return `<section class="sec" id="${catId(name)}" aria-labelledby="h-${catId(name)}">
     <div class="sec-head"><a class="see-all" href="#" aria-label="See all ${name} games"><h2 class="sec-title" id="h-${catId(name)}">${name}</h2>${icon('caret-right')}</a></div>
     <div class="row-4">${cards}</div></section>`;
@@ -1280,6 +1304,44 @@ document.querySelectorAll('[data-set-theme]').forEach(b => b.addEventListener('c
 mq.addEventListener('change', syncTheme);
 new MutationObserver(syncTheme).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 syncTheme();
+
+/* ---------- scrolling rows ---------- */
+document.querySelectorAll('.row-4,.row-6,.cats').forEach(row => {
+  const sync = () => {
+    const x = row.scrollLeft, max = row.scrollWidth - row.clientWidth - 2;
+    row.classList.toggle('is-more-l', x > 2);
+    row.classList.toggle('is-more-r', x < max);
+  };
+  row.addEventListener('scroll', sync, { passive: true });
+  addEventListener('resize', sync);
+  sync();
+  // a mouse can drag the row; a drag never counts as a click on the card under it
+  let startX = 0, startLeft = 0, moved = false;
+  row.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    startX = e.clientX; startLeft = row.scrollLeft; moved = false;
+    const move = ev => {
+      const dx = ev.clientX - startX;
+      if (!moved && Math.abs(dx) > 5) { moved = true; row.classList.add('is-dragging'); }
+      if (moved) row.scrollLeft = startLeft - dx;
+    };
+    const up = () => {
+      removeEventListener('pointermove', move);
+      removeEventListener('pointerup', up);
+      if (!moved) return;
+      // release onto the nearest card edge
+      const step = row.children[1].offsetLeft - row.children[0].offsetLeft, left = row.scrollLeft;
+      row.classList.remove('is-dragging');
+      row.scrollLeft = left;
+      row.scrollTo({ left: Math.round(left / step) * step, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+      const eat = ev => { ev.preventDefault(); ev.stopPropagation(); };
+      row.addEventListener('click', eat, { capture: true, once: true });
+      setTimeout(() => row.removeEventListener('click', eat, { capture: true }), 0);
+    };
+    addEventListener('pointermove', move);
+    addEventListener('pointerup', up);
+  });
+});
 
 /* ---------- section reveals ---------- */
 if (!reduceMotion.matches && 'IntersectionObserver' in window) {
