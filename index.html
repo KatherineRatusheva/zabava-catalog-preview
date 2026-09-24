@@ -36,8 +36,10 @@
   --tooltip-bg:#0F1E2E;
   --tooltip-fg:#F4FAF6;
   --shadow-rail:14px 0 30px -18px rgba(15,30,46,.3);
-  /* light-theme icon colour: steel blue (menu, category tiles); the active item is black on lime */
-  --icon:#2D5682;
+  /* light-theme icon colour: graphite with a hint of green, the one icon colour everywhere; active menu item is black on lime */
+  --icon:#2F3B34;
+  --see-all-icon:var(--icon);
+  --search-icon:var(--icon);
   /* the logo is a lime gamepad; its cross and buttons are cut out, so the page shows through */
   --logo-body:var(--lime);
   --nav-fg:var(--icon);
@@ -106,6 +108,8 @@
     --nav-active-bg:rgba(180,240,60,.12);
     --nav-active-fg:#B4F03C;
     --cat-icon:var(--lime-ink);
+    --see-all-icon:var(--text);
+    --search-icon:var(--text-3);
     --cat-icon-o:.8;
     --nav-active-ring:none;
     --search-bg:rgba(255,255,255,.06);
@@ -142,6 +146,8 @@
   --nav-active-bg:rgba(180,240,60,.12);
   --nav-active-fg:#B4F03C;
   --cat-icon:var(--lime-ink);
+  --see-all-icon:var(--text);
+  --search-icon:var(--text-3);
   --cat-icon-o:.8;
   --nav-active-ring:none;
   --search-bg:rgba(255,255,255,.06);
@@ -181,7 +187,7 @@ h1,h2,h3,p{margin:0}
 .search-field:focus-within{border-color:var(--border-strong);background:var(--search-bg-focus)}
 .search-field .i{transition:color var(--t-ui) var(--ease-out)}
 .search-field:focus-within .i{color:var(--text-2)}
-.search-field .i{width:18px;height:18px;color:var(--text-3)}
+.search-field .i{width:18px;height:18px;color:var(--search-icon)}
 .search-field input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;font:inherit;font-size:14px;font-weight:500;color:var(--text)}
 .search-field input::placeholder{color:var(--text-3)}
 .search-field input::-webkit-search-cancel-button{display:none}
@@ -326,7 +332,7 @@ h1,h2,h3,p{margin:0}
 .sec-head .sec-title{margin-bottom:0}
 .see-all{display:inline-flex;align-items:center;gap:6px;line-height:1;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
 .see-all .sec-title{color:inherit}
-.see-all .i{position:relative;top:3px;width:30px;height:30px;flex:none;display:block;color:var(--text);transition:color var(--t-ui) var(--ease-out),transform var(--t-ui) var(--ease-out)}
+.see-all .i{position:relative;top:3px;width:30px;height:30px;flex:none;display:block;color:var(--see-all-icon);transition:color var(--t-ui) var(--ease-out),transform var(--t-ui) var(--ease-out)}
 .see-all:hover,.see-all:focus-visible{color:var(--lime-ink)}
 .see-all:hover .i,.see-all:focus-visible .i{color:var(--lime-ink);transform:translateX(2px)}
 
