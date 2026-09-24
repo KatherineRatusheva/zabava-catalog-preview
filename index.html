@@ -254,8 +254,7 @@ h1,h2,h3,p{margin:0}
 .card:hover .play{background:var(--lime)}
 
 /* ============ Mosaic — the reference composition, full width ============ */
-/* The reference composition: featured + 2+1 block, a row of 5, a row of 6, cards at the reference size.
-   Wider screens repeat the pattern to the right (JS sets the templates) instead of enlarging the cards. */
+/* Card proportions are the reference's 1:1: featured + 2+1 block, a row of 5, a row of 6. */
 .mosaic{container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap)}
 .mosaic>.sec-title{margin-bottom:var(--s4)}
 .m-a,.m-r3,.m-r6{display:grid;gap:var(--gap)}
@@ -263,6 +262,7 @@ h1,h2,h3,p{margin:0}
   --u:calc((100cqw - 3 * var(--gap)) / 743);
   grid-template-columns:288fr 110fr 105fr 240fr;
   grid-template-rows:calc(var(--u) * 199) calc(var(--u) * 165);
+  grid-template-areas:"f t t w" "f b m p";
 }
 .m-r3{grid-template-columns:151fr 140fr 186fr 126fr 134fr;grid-auto-rows:calc((100cqw - 4 * var(--gap)) / 737 * 154)}
 .m-r6{grid-template-columns:118fr 119fr 118fr 121fr 125fr 128fr;grid-auto-rows:calc((100cqw - 5 * var(--gap)) / 729 * 139)}
@@ -1180,22 +1180,12 @@ const NavCategory = ({ name, ic }) =>
 /* ---------- page ---------- */
 const K = 1; // mosaic keeps the reference proportions
 const m = (w, h) => w / (h * K);
-// mosaic: the featured card, then 2+1 blocks; rows of 5 and 6 — widths in reference px
-const FEAT = ['crown-chaos', m(284, 371)];
-const BLOCKS = [
-  [['neon-drift', 'hot'], ['craft-valley', 'new'], ['bubble-buddies', 'hot'], ['mind-spark'], ['goal-rush', 'new']],
-  [['sky-pilot', 'top'], ['dino-dash'], ['chick-flap', 'new'], ['ice-tiles'], ['farm-friends', 'hot']],
-  [['rocket-rescue'], ['city-rise', 'new'], ['snow-buddy'], ['tube-sort', 'hot'], ['pixel-knight']],
-  [['sky-arena', 'hot'], ['relic-hunt'], ['jelly-bears'], ['gem-merge', 'new'], ['mech-rumble']],
+const A = [
+  ['crown-chaos', 'f', m(284, 371), '', true], ['neon-drift', 't', m(221, 195), 'hot'], ['craft-valley', 'w', m(236, 195), 'new'],
+  ['bubble-buddies', 'b', m(106, 161), 'hot'], ['mind-spark', 'm', m(101, 161)], ['goal-rush', 'p', m(236, 161), 'new'],
 ];
-const BLOCK_AR = [m(221, 195), m(236, 195), m(106, 161), m(101, 161), m(236, 161)];
-const R5_W = [151, 140, 186, 126, 134], R6_W = [118, 119, 118, 121, 125, 128];
-const R5 = [['paw-pals'], ['swamp-zombies', 'hot'], ['burger-tycoon'], ['gem-cascade'], ['ninja-roofs'],
-  ['rope-swing'], ['hide-and-peek', 'new'], ['knight-quest'], ['cat-cafe'], ['stick-brawl'],
-  ['merge-kitties'], ['tower-guard', 'hot'], ['pool-pro'], ['ocean-merge'], ['jungle-run']];
-const R6 = [['sunset-rally'], ['word-wood'], ['cloud-tower'], ['fruit-frenzy'], ['block-rush'], ['galaxy-raid'],
-  ['blob-party'], ['teddy-town'], ['target-pro'], ['quiz-blocks'], ['solitaire'], ['beat-buddy'],
-  ['dj-bot'], ['rhythm-orbs'], ['piano-blocks'], ['spell-it'], ['robo-command'], ['penalty-cup']];
+const R3 = [['paw-pals', 147], ['swamp-zombies', 136, 'hot'], ['burger-tycoon', 182], ['gem-cascade', 122], ['ninja-roofs', 130]];
+const R6 = [['sunset-rally', 118], ['word-wood', 119], ['cloud-tower', 118], ['fruit-frenzy', 121], ['tube-sort', 125], ['galaxy-raid', 128]];
 const TRENDING = [['deep-sea-dash', 'hot'], ['ghost-town', 'hot'], ['balloon-voyage', 'top'], ['moto-canyon', 'new']];
 const NEW = [['berry-merge', 'hot'], ['mahjong-friends', 'new'], ['night-racer', 'top'], ['monster-mash', 'hot'], ['castle-crafters'], ['cube-drop']];
 const TOP = [['robo-arena', 'top'], ['island-life', 'hot'], ['hoop-kings'], ['reef-friends', 'new']];
@@ -1208,31 +1198,9 @@ const CATS = [
 const MORE_CATS = [{ name: 'Casual', ic: 'smiley' }, { name: 'Merge', ic: 'arrows-merge' }, { name: 'Shooting', ic: 'crosshair' }, { name: 'Word', ic: 'text-aa' }, { name: 'Cards', ic: 'cards' }, { name: 'Music', ic: 'music-notes' }];
 const $ = id => document.getElementById(id);
 const RA = 188 / 126, PA = 121 / 183;
-// cards keep the reference size (~1.15px per reference px): a wider screen gets more blocks and cards, not bigger ones
-const U0 = 1.15;
-let mosaicKey = '';
-const renderMosaic = () => {
-  const mob = matchMedia('(max-width:720px)').matches, room = $('top').clientWidth / U0;
-  const k = mob ? 1 : Math.min(BLOCKS.length, Math.max(1, Math.round((room - 288) / 455)));
-  const n5 = mob ? 5 : Math.min(R5.length, Math.max(5, Math.round(room / 147))), n6 = mob ? 6 : Math.min(R6.length, Math.max(6, Math.round(room / 121)));
-  if (mosaicKey === (mosaicKey = [k, n5, n6].join())) return;
-  const a = $('m-a'), fr = 288 + 455 * k;
-  a.style.gridTemplateColumns = '288fr' + ' 110fr 105fr 240fr'.repeat(k);
-  a.style.gridTemplateRows = [199, 165].map(h => `calc((100cqw - ${3 * k} * var(--gap)) / ${fr} * ${h})`).join(' ');
-  a.innerHTML = GameCard(FEAT[0], { ar: FEAT[1], area: '1 / 1 / 3 / 2', feat: true }) + BLOCKS.slice(0, k).map((b, j) => {
-    const c = 2 + 3 * j, areas = [`1 / ${c} / 2 / ${c + 2}`, `1 / ${c + 2} / 2 / ${c + 3}`, `2 / ${c} / 3 / ${c + 1}`, `2 / ${c + 1} / 3 / ${c + 2}`, `2 / ${c + 2} / 3 / ${c + 3}`];
-    return b.map(([id, badge], i) => GameCard(id, { ar: BLOCK_AR[i], area: areas[i], badge })).join('');
-  }).join('');
-  const row = (el, list, ws, n, h) => {
-    const w = list.slice(0, n).map((_, i) => ws[i % ws.length]), sum = w.reduce((x, y) => x + y, 0);
-    el.style.gridTemplateColumns = w.map(v => v + 'fr').join(' ');
-    el.style.gridAutoRows = `calc((100cqw - ${n - 1} * var(--gap)) / ${sum} * ${h})`;
-    el.innerHTML = list.slice(0, n).map(([id, badge], i) => GameCard(id, { ar: m(w[i], h), badge })).join('');
-  };
-  row($('m-r3'), R5, R5_W, n5, 154);
-  row($('m-r6'), R6, R6_W, n6, 139);
-};
-addEventListener('resize', renderMosaic); renderMosaic();
+$('m-a').innerHTML = A.map(([id, area, ar, badge, feat]) => GameCard(id, { ar, area, badge, feat })).join('');
+$('m-r3').innerHTML = R3.map(([id, w, badge]) => GameCard(id, { ar: m(w, 150), badge })).join('');
+$('m-r6').innerHTML = R6.map(([id, w]) => GameCard(id, { ar: m(w, 139) })).join('');
 $('trend-row').innerHTML = TRENDING.map(([id, badge]) => GameCard(id, { ar: RA, badge, play: true })).join('');
 $('new-row').innerHTML = NEW.map(([id, badge]) => GameCard(id, { ar: PA, badge, open: true })).join('');
 $('top-row').innerHTML = TOP.map(([id, badge]) => GameCard(id, { ar: RA, badge, play: true })).join('');
