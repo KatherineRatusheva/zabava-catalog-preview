@@ -404,7 +404,14 @@ h1,h2,h3,p{margin:0}
 .gp-launch:hover,.gp-launch:focus-visible{background:color-mix(in srgb,var(--lime) 86%,#fff)}
 .gp-launch .i{width:42px;height:42px;margin-left:4px}
 .gp-tile{padding:20px;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border)}
-.gp-side{grid-area:side;position:sticky;top:calc(var(--head-h) + 12px);display:flex;flex-direction:column;gap:var(--s4)}
+.gp-side{grid-area:side;display:flex;flex-direction:column;gap:var(--s4)}
+.gp-info{display:flex;flex-direction:column;gap:var(--s4)}
+/* same-genre games fill the side column next to the About tile */
+.gp-similar .gp-h{margin-bottom:12px}
+.gp-mini{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.gp-mini .card{aspect-ratio:188/126}
+.gp-mini .cap{padding:24px 8px 8px}
+.gp-mini .cap-title{font-size:12px}
 .gp-id{display:flex;align-items:center;gap:14px;min-width:0}
 .gp-icon{position:relative;flex:none;width:64px;height:64px;border-radius:14px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--card-ring)}
 .gp-icon svg{position:absolute;inset:0;width:100%;height:100%}
@@ -415,14 +422,16 @@ h1,h2,h3,p{margin:0}
 .gp-stats span{display:inline-flex;align-items:center;gap:6px}
 .gp-stats .i{width:18px;height:18px;color:var(--st-rest)}
 .gp-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
-.gp-facts{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0;padding-top:var(--s4);border-top:1px solid var(--border);font-size:13px}
-.gp-facts dt{color:var(--text-2);font-weight:600}
-.gp-facts dd{margin:0;font-weight:700}
+/* key facts as four equal cells: label over value */
+.gp-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);margin:0}
+.gp-facts div{padding:12px 14px;border-radius:var(--r-ctl);background:var(--search-bg);border:1px solid var(--border)}
+.gp-facts dt{font-size:12px;font-weight:600;color:var(--text-2)}
+.gp-facts dd{margin:4px 0 0;font-size:15px;font-weight:800}
 .gp-facts a{transition:color var(--t-ui) var(--ease-out)}
 .gp-facts a:hover,.gp-facts a:focus-visible{color:var(--link-hover)}
 /* about tile: long copy is clamped with a soft fade and opens in place */
 .gp-about{grid-area:about;display:flex;flex-direction:column;gap:20px}
-.gp-about section+section{padding-top:20px;border-top:1px solid var(--border)}
+.gp-about>*+section{padding-top:20px;border-top:1px solid var(--border)}
 .gp-h{margin:0 0 10px;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
 .gp-desc{font-size:14px;line-height:1.65;color:var(--text-2)}
 .gp-desc p{margin:0 0 10px}
@@ -430,11 +439,14 @@ h1,h2,h3,p{margin:0}
 .gp-desc.is-clamped{max-height:calc(1.65em * 4);overflow:hidden;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
 .gp-more{margin-top:8px;font-size:14px;font-weight:700;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
 .gp-more:hover,.gp-more:focus-visible{color:var(--link-hover)}
-.gp-controls{display:grid;gap:10px;margin:0;padding:0;list-style:none;font-size:14px;color:var(--text-2)}
+.gp-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 24px;margin:0;padding:0;list-style:none;font-size:14px;color:var(--text-2)}
 .gp-controls li{display:flex;align-items:center;gap:12px}
-.gp-keys{display:flex;gap:6px;min-width:112px}
+.gp-keys{display:flex;gap:6px;flex:none;width:76px}
 .key{display:grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:7px;border:1px solid var(--border-strong);background:var(--search-bg);color:var(--text);font-size:12px;font-weight:800;line-height:1}
-.key--glyph{font-size:16px;font-weight:700}
+.key .i{width:16px;height:16px}
+.key--up .i{transform:rotate(-90deg)}
+.key--down .i{transform:rotate(90deg)}
+.key--left .i{transform:rotate(180deg)}
 .gp-tags{display:flex;flex-wrap:wrap;gap:var(--s2)}
 .gp-tags .chip{display:inline-flex;align-items:center;height:32px;padding:0 14px;font-size:13px}
 /* category page: header, sort chips, a grid of the same landscape cards, other categories */
@@ -450,11 +462,12 @@ h1,h2,h3,p{margin:0}
 .cp-grid .card{aspect-ratio:188/126}
 @media (max-width:1100px){
   .gp{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "side" "about"}
-  .gp-side{position:static}
+  .gp-similar{display:none} /* on narrow screens the row below carries the recommendations */
   .cp-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (max-width:720px){
   .gp-title{font-size:22px}
+  .gp-facts{grid-template-columns:1fr 1fr}
   .gp-launch{width:68px;height:68px;margin:-34px 0 0 -34px}
   .gp-launch .i{width:32px;height:32px}
   .cp-title{font-size:22px}
@@ -1604,24 +1617,25 @@ function GamePage(id) {
     PLAY[g.g] || '',
     `It works on desktop and mobile, and your progress is saved in the browser, so you can come back any time and pick up where you left off. New levels and events arrive regularly, so there is always something fresh to try.`,
   ];
+  const KEY = { '←': 'left', '→': 'right', '↑': 'up', '↓': 'down' };
+  const keycap = k => KEY[k] ? `<kbd class="key key--${KEY[k]}" aria-label="${KEY[k]} arrow">${icon('caret-right')}</kbd>` : `<kbd class="key">${k}</kbd>`;
   return crumbs([[g.g, catHref], [g.t]]) + `
     <div class="gp">
       <div class="gp-stage">${art(id, 16 / 9)}<button class="gp-launch" type="button" aria-label="Play ${g.t}">${icon('play')}</button></div>
-      <aside class="gp-side gp-tile">
-        <div class="gp-id"><span class="gp-icon">${art(id, 1)}</span><div><h1 class="gp-title">${g.t}</h1><a class="gp-genre" href="${catHref}">${g.g}</a></div></div>
-        <div class="gp-stats"><span>${icon('star')}${st.rating}</span><span>${icon('thumbs-up')}${compact(st.likes)}</span><span>${icon('play')}${compact(st.plays)} plays</span></div>
-        <button class="btn-primary" type="button">${icon('play')}Play now</button>
-        <div class="gp-actions">
-          <button class="btn-ghost" type="button" aria-pressed="false" data-toggle>${icon('heart')}Favorite</button>
-          <button class="btn-ghost" type="button">${icon('share')}Share</button>
+      <aside class="gp-side">
+        <div class="gp-info gp-tile">
+          <div class="gp-id"><span class="gp-icon">${art(id, 1)}</span><div><h1 class="gp-title">${g.t}</h1><a class="gp-genre" href="${catHref}">${g.g}</a></div></div>
+          <div class="gp-stats"><span>${icon('star')}${st.rating}</span><span>${icon('thumbs-up')}${compact(st.likes)}</span><span>${icon('play')}${compact(st.plays)} plays</span></div>
+          <button class="btn-primary" type="button">${icon('play')}Play now</button>
+          <div class="gp-actions">
+            <button class="btn-ghost" type="button" aria-pressed="false" data-toggle>${icon('heart')}Favorite</button>
+            <button class="btn-ghost" type="button">${icon('share')}Share</button>
+          </div>
         </div>
-        <dl class="gp-facts">
-          <dt>Genre</dt><dd><a href="${catHref}">${g.g}</a></dd>
-          <dt>Rating</dt><dd>${st.rating} / 5</dd>
-          <dt>Plays</dt><dd>${compact(st.plays)}</dd>
-          <dt>Released</dt><dd>${st.released}</dd>
-          <dt>Works on</dt><dd>Desktop and mobile</dd>
-        </dl>
+        <section class="gp-similar">
+          <div class="sec-head gp-h"><a class="see-all" href="${catHref}"><h2 class="sec-title" style="font-size:18px">More ${g.g} games</h2>${icon('caret-right')}</a></div>
+          <div class="gp-mini">${more.slice(0, 8).map(x => GameCard(x, { ar: RA })).join('')}</div>
+        </section>
       </aside>
       <div class="gp-about gp-tile">
         <section>
@@ -1629,17 +1643,22 @@ function GamePage(id) {
           <div class="gp-desc is-clamped" id="gp-desc">${desc.map(t => `<p>${t}</p>`).join('')}</div>
           <button class="gp-more" type="button" aria-controls="gp-desc" aria-expanded="false" hidden>Show more</button>
         </section>
+        <dl class="gp-facts">
+          <div><dt>Rating</dt><dd>${st.rating} / 5</dd></div>
+          <div><dt>Plays</dt><dd>${compact(st.plays)}</dd></div>
+          <div><dt>Released</dt><dd>${st.released}</dd></div>
+          <div><dt>Works on</dt><dd>Desktop, mobile</dd></div>
+        </dl>
         <section>
           <h2 class="gp-h">How to play</h2>
-          <ul class="gp-controls">${controls.map(([keys, what]) =>
-            `<li><span class="gp-keys">${keys.map(k => `<kbd class="key${k.length === 1 ? ' key--glyph' : ''}">${k}</kbd>`).join('')}</span>${what}</li>`).join('')}</ul>
+          <ul class="gp-controls">${controls.map(([keys, what]) => `<li><span class="gp-keys">${keys.map(keycap).join('')}</span>${what}</li>`).join('')}</ul>
         </section>
         <section>
           <h2 class="gp-h">Tags</h2>
           <div class="gp-tags"><a class="chip" href="${catHref}">${g.g}</a>${subs.map(t => `<a class="chip" href="${catHref}">${t}</a>`).join('')}</div>
         </section>
       </div>
-    </div>` + cardRow(`More ${g.g} games`, more, catHref) + cardRow('You may also like', also);
+    </div>` + cardRow('You may also like', also);
 }
 
 // category page header copy and sub-genre filters
