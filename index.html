@@ -119,7 +119,7 @@
     --card-ring:rgba(235,245,225,.06);
     --scrim:rgba(8,10,9,.82);
     --scrim-rgb:8,10,9;
-    --shadow-rest:0 1px 2px rgba(0,0,0,.35);
+    --shadow-rest:none; /* a dark 1px drop read as a black line under a hovered card */
     --shadow-hover:0 16px 30px -14px rgba(0,0,0,.8);
     --shadow-card-hover:var(--shadow-rest);
     --shadow-pop:0 20px 44px -18px rgba(0,0,0,.85),0 0 0 1px rgba(222,236,212,.06);
@@ -170,7 +170,7 @@
   --card-ring:rgba(235,245,225,.06);
   --scrim:rgba(8,10,9,.82);
   --scrim-rgb:8,10,9;
-  --shadow-rest:0 1px 2px rgba(0,0,0,.35);
+  --shadow-rest:none; /* a dark 1px drop read as a black line under a hovered card */
   --shadow-hover:0 16px 30px -14px rgba(0,0,0,.8);
   --shadow-card-hover:var(--shadow-rest);
   --shadow-pop:0 20px 44px -18px rgba(0,0,0,.85),0 0 0 1px rgba(222,236,212,.06);
@@ -395,9 +395,11 @@ h1,h2,h3,p{margin:0}
 
 /* ============ motion: section reveal ============ */
 /* Only sections that start below the fold are prepared; everything in the first screen is visible at once. */
-/* only the cards move, barely: they rise 6px out of a light fade, one after another; titles and the section stay put */
-.will-reveal :is(.row-4,.row-6,.cats)>*{opacity:.6;transform:translateY(6px)}
-.will-reveal.is-in :is(.row-4,.row-6,.cats)>*{opacity:1;transform:none;transition:opacity var(--t-reveal) var(--ease-card),transform var(--t-reveal) var(--ease-card),box-shadow var(--t-card) var(--ease-card);transition-delay:calc(var(--i,0) * 30ms)}
+/* only the cards move, barely: they rise 6px out of a light fade, one after another; titles and the section stay put.
+   The rise uses `translate`, not `transform`, so hovering a card mid-reveal scales it straight away instead of sticking */
+.will-reveal :is(.row-4,.row-6,.cats)>*{opacity:.6;translate:0 6px}
+.will-reveal.is-in :is(.row-4,.row-6,.cats)>*{--d:calc(var(--i,0) * 30ms);opacity:1;translate:none;
+  transition:opacity var(--t-reveal) var(--ease-card) var(--d),translate var(--t-reveal) var(--ease-card) var(--d),transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),background-color var(--t-ui) var(--ease-out)}
 
 /* ============ motion: theme switch ============ */
 ::view-transition-old(root),::view-transition-new(root){animation-duration:var(--t-theme);animation-timing-function:var(--ease-out)}
