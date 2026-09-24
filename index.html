@@ -273,8 +273,11 @@ h1,h2,h3,p{margin:0}
   --w:calc((100cqw - 5 * var(--gap)) / 6);
 }
 .m-col{display:flex;flex-direction:column;gap:var(--gap);min-width:0;
-  height:min(calc((var(--w) * 3.005 + var(--gap) * 2.2) * 1), calc(100svh - var(--head-h) - 36px))} /* slightly taller than the natural shapes: the user's size call */
+  height:min(calc((var(--w) * 2.67 + var(--gap) * 2) * .98), calc(100svh - var(--head-h) - 36px))} /* ≈584px at 1440, the height the user settled on */ /* slightly taller than the natural shapes: the user's size call */
 .m-col>.card{flex:calc(1 / var(--ar)) 1 0;min-height:0}
+/* a square slot can hold four small squares */
+.m-quad{flex:1 1 0;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:var(--gap)}
+.m-quad .card{min-height:0}
 
 /* ============ Rows ============ */
 /* every row below the mosaic scrolls sideways (trackpad, shift+wheel, mouse drag, swipe):
@@ -363,7 +366,7 @@ h1,h2,h3,p{margin:0}
   .main-in{max-width:none}
   /* mosaic becomes a 2-column masonry, every tile keeps its proportions */
   .mosaic{display:block;columns:2;column-gap:var(--gap)}
-  .m-cols,.m-col{display:contents}
+  .m-cols,.m-col,.m-quad{display:contents}
   .mosaic .card{aspect-ratio:var(--ar);margin-bottom:var(--gap);break-inside:avoid}
   .mosaic .card.is-feat{column-span:all}
   .is-feat .cap{padding:48px 14px 14px}
@@ -1196,14 +1199,19 @@ const m = (w, h) => w / (h * K);
 // [id, grid-area, reference w, h, featured]
 // the page's shapes: L landscape (category rows), S square, P portrait (New & popular, used sparingly)
 const SHAPE = { L: 188 / 126, S: 1, P: 3 / 5 };
+// column recipes that share one natural height: S+S+L, P+S, L+L+L+L (in any order);
+// a Q slot is a square split into four small squares
 const M_COLS = [
-  [['crown-chaos', 'S'], ['neon-drift', 'L'], ['farm-friends', 'L'], ['chick-flap', 'L']],
-  [['sky-pilot', 'L'], ['knight-quest', 'P'], ['goal-rush', 'L']],
-  [['bubble-buddies', 'S'], ['word-wood', 'S'], ['paw-pals', 'S']],
-  [['dino-dash', 'L'], ['craft-valley', 'L'], ['ice-tiles', 'S'], ['burger-tycoon', 'L']],
-  [['stick-brawl', 'L'], ['gem-cascade', 'S'], ['hide-and-peek', 'L'], ['pool-pro', 'L']],
-  [['city-rise', 'L'], ['solitaire', 'L'], ['tube-sort', 'P']],
+  [['crown-chaos', 'S'], ['neon-drift', 'L'], ['Q', 'mind-spark', 'swamp-zombies', 'cat-cafe', 'fruit-frenzy']],
+  [['sky-pilot', 'L'], ['farm-friends', 'L'], ['goal-rush', 'L'], ['chick-flap', 'L']],
+  [['knight-quest', 'P'], ['bubble-buddies', 'S']],
+  [['paw-pals', 'S'], ['Q', 'ice-tiles', 'snow-buddy', 'stick-brawl', 'word-wood'], ['dino-dash', 'L']],
+  [['craft-valley', 'L'], ['hide-and-peek', 'L'], ['burger-tycoon', 'L'], ['pool-pro', 'L']],
+  [['gem-cascade', 'S'], ['tube-sort', 'P']],
 ];
+const mosaicSlot = ([id, k, ...more]) => id === 'Q'
+  ? `<div class="m-quad">${[k, ...more].map(g => GameCard(g, { ar: 1 })).join('')}</div>`
+  : GameCard(id, { ar: SHAPE[k] });
 const TRENDING = [['deep-sea-dash'], ['ghost-town'], ['balloon-voyage'], ['moto-canyon'],
   ['rope-swing'], ['galaxy-raid'], ['skate-star'], ['jungle-run'], ['disco-blob'], ['letter-drop']];
 const NEW = [['berry-merge'], ['mahjong-friends'], ['night-racer'], ['monster-mash'], ['castle-crafters'], ['cube-drop'],
@@ -1220,7 +1228,7 @@ const MORE_CATS = [{ name: 'Casual', ic: 'smiley', count: 134 }, { name: 'Merge'
   { name: 'Word', ic: 'text-aa', count: 54 }, { name: 'Cards', ic: 'cards', count: 41 }, { name: 'Music', ic: 'music-notes', count: 36 }];
 const $ = id => document.getElementById(id);
 const RA = 188 / 126, PA = 3 / 5;
-$('m-a').innerHTML = M_COLS.map(col => `<div class="m-col">${col.map(([id, k]) => GameCard(id, { ar: SHAPE[k] })).join('')}</div>`).join('');
+$('m-a').innerHTML = M_COLS.map(col => `<div class="m-col">${col.map(mosaicSlot).join('')}</div>`).join('');
 
 // the rows follow the screen height, so redraw each cover for the tile's real shape instead of cropping it
 const fitCovers = () => document.querySelectorAll('.mosaic .card').forEach(c => {
