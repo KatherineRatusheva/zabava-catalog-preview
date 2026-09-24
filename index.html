@@ -350,8 +350,9 @@ h1,h2,h3,p{margin:0}
 .cats{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:var(--gap)}
 .cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 12px 16px;text-align:center;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border);color:var(--text);transition:background-color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
 .cat-badge{display:grid;place-items:center;width:48px;height:48px;flex:none}
-.cat-badge .i{width:48px;height:48px;color:var(--st-rest);transition:color var(--t-ui) var(--ease-out)}
-.cat:hover .cat-badge .i,.cat:focus-visible .cat-badge .i{color:var(--st-hover-fg)}
+.cat-badge .i{width:48px;height:48px;color:var(--st-rest);transition:color var(--t-ui) var(--ease-out),transform 450ms var(--ease-card)}
+/* the icon rises, tilts and grows a touch in one soft move (the user asked for motion here) */
+.cat:hover .cat-badge .i,.cat:focus-visible .cat-badge .i{color:var(--st-hover-fg);transform:translateY(-4px) rotate(-8deg) scale(1.08)}
 .cat-text{min-width:0;max-width:100%;display:flex;flex-direction:column;gap:1px}
 .cat-name{font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cat-name{font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
