@@ -261,22 +261,19 @@ h1,h2,h3,p{margin:0}
 .play .i{width:18px;height:18px;margin-left:2px}
 .card:hover .play,.card:focus-visible .play{background:var(--lime);color:var(--on-lime);transform:none}
 
-/* ============ Mosaic — one 3-row grid, full width ============ */
-/* Tiles are 1×1, wide (2 columns) or tall (2 rows) and interlock across rows, so no row is a strip of equal cards
-   and no single game takes over the grid. Sizes in reference px; the height is capped to fit one screen. */
+/* ============ Mosaic — three rows of squares, full width ============ */
+/* Every game gets the same square tile, so none is singled out. Rows hold 6 / 7 / 6 squares: the middle row is
+   offset like brickwork, so the seams never line up. The height is capped to fit one screen under the header. */
 .mosaic{
   container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap);
-  --fit:max(.5px, calc((100svh - var(--head-h) - 36px - 2 * var(--gap)) / 603));
+  --room:calc(100svh - var(--head-h) - 36px - 2 * var(--gap));
   padding-top:8px; /* room for the hover lift under the sticky header */
 }
 .mosaic>.sec-title{margin-bottom:var(--s4)}
-.m-a{
-  display:grid;gap:var(--gap);
-  --u:min(calc((100cqw - 6 * var(--gap)) / 1243), var(--fit));
-  grid-template-columns:200fr 150fr 150fr 230fr 150fr 150fr 213fr;
-  grid-template-rows:calc(var(--u) * 232) calc(var(--u) * 192) calc(var(--u) * 179);
-  grid-template-areas:"A A B C D D E" "F G B H H I E" "F J J K L M M";
-}
+.m-row{display:grid;gap:var(--gap);grid-template-columns:repeat(var(--n),minmax(0,1fr));
+  grid-auto-rows:min(calc((100cqw - (var(--n) - 1) * var(--gap)) / var(--n)), calc(var(--room) * var(--share)))}
+.m-row--6{--n:6;--share:.35}
+.m-row--7{--n:7;--share:.30}
 
 /* ============ Rows ============ */
 /* every row below the mosaic scrolls sideways (trackpad, shift+wheel, mouse drag, swipe):
@@ -365,7 +362,7 @@ h1,h2,h3,p{margin:0}
   .main-in{max-width:none}
   /* mosaic becomes a 2-column masonry, every tile keeps its proportions */
   .mosaic{display:block;columns:2;column-gap:var(--gap)}
-  .m-a{display:contents}
+  .m-row{display:contents}
   .mosaic .card{aspect-ratio:var(--ar);margin-bottom:var(--gap);break-inside:avoid}
   .mosaic .card.is-feat{column-span:all}
   .is-feat .cap{padding:48px 14px 14px}
@@ -429,7 +426,9 @@ h1,h2,h3,p{margin:0}
 
       <section class="mosaic" id="top" aria-labelledby="h-top">
         <h2 class="sr-only" id="h-top">Featured games</h2>
-        <div class="m-a" id="m-a"></div>
+        <div class="m-row m-row--6" id="m-r1"></div>
+        <div class="m-row m-row--7" id="m-r2"></div>
+        <div class="m-row m-row--6" id="m-r3"></div>
       </section>
 
       <section class="sec" id="trending" aria-labelledby="h-trending">
@@ -1196,10 +1195,10 @@ const NavCategory = ({ name, ic }) =>
 const K = 1; // mosaic keeps the reference proportions
 const m = (w, h) => w / (h * K);
 // [id, grid-area, reference w, h, featured]
-const A = [
-  ['neon-drift', 'A', 360, 232], ['ninja-roofs', 'B', 150, 434], ['craft-valley', 'C', 230, 232], ['farm-friends', 'D', 310, 232], ['crown-chaos', 'E', 213, 434],
-  ['knight-quest', 'F', 200, 381], ['chick-flap', 'G', 150, 192], ['dino-dash', 'H', 390, 192], ['ice-tiles', 'I', 150, 192],
-  ['burger-tycoon', 'J', 310, 179], ['gem-cascade', 'K', 230, 179], ['paw-pals', 'L', 150, 179], ['sky-pilot', 'M', 373, 179],
+const M_ROWS = [
+  ['neon-drift', 'crown-chaos', 'craft-valley', 'farm-friends', 'ninja-roofs', 'sky-pilot'],
+  ['chick-flap', 'knight-quest', 'goal-rush', 'ice-tiles', 'dino-dash', 'bubble-buddies', 'swamp-zombies'],
+  ['burger-tycoon', 'gem-cascade', 'hide-and-peek', 'paw-pals', 'rope-swing', 'mind-spark'],
 ];
 const TRENDING = [['deep-sea-dash'], ['ghost-town'], ['balloon-voyage'], ['moto-canyon'],
   ['rope-swing'], ['galaxy-raid'], ['skate-star'], ['jungle-run'], ['disco-blob'], ['letter-drop']];
@@ -1217,7 +1216,7 @@ const MORE_CATS = [{ name: 'Casual', ic: 'smiley', count: 134 }, { name: 'Merge'
   { name: 'Word', ic: 'text-aa', count: 54 }, { name: 'Cards', ic: 'cards', count: 41 }, { name: 'Music', ic: 'music-notes', count: 36 }];
 const $ = id => document.getElementById(id);
 const RA = 188 / 126, PA = 3 / 5;
-$('m-a').innerHTML = A.map(([id, area, w, h, feat]) => GameCard(id, { ar: m(w, h), area, feat })).join('');
+M_ROWS.forEach((ids, r) => { $('m-r' + (r + 1)).innerHTML = ids.map(id => GameCard(id, { ar: 1 })).join(''); });
 
 // the rows follow the screen height, so redraw each cover for the tile's real shape instead of cropping it
 const fitCovers = () => document.querySelectorAll('.mosaic .card').forEach(c => {
