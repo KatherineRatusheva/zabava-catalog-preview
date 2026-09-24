@@ -8,7 +8,9 @@
 :root{
   /* color — light */
   --bg:#F4FAF6;
-  --page-bg:radial-gradient(1100px 640px at 0 0,rgba(180,240,60,.09),rgba(180,240,60,0) 70%),linear-gradient(180deg,#F0F8F3 0,#F4FAF6 560px);
+  /* a faint grain layer dithers the very soft gradients so they never band into rings */
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --page-bg:var(--grain),radial-gradient(2400px 1600px at 0 0,rgba(180,240,60,0.09) 0%,rgba(180,240,60,0.065) 15%,rgba(180,240,60,0.0441) 30%,rgba(180,240,60,0.0272) 45%,rgba(180,240,60,0.0144) 60%,rgba(180,240,60,0.0056) 75%,rgba(180,240,60,0.0009) 90%,rgba(180,240,60,0) 100%),linear-gradient(180deg,#F0F8F3 0,#F2F9F4 400px,#F4FAF6 900px);
   --surface:#FFFFFF;
   --surface-2:#EAF3EE;
   --control-active:#FFFFFF;
@@ -72,7 +74,7 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#121413;
-    --page-bg:radial-gradient(1100px 640px at 0 0,rgba(168,208,118,.06),rgba(168,208,118,0) 70%),linear-gradient(180deg,#171917 0,#121413 560px);
+    --page-bg:var(--grain),radial-gradient(2400px 1600px at 0 0,rgba(168,208,118,0.06) 0%,rgba(168,208,118,0.0433) 15%,rgba(168,208,118,0.0294) 30%,rgba(168,208,118,0.0182) 45%,rgba(168,208,118,0.0096) 60%,rgba(168,208,118,0.0037) 75%,rgba(168,208,118,0.0006) 90%,rgba(168,208,118,0) 100%),linear-gradient(180deg,#171917 0,#141614 450px,#121413 900px);
     --surface:#1A1D1B;
     --surface-2:#222623;
     --control-active:#2E332F;
@@ -106,7 +108,7 @@
 }
 :root[data-theme="dark"]{
   --bg:#121413;
-  --page-bg:radial-gradient(1100px 640px at 0 0,rgba(168,208,118,.06),rgba(168,208,118,0) 70%),linear-gradient(180deg,#171917 0,#121413 560px);
+  --page-bg:var(--grain),radial-gradient(2400px 1600px at 0 0,rgba(168,208,118,0.06) 0%,rgba(168,208,118,0.0433) 15%,rgba(168,208,118,0.0294) 30%,rgba(168,208,118,0.0182) 45%,rgba(168,208,118,0.0096) 60%,rgba(168,208,118,0.0037) 75%,rgba(168,208,118,0.0006) 90%,rgba(168,208,118,0) 100%),linear-gradient(180deg,#171917 0,#141614 450px,#121413 900px);
   --surface:#1A1D1B;
   --surface-2:#222623;
   --control-active:#2E332F;
