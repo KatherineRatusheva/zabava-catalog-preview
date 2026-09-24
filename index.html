@@ -271,7 +271,7 @@ h1,h2,h3,p{margin:0}
 /* ============ Badge ============ */
 
 /* ============ GameCard ============ */
-.card{position:relative;display:block;isolation:isolate;border-radius:var(--r-card);background:var(--card-bg);box-shadow:var(--shadow-rest);container-type:inline-size;transform-origin:50% 100%;transition:transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),z-index 0s linear var(--t-card)}
+.card{position:relative;display:block;isolation:isolate;border-radius:var(--r-card);background:var(--card-bg);box-shadow:var(--shadow-rest);container-type:inline-size;transform-origin:50% 50%;transition:transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),z-index 0s linear var(--t-card)}
 .card:active{transform:scale(1.015);transition-duration:120ms}
 .card.is-top{transform-origin:50% 0}
 .card::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--card-ring);pointer-events:none;transition:box-shadow var(--t-card) var(--ease-card)}
@@ -282,10 +282,10 @@ h1,h2,h3,p{margin:0}
 .card-clip::before{content:"";position:absolute;inset:0;z-index:1;background:rgba(255,255,255,.04);opacity:0;pointer-events:none;transition:opacity var(--t-card) var(--ease-card)}
 .card:hover .card-clip::before,.card:focus-visible .card-clip::before{opacity:1}
 .cover text{font-family:"Lilita One","Arial Black",Impact,sans-serif}
-/* hover: the whole card grows up from its bottom edge and rises above its neighbours; the art inside zooms a little more.
+/* hover: the whole card grows from its centre (so it doesn't climb too high) and rises above its neighbours; the art inside zooms a little more.
    It stays on top until it has shrunk back (z-index switches only at the end of the way out) */
-.card:hover,.card:focus-visible{z-index:4;transform:scale(1.025);box-shadow:var(--shadow-card-hover);transition:transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),z-index 0s}
-.card:hover .cover,.card:focus-visible .cover{transform:scale(1.05)}
+.card:hover,.card:focus-visible{z-index:4;transform:scale(1.045);box-shadow:var(--shadow-card-hover);transition:transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),z-index 0s}
+.card:hover .cover,.card:focus-visible .cover{transform:scale(1.07)}
 .card:active .cover{transform:scale(1.04)}
 /* an eased scrim: dense only right under the title, then it melts away, so there is no dark band */
 .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s2);padding:48px 12px 12px;background:linear-gradient(to top,rgba(var(--scrim-rgb),.66) 0%,rgba(var(--scrim-rgb),.52) 18%,rgba(var(--scrim-rgb),.34) 40%,rgba(var(--scrim-rgb),.17) 62%,rgba(var(--scrim-rgb),.05) 82%,rgba(var(--scrim-rgb),0) 100%)}
