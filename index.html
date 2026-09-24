@@ -420,12 +420,11 @@ h1,h2,h3,p{margin:0}
 .gp-facts a{transition:color var(--t-ui) var(--ease-out)}
 .gp-facts a:hover,.gp-facts a:focus-visible{color:var(--link-hover)}
 /* category page: header, sort chips, a grid of the same landscape cards, other categories */
-.cp-head{display:flex;align-items:center;gap:16px;margin-bottom:var(--s4)}
-.cp-head .i{width:52px;height:52px;flex:none;color:var(--st-rest)}
-.cp-title{margin:0;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
-.cp-sub{margin-top:4px;font-size:14px;font-weight:600;color:var(--text-2)}
-.chips{display:flex;flex-wrap:wrap;gap:var(--s2);margin-bottom:var(--s4)}
-.chip{height:36px;padding:0 16px;border-radius:999px;border:1px solid var(--border);background:var(--tile-bg);color:var(--st-rest);font-size:14px;font-weight:700;transition:background var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out)}
+.cp-head{margin-bottom:var(--s5)}
+.cp-title{margin:0;font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.cp-sub{max-width:1000px;margin:10px 0 0;font-size:17px;font-weight:600;line-height:1.45;color:var(--text-2)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:var(--s5)}
+.chip{height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--border);background:var(--tile-bg);color:var(--st-rest);font-size:15px;font-weight:700;transition:background var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out)}
 .chip:hover,.chip:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--tile-bg);color:var(--st-hover-fg)}
 .chip[aria-pressed="true"]{background:var(--st-active-bg);color:var(--st-active-fg);border-color:transparent}
 .cp-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--gap)}
@@ -438,8 +437,10 @@ h1,h2,h3,p{margin:0}
   .gp-title{font-size:22px}
   .gp-launch{width:68px;height:68px;margin:-34px 0 0 -34px}
   .gp-launch .i{width:32px;height:32px}
-  .cp-title{font-size:24px}
-  .cp-head .i{width:40px;height:40px}
+  .cp-title{font-size:28px}
+  .cp-sub{font-size:15px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter)}
+  .chip{flex:none;height:38px;padding:0 16px;font-size:14px}
   .cp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
@@ -1572,15 +1573,37 @@ function GamePage(id) {
     </div>` + cardRow(`More ${g.g} games`, more, catHref) + cardRow('You may also like', also);
 }
 
-// the three sort orders are stable per category, so switching back and forth is predictable
-const sortGames = (ids, by) => by === 0 ? ids : [...ids].sort((a, b) => hash(a + '#' + by) - hash(b + '#' + by));
+// category page header copy and sub-genre filters
+const CAT_INFO = {
+  Action: ['Quick fights, big moves and non-stop action — short rounds that keep your pulse up.', ['Fighting', 'Ninja', 'Stickman', 'Survival', 'Platform', 'Boss battles']],
+  Puzzle: ['Clever levels that start easy and get trickier the further you go.', ['Match-3', 'Logic', 'Sorting', 'Blocks', 'Mahjong', 'Hidden object']],
+  Arcade: ['Fast reflexes, endless runs and quick score-chasing sessions — built for the five minutes you have.', ['Endless runner', 'Platformer', 'Reflex', 'Retro', 'Score attack', 'One button']],
+  Strategy: ['Plan ahead, build smart and outthink every wave.', ['Tower defense', 'Base building', 'Turn-based', 'Kingdom', 'Card battle', 'Idle']],
+  Simulation: ['Build, grow and run things your own way, one day at a time.', ['Tycoon', 'Farming', 'City builder', 'Cooking', 'Life', 'Idle']],
+  Sports: ['Short matches, easy controls and real competition.', ['Football', 'Basketball', 'Pool', 'Skateboard', 'Archery', 'Penalty']],
+  Racing: ['Tight tracks, fast cars and a finish line worth chasing.', ['Cars', 'Motorbikes', 'Drift', 'Rally', 'Stunt', 'Kart']],
+  Adventure: ['Explore new places, find hidden treasure and see what is around the corner.', ['Exploration', 'Quest', 'Treasure hunt', 'Pixel', 'Escape', 'Story']],
+  Multiplayer: ['Jump in with other players and see who comes out on top.', ['1v1', 'Battle', 'Co-op', '.io', 'Party', 'Arena']],
+  Kids: ['Friendly, colourful games that are easy to pick up for younger players.', ['Animals', 'Learning', 'Memory', 'Easy puzzles', 'Music', 'Pets']],
+  Casual: ['Relaxed play for a quick break or a whole evening.', ['Relaxing', 'Clicker', 'Cooking', 'Pets', 'Hidden object', 'Idle']],
+  Merge: ['Combine matching pieces and watch your world level up.', ['Fruit', 'Animals', 'Gems', 'Numbers', 'Blocks', 'Idle merge']],
+  Shooting: ['Aim, fire and clear the stage before time runs out.', ['Space', 'Target', 'Robots', 'Arcade shooter', 'Bubble shooter', 'Sniper']],
+  Word: ['Find the words, beat the clock and grow your vocabulary.', ['Word search', 'Crosswords', 'Anagrams', 'Spelling', 'Quiz', 'Trivia']],
+  Cards: ['Classic card play on a clean, modern table.', ['Solitaire', 'Spider', 'Mahjong', 'Poker', 'Memory', 'Classic']],
+  Music: ['Tap to the beat, keep the rhythm and play along.', ['Rhythm', 'Piano', 'DJ', 'Beat', 'Tap', 'Relaxing']],
+};
+// a sub-genre shows a stable part of the category's games, so switching filters is predictable
+const filterGames = (name, sub) => {
+  const ids = gamesFor(name, 20);
+  return sub ? [...ids].sort((a, b) => hash(a + '#' + sub) - hash(b + '#' + sub)).slice(0, 8 + hash(name + sub) % 5) : ids;
+};
 function CategoryPage(name) {
-  const c = ALL_CATS.find(x => x.name === name);
+  const [about, subs] = CAT_INFO[name];
   return crumbs([['Categories', '#categories'], [name]]) + `
-    <header class="cp-head">${icon(c.ic)}<div><h1 class="cp-title">${name}</h1><div class="cp-sub">${c.count} games</div></div></header>
-    <div class="chips" role="group" aria-label="Sort games">${['Popular', 'New', 'Top rated'].map((l, i) =>
-      `<button class="chip" type="button" data-sort="${i}" aria-pressed="${i === 0}">${l}</button>`).join('')}</div>
-    <div class="cp-grid" data-cat="${name}">${gamesFor(name, 20).map(g => GameCard(g, { ar: RA, play: true })).join('')}</div>
+    <header class="cp-head"><h1 class="cp-title">${name} games</h1><p class="cp-sub">${about}</p></header>
+    <div class="chips" role="group" aria-label="Filter ${name} games">${['', ...subs].map(sub =>
+      `<button class="chip" type="button" data-sub="${sub}" aria-pressed="${!sub}">${sub || 'All ' + name.toLowerCase()}</button>`).join('')}</div>
+    <div class="cp-grid" data-cat="${name}">${filterGames(name, '').map(g => GameCard(g, { ar: RA, play: true })).join('')}</div>
     <section class="sec sec-cats"><h2 class="sec-title">Other categories</h2><div class="cats">${ALL_CATS.filter(x => x.name !== name).map(CategoryButton).join('')}</div></section>`;
 }
 
@@ -1612,9 +1635,9 @@ pageView.addEventListener('click', e => {
   if (t) t.setAttribute('aria-pressed', String(t.getAttribute('aria-pressed') !== 'true'));
   const chip = e.target.closest('.chip');
   if (chip) {
-    const grid = pageView.querySelector('.cp-grid'), by = Number(chip.dataset.sort);
+    const grid = pageView.querySelector('.cp-grid');
     pageView.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
-    grid.innerHTML = sortGames(gamesFor(grid.dataset.cat, 20), by).map(g => GameCard(g, { ar: RA, play: true })).join('');
+    grid.innerHTML = filterGames(grid.dataset.cat, chip.dataset.sub).map(g => GameCard(g, { ar: RA, play: true })).join('');
   }
 });
 addEventListener('hashchange', route);
