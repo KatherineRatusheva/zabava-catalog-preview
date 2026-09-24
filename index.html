@@ -254,26 +254,28 @@ h1,h2,h3,p{margin:0}
 .card.is-open .cap-text{grid-template-rows:auto 1fr}
 .card.is-open .cap-title{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .card.is-open .meta{opacity:1;transform:none}
-@container (max-width:150px){.cap-icon{display:none}.card.is-open .cap-body{grid-template-columns:0px minmax(0,1fr);column-gap:0}}
+@container (max-width:150px){.card:not(.is-open) .cap-title{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.cap-icon{display:none}.card.is-open .cap-body{grid-template-columns:0px minmax(0,1fr);column-gap:0}}
 .is-feat .cap{padding:80px 20px 18px}
 /* play: dark glass disc with a white triangle at rest, the lime accent on hover */
 .play{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:rgba(10,12,11,.46);color:#fff;box-shadow:0 6px 14px -8px rgba(0,0,0,.6);transform:scale(.96);transition:background-color var(--t-card) var(--ease-out),color var(--t-card) var(--ease-out),transform var(--t-card) var(--ease-out)}
 .play .i{width:18px;height:18px;margin-left:2px}
 .card:hover .play,.card:focus-visible .play{background:var(--lime);color:var(--on-lime);transform:none}
 
-/* ============ Mosaic — three rows of squares, full width ============ */
-/* Every game gets the same square tile, so none is singled out. Rows hold 6 / 7 / 6 squares: the middle row is
-   offset like brickwork, so the seams never line up. The height is capped to fit one screen under the header. */
+/* ============ Mosaic — squares and rectangles of mixed sizes ============ */
+/* A 10×4 grid of near-square cells (5% taller than wide). Tiles are 1×1 and 2×2 squares, 2×1 and 1×2 rectangles, interleaved so the
+   composition keeps moving and no single game dominates. The height is capped to fit one screen. */
 .mosaic{
   container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap);
-  --room:calc(100svh - var(--head-h) - 36px - 2 * var(--gap));
+  --room:calc(100svh - var(--head-h) - 36px);
   padding-top:8px; /* room for the hover lift under the sticky header */
 }
 .mosaic>.sec-title{margin-bottom:var(--s4)}
-.m-row{display:grid;gap:var(--gap);grid-template-columns:repeat(var(--n),minmax(0,1fr));
-  grid-auto-rows:min(calc((100cqw - (var(--n) - 1) * var(--gap)) / var(--n)), calc(var(--room) * var(--share)))}
-.m-row--6{--n:6;--share:.35}
-.m-row--7{--n:7;--share:.30}
+.m-sq{
+  display:grid;gap:var(--gap);
+  --col:calc((100cqw - 9 * var(--gap)) / 10);
+  grid-template-columns:repeat(10,minmax(0,1fr));
+  grid-template-rows:repeat(4,min(calc(var(--col) * 1.05), calc((var(--room) - 3 * var(--gap)) / 4)));
+}
 
 /* ============ Rows ============ */
 /* every row below the mosaic scrolls sideways (trackpad, shift+wheel, mouse drag, swipe):
@@ -362,7 +364,7 @@ h1,h2,h3,p{margin:0}
   .main-in{max-width:none}
   /* mosaic becomes a 2-column masonry, every tile keeps its proportions */
   .mosaic{display:block;columns:2;column-gap:var(--gap)}
-  .m-row{display:contents}
+  .m-sq{display:contents}
   .mosaic .card{aspect-ratio:var(--ar);margin-bottom:var(--gap);break-inside:avoid}
   .mosaic .card.is-feat{column-span:all}
   .is-feat .cap{padding:48px 14px 14px}
@@ -426,9 +428,7 @@ h1,h2,h3,p{margin:0}
 
       <section class="mosaic" id="top" aria-labelledby="h-top">
         <h2 class="sr-only" id="h-top">Featured games</h2>
-        <div class="m-row m-row--6" id="m-r1"></div>
-        <div class="m-row m-row--7" id="m-r2"></div>
-        <div class="m-row m-row--6" id="m-r3"></div>
+        <div class="m-sq" id="m-a"></div>
       </section>
 
       <section class="sec" id="trending" aria-labelledby="h-trending">
@@ -1195,11 +1195,15 @@ const NavCategory = ({ name, ic }) =>
 const K = 1; // mosaic keeps the reference proportions
 const m = (w, h) => w / (h * K);
 // [id, grid-area, reference w, h, featured]
-const M_ROWS = [
-  ['neon-drift', 'crown-chaos', 'craft-valley', 'farm-friends', 'ninja-roofs', 'sky-pilot'],
-  ['chick-flap', 'knight-quest', 'goal-rush', 'ice-tiles', 'dino-dash', 'bubble-buddies', 'swamp-zombies'],
-  ['burger-tycoon', 'gem-cascade', 'hide-and-peek', 'paw-pals', 'rope-swing', 'mind-spark'],
+// [id, row, col, width, height] in grid cells, listed row by row
+const M_TILES = [
+  ['crown-chaos', 1, 1, 2, 2], ['neon-drift', 1, 3, 2, 1], ['ninja-roofs', 1, 5, 1, 2], ['chick-flap', 1, 6, 1, 1],
+  ['dino-dash', 1, 7, 2, 2], ['tube-sort', 1, 9, 1, 2], ['ice-tiles', 1, 10, 1, 1],
+  ['bubble-buddies', 2, 3, 1, 1], ['mind-spark', 2, 4, 1, 1], ['knight-quest', 2, 6, 1, 2], ['cloud-tower', 2, 10, 1, 2],
+  ['rocket-rescue', 3, 1, 1, 2], ['farm-friends', 3, 2, 2, 1], ['paw-pals', 3, 4, 2, 2], ['gem-cascade', 3, 7, 1, 1], ['sky-pilot', 3, 8, 2, 1],
+  ['swamp-zombies', 4, 2, 1, 1], ['cat-cafe', 4, 3, 1, 1], ['goal-rush', 4, 6, 2, 1], ['burger-tycoon', 4, 8, 2, 1], ['fruit-frenzy', 4, 10, 1, 1],
 ];
+const cellSpan = n => n * 125 + (n - 1) * 10, cellSpanV = n => n * 131 + (n - 1) * 10;
 const TRENDING = [['deep-sea-dash'], ['ghost-town'], ['balloon-voyage'], ['moto-canyon'],
   ['rope-swing'], ['galaxy-raid'], ['skate-star'], ['jungle-run'], ['disco-blob'], ['letter-drop']];
 const NEW = [['berry-merge'], ['mahjong-friends'], ['night-racer'], ['monster-mash'], ['castle-crafters'], ['cube-drop'],
@@ -1216,7 +1220,8 @@ const MORE_CATS = [{ name: 'Casual', ic: 'smiley', count: 134 }, { name: 'Merge'
   { name: 'Word', ic: 'text-aa', count: 54 }, { name: 'Cards', ic: 'cards', count: 41 }, { name: 'Music', ic: 'music-notes', count: 36 }];
 const $ = id => document.getElementById(id);
 const RA = 188 / 126, PA = 3 / 5;
-M_ROWS.forEach((ids, r) => { $('m-r' + (r + 1)).innerHTML = ids.map(id => GameCard(id, { ar: 1 })).join(''); });
+$('m-a').innerHTML = M_TILES.map(([id, r, c, w, h]) =>
+  GameCard(id, { ar: cellSpan(w) / cellSpanV(h), area: `${r} / ${c} / ${r + h} / ${c + w}` })).join('');
 
 // the rows follow the screen height, so redraw each cover for the tile's real shape instead of cropping it
 const fitCovers = () => document.querySelectorAll('.mosaic .card').forEach(c => {
