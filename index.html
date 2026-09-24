@@ -32,9 +32,10 @@
   --card-bg:#E2ECE6;
   --card-ring:rgba(15,30,46,.07);
   --scrim:rgba(6,14,24,.78);
+  --scrim-rgb:6,14,24;
   --shadow-rest:0 1px 2px rgba(15,30,46,.06);
   --shadow-hover:0 14px 28px -14px rgba(15,30,46,.38);
-  --shadow-card-hover:0 20px 36px -18px rgba(15,30,46,.34),0 6px 14px -8px rgba(15,30,46,.14);
+  --shadow-card-hover:var(--shadow-rest); /* no drop shadow on hover: nothing spills past the card onto its neighbours */
   --shadow-pop:0 18px 40px -18px rgba(15,30,46,.28),0 2px 6px rgba(15,30,46,.05);
   --tooltip-bg:#2F3B34;
   --tooltip-fg:#F4FAF6;
@@ -72,7 +73,7 @@
 
   /* spacing — 4px base */
   --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;--s8:32px;--s10:40px;--s12:48px;
-  --gap:10px;
+  --gap:14px;
   --rail-w:64px;
   --head-h:72px;
   --gutter:24px;
@@ -112,9 +113,10 @@
     --card-bg:#1C1F1D;
     --card-ring:rgba(235,245,225,.06);
     --scrim:rgba(8,10,9,.82);
+    --scrim-rgb:8,10,9;
     --shadow-rest:0 1px 2px rgba(0,0,0,.35);
     --shadow-hover:0 16px 30px -14px rgba(0,0,0,.8);
-    --shadow-card-hover:0 22px 40px -18px rgba(0,0,0,.72),0 8px 16px -10px rgba(0,0,0,.45);
+    --shadow-card-hover:var(--shadow-rest);
     --shadow-pop:0 20px 44px -18px rgba(0,0,0,.85),0 0 0 1px rgba(222,236,212,.06);
     --tooltip-bg:#ECEFE9;
     --tooltip-fg:#121413;
@@ -159,9 +161,10 @@
   --card-bg:#1C1F1D;
   --card-ring:rgba(235,245,225,.06);
   --scrim:rgba(8,10,9,.82);
+  --scrim-rgb:8,10,9;
   --shadow-rest:0 1px 2px rgba(0,0,0,.35);
   --shadow-hover:0 16px 30px -14px rgba(0,0,0,.8);
-  --shadow-card-hover:0 22px 40px -18px rgba(0,0,0,.72),0 8px 16px -10px rgba(0,0,0,.45);
+  --shadow-card-hover:var(--shadow-rest);
   --shadow-pop:0 20px 44px -18px rgba(0,0,0,.85),0 0 0 1px rgba(222,236,212,.06);
   --tooltip-bg:#ECEFE9;
   --tooltip-fg:#121413;
@@ -284,9 +287,10 @@ h1,h2,h3,p{margin:0}
 .card:hover,.card:focus-visible{z-index:4;transform:scale(1.025);box-shadow:var(--shadow-card-hover);transition:transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),z-index 0s}
 .card:hover .cover,.card:focus-visible .cover{transform:scale(1.05)}
 .card:active .cover{transform:scale(1.04)}
-.cap{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s2);padding:36px 12px 12px;background:linear-gradient(to top,var(--scrim),rgba(6,14,24,0))}
+/* an eased scrim: dense only right under the title, then it melts away, so there is no dark band */
+.cap{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s2);padding:48px 12px 12px;background:linear-gradient(to top,rgba(var(--scrim-rgb),.66) 0%,rgba(var(--scrim-rgb),.52) 18%,rgba(var(--scrim-rgb),.34) 40%,rgba(var(--scrim-rgb),.17) 62%,rgba(var(--scrim-rgb),.05) 82%,rgba(var(--scrim-rgb),0) 100%)}
 /* open caption (New & popular): deeper scrim, square game icon next to the title, likes under it */
-.cap::after{content:"";position:absolute;inset:-24px 0 0;z-index:-1;background:linear-gradient(to top,rgba(6,14,24,.34),rgba(6,14,24,0));opacity:0;pointer-events:none;transition:opacity var(--t-card) var(--ease-card)}
+.cap::after{content:"";position:absolute;inset:-24px 0 0;z-index:-1;background:linear-gradient(to top,rgba(var(--scrim-rgb),.14),rgba(var(--scrim-rgb),.05) 50%,rgba(var(--scrim-rgb),0));opacity:0;pointer-events:none;transition:opacity var(--t-card) var(--ease-card)}
 .card:hover .cap::after,.card:focus-visible .cap::after{opacity:1}
 .cap::before{content:"";position:absolute;inset:-40px 0 0;z-index:-1;background:linear-gradient(to top,rgba(6,14,24,.6),rgba(6,14,24,0));opacity:0;transition:opacity var(--t-card) var(--ease-card)}
 .cap-body{--icon:clamp(34px,15cqw,52px);flex:1;min-width:0;display:grid;grid-template-columns:0px minmax(0,1fr);column-gap:0;align-items:end;transition:grid-template-columns var(--t-card) var(--ease-card),column-gap var(--t-card) var(--ease-card)}
@@ -351,8 +355,8 @@ h1,h2,h3,p{margin:0}
 .cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 12px 16px;text-align:center;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border);color:var(--text);transition:background-color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
 .cat-badge{display:grid;place-items:center;width:48px;height:48px;flex:none}
 .cat-badge .i{width:48px;height:48px;color:var(--st-rest);transition:color var(--t-ui) var(--ease-out),transform 450ms var(--ease-card)}
-/* the icon rises, tilts and grows a touch in one soft move (the user asked for motion here) */
-.cat:hover .cat-badge .i,.cat:focus-visible .cat-badge .i{color:var(--st-hover-fg);transform:translateY(-4px) rotate(-8deg) scale(1.08)}
+/* the icon grows and rises a touch in one soft move, no tilt (the user asked for motion here) */
+.cat:hover .cat-badge .i,.cat:focus-visible .cat-badge .i{color:var(--st-hover-fg);transform:translateY(-3px) scale(1.16)}
 .cat-text{min-width:0;max-width:100%;display:flex;flex-direction:column;gap:1px}
 .cat-name{font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cat-name{font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -618,7 +622,7 @@ h1,h2,h3,p{margin:0}
 
 /* ============ mobile ============ */
 @media (max-width:720px){
-  :root{--gap:8px;--gutter:16px}
+  :root{--gutter:16px}
   html{scroll-padding-top:72px}
   .app{padding-left:0;grid-template-rows:auto auto 1fr}
   .topbar{position:static;display:flex;flex-wrap:wrap;height:auto;gap:var(--s3);margin-left:0;padding:var(--s3) var(--gutter) 0}
@@ -1477,7 +1481,7 @@ const M_TILES = [
   ['fruit-frenzy', 5, 1, 1, 1], ['mind-spark', 5, 2, 1, 1], ['bubble-buddies', 5, 3, 1, 1],
   ['snow-buddy', 5, 9, 1, 1], ['cat-cafe', 5, 10, 1, 1], ['hide-and-peek', 5, 11, 1, 1], ['gem-cascade', 5, 12, 1, 1],
 ];
-const span = n => n * 103 + (n - 1) * 10;
+const span = n => n * 100 + (n - 1) * 14;
 const TRENDING = [['deep-sea-dash'], ['ghost-town'], ['balloon-voyage'], ['moto-canyon'],
   ['rope-swing'], ['galaxy-raid'], ['skate-star'], ['jungle-run'], ['disco-blob'], ['letter-drop']];
 const NEW = [['berry-merge'], ['mahjong-friends'], ['night-racer'], ['monster-mash'], ['castle-crafters'], ['cube-drop'],
