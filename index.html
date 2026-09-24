@@ -379,9 +379,9 @@ h1,h2,h3,p{margin:0}
 
 /* ============ motion: section reveal ============ */
 /* Only sections that start below the fold are prepared; everything in the first screen is visible at once. */
-/* only the cards move: they rise 10px out of a light fade, one after another; titles and the section stay put */
-.will-reveal :is(.row-4,.row-6,.cats)>*{opacity:.35;transform:translateY(10px)}
-.will-reveal.is-in :is(.row-4,.row-6,.cats)>*{opacity:1;transform:none;transition:opacity var(--t-reveal) var(--ease-card),transform var(--t-reveal) var(--ease-card),box-shadow var(--t-card) var(--ease-card);transition-delay:calc(var(--i,0) * 45ms)}
+/* only the cards move, barely: they rise 6px out of a light fade, one after another; titles and the section stay put */
+.will-reveal :is(.row-4,.row-6,.cats)>*{opacity:.6;transform:translateY(6px)}
+.will-reveal.is-in :is(.row-4,.row-6,.cats)>*{opacity:1;transform:none;transition:opacity var(--t-reveal) var(--ease-card),transform var(--t-reveal) var(--ease-card),box-shadow var(--t-card) var(--ease-card);transition-delay:calc(var(--i,0) * 30ms)}
 
 /* ============ motion: theme switch ============ */
 ::view-transition-old(root),::view-transition-new(root){animation-duration:var(--t-theme);animation-timing-function:var(--ease-out)}
@@ -411,11 +411,14 @@ h1,h2,h3,p{margin:0}
 /* a 16:9 stage, capped so the whole player (stage + bar) fits in the first screen */
 .gp-stage{position:relative;aspect-ratio:16/9;max-height:calc(100svh - 240px);min-height:320px;width:100%;background:var(--card-bg);isolation:isolate}
 .gp-stage .cover{position:absolute;inset:0;width:100%;height:100%}
-.gp-stage::after{content:"";position:absolute;inset:0;background:radial-gradient(50% 60% at 50% 50%,rgba(6,14,24,.26),rgba(6,14,24,0));pointer-events:none}
+.gp-stage::after{content:"";position:absolute;inset:0;background:radial-gradient(50% 60% at 50% 50%,rgba(6,10,8,.12),rgba(6,10,8,0)),rgba(6,10,8,.16);pointer-events:none;transition:opacity var(--t-card) var(--ease-card)}
+/* a light dim until the game starts; Play lifts it and the centre button steps aside */
+.gp-stage.is-playing::after{opacity:0}
+.gp-stage.is-playing .gp-launch{opacity:0;pointer-events:none}
 .gp-fs{position:absolute;right:24px;bottom:28px;z-index:1;display:flex;align-items:center;gap:10px;height:48px;padding:0 18px;border-radius:var(--r-ctl);background:rgba(10,12,11,.46);color:#fff;font-size:15px;font-weight:700;transition:background-color var(--t-ui) var(--ease-out)}
 .gp-fs .i{width:22px;height:22px}
 .gp-fs:hover,.gp-fs:focus-visible{background:rgba(10,12,11,.62)}
-.gp-launch{position:absolute;left:50%;top:50%;z-index:1;display:grid;place-items:center;width:88px;height:88px;margin:-44px 0 0 -44px;border-radius:50%;background:var(--lime);color:var(--on-lime);box-shadow:0 14px 30px -12px rgba(0,0,0,.55);transition:background-color var(--t-card) var(--ease-card),transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card)}
+.gp-launch{position:absolute;left:50%;top:50%;z-index:1;display:grid;place-items:center;width:88px;height:88px;margin:-44px 0 0 -44px;border-radius:50%;background:var(--lime);color:var(--on-lime);box-shadow:0 14px 30px -12px rgba(0,0,0,.55);transition:background-color var(--t-card) var(--ease-card),transform var(--t-card) var(--ease-card),box-shadow var(--t-card) var(--ease-card),opacity var(--t-card) var(--ease-card)}
 /* hover: the play button grows softly */
 .gp-launch:hover,.gp-launch:focus-visible{background:color-mix(in srgb,var(--lime) 86%,#fff);transform:scale(1.12);box-shadow:0 18px 36px -12px rgba(0,0,0,.6)}
 .gp-launch .i{width:42px;height:42px;margin-left:4px}
@@ -2008,6 +2011,7 @@ pageView.addEventListener('click', e => {
     more.textContent = open ? 'Show less' : 'Show more';
     placeWall(); fitCovers();
   }
+  if (e.target.closest('.gp-launch, .gp-bar .btn-primary')) pageView.querySelector('.gp-stage').classList.add('is-playing');
   const t = e.target.closest('[data-toggle]');
   if (t) t.setAttribute('aria-pressed', String(t.getAttribute('aria-pressed') !== 'true'));
   const chip = e.target.closest('.chip[data-sub]'); // tag chips on a game page are plain links
