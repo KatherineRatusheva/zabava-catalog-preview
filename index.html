@@ -1603,8 +1603,7 @@ function CategoryPage(name) {
     <header class="cp-head"><h1 class="cp-title">${name} games</h1><p class="cp-sub">${about}</p></header>
     <div class="chips" role="group" aria-label="Filter ${name} games">${['', ...subs].map(sub =>
       `<button class="chip" type="button" data-sub="${sub}" aria-pressed="${!sub}">${sub || 'All ' + name.toLowerCase()}</button>`).join('')}</div>
-    <div class="cp-grid" data-cat="${name}">${filterGames(name, '').map(g => GameCard(g, { ar: RA, play: true })).join('')}</div>
-    <section class="sec sec-cats"><h2 class="sec-title">Other categories</h2><div class="cats">${ALL_CATS.filter(x => x.name !== name).map(CategoryButton).join('')}</div></section>`;
+    <div class="cp-grid" data-cat="${name}">${filterGames(name, '').map(g => GameCard(g, { ar: RA, play: true })).join('')}</div>`;
 }
 
 const homeView = $('view-home'), pageView = $('view-page');
