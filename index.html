@@ -29,6 +29,7 @@
   --scrim:rgba(6,14,24,.78);
   --shadow-rest:0 1px 2px rgba(15,30,46,.06);
   --shadow-hover:0 14px 28px -14px rgba(15,30,46,.38);
+  --shadow-card-hover:0 20px 36px -18px rgba(15,30,46,.34),0 6px 14px -8px rgba(15,30,46,.14);
   --shadow-pop:0 18px 40px -18px rgba(15,30,46,.28),0 2px 6px rgba(15,30,46,.05);
   --tooltip-bg:#0F1E2E;
   --tooltip-fg:#F4FAF6;
@@ -64,7 +65,7 @@
   --ease-out:cubic-bezier(.22,1,.36,1);
   --t-ui:180ms;
   --t-card:220ms;
-  --t-art:360ms;
+  --t-art:320ms;
   --t-reveal:320ms;
   --t-theme:260ms;
 }
@@ -88,6 +89,7 @@
     --scrim:rgba(8,10,9,.82);
     --shadow-rest:0 1px 2px rgba(0,0,0,.35);
     --shadow-hover:0 16px 30px -14px rgba(0,0,0,.8);
+    --shadow-card-hover:0 22px 40px -18px rgba(0,0,0,.72),0 8px 16px -10px rgba(0,0,0,.45);
     --shadow-pop:0 20px 44px -18px rgba(0,0,0,.85),0 0 0 1px rgba(222,236,212,.06);
     --tooltip-bg:#ECEFE9;
     --tooltip-fg:#121413;
@@ -121,6 +123,7 @@
   --scrim:rgba(8,10,9,.82);
   --shadow-rest:0 1px 2px rgba(0,0,0,.35);
   --shadow-hover:0 16px 30px -14px rgba(0,0,0,.8);
+  --shadow-card-hover:0 22px 40px -18px rgba(0,0,0,.72),0 8px 16px -10px rgba(0,0,0,.45);
   --shadow-pop:0 20px 44px -18px rgba(0,0,0,.85),0 0 0 1px rgba(222,236,212,.06);
   --tooltip-bg:#ECEFE9;
   --tooltip-fg:#121413;
@@ -221,21 +224,28 @@ h1,h2,h3,p{margin:0}
 
 /* ============ GameCard ============ */
 .card{position:relative;display:block;overflow:hidden;isolation:isolate;border-radius:var(--r-card);background:var(--card-bg);box-shadow:var(--shadow-rest);container-type:inline-size;transition:transform var(--t-card) var(--ease-out),box-shadow var(--t-card) var(--ease-out)}
-.card:active{transform:translateY(-1px);transition-duration:120ms}
+.card:active{transform:translateY(-2px);transition-duration:120ms}
 .card::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--card-ring);pointer-events:none;transition:box-shadow var(--t-card) var(--ease-out)}
 .card:hover::after,.card:focus-visible::after{box-shadow:inset 0 0 0 1px var(--card-ring-hover)}
-.card .cover{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform var(--t-art) var(--ease-out)}
+.card .cover{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform var(--t-art) var(--ease-out),filter var(--t-art) var(--ease-out)}
 .cover text{font-family:"Lilita One","Arial Black",Impact,sans-serif}
-.card:hover,.card:focus-visible{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
-.card:hover .cover,.card:focus-visible .cover{transform:scale(1.02)}
-.card:active .cover{transform:scale(1.015)}
+/* hover: the card lifts (220ms), the art inside comes alive a beat slower (320ms) */
+.card:hover,.card:focus-visible{transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
+.card:hover .cover,.card:focus-visible .cover{transform:scale(1.035);filter:brightness(1.03) saturate(1.02)}
+.card:active .cover{transform:scale(1.025)}
+.card .badge{transition:filter var(--t-card) var(--ease-out)}
+.card:hover .badge,.card:focus-visible .badge{filter:brightness(1.06)}
 .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s2);padding:36px 12px 12px;background:linear-gradient(to top,var(--scrim),rgba(6,14,24,0))}
 /* open caption (New & popular): deeper scrim, square game icon next to the title, likes under it */
+.cap::after{content:"";position:absolute;inset:-24px 0 0;z-index:-1;background:linear-gradient(to top,rgba(6,14,24,.34),rgba(6,14,24,0));opacity:0;pointer-events:none;transition:opacity var(--t-card) var(--ease-out)}
+.card:hover .cap::after,.card:focus-visible .cap::after{opacity:1}
 .cap::before{content:"";position:absolute;inset:-40px 0 0;z-index:-1;background:linear-gradient(to top,rgba(6,14,24,.6),rgba(6,14,24,0));opacity:0;transition:opacity var(--t-card) var(--ease-out)}
 .cap-body{--icon:clamp(34px,15cqw,52px);flex:1;min-width:0;display:grid;grid-template-columns:0px minmax(0,1fr);column-gap:0;align-items:end;transition:grid-template-columns var(--t-card) var(--ease-out),column-gap var(--t-card) var(--ease-out)}
 .cap-icon{position:relative;width:var(--icon);height:var(--icon);border-radius:var(--r-card);overflow:hidden;opacity:0;background:rgba(255,255,255,.12);box-shadow:0 0 0 1px rgba(255,255,255,.22),0 4px 10px rgba(0,0,0,.3);transition:opacity var(--t-card) var(--ease-out)}
 .cap-icon svg{position:absolute;inset:0;width:100%;height:100%}
 .cap-text{display:grid;grid-template-rows:auto 0fr;min-width:0;transition:grid-template-rows var(--t-card) var(--ease-out)}
+.cap-title,.cap-body{transition:transform var(--t-card) var(--ease-out)}
+.card:not(.is-open):hover .cap-title,.card:not(.is-open):focus-visible .cap-title,.card.is-open:hover .cap-body,.card.is-open:focus-visible .cap-body{transform:translateY(-2px)}
 .cap-title{font-size:clamp(13px,4.6cqw,17px);font-weight:700;letter-spacing:-.01em;line-height:1.2;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.35);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .is-feat .cap-title{font-size:clamp(16px,5.4cqw,24px);font-weight:800}
 .meta{display:flex;align-items:center;gap:10px;min-height:0;overflow:hidden;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.9);white-space:nowrap;font-variant-numeric:tabular-nums;opacity:0;transform:translateY(4px);transition:opacity var(--t-card) var(--ease-out),transform var(--t-card) var(--ease-out)}
@@ -249,9 +259,9 @@ h1,h2,h3,p{margin:0}
 .card.is-open .meta{opacity:1;transform:none}
 @container (max-width:150px){.cap-icon{display:none}.card.is-open .cap-body{grid-template-columns:0px minmax(0,1fr);column-gap:0}}
 .is-feat .cap{padding:80px 20px 18px}
-.play{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;background:#fff;color:#0F1E2E;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:background-color var(--t-ui) var(--ease-out)}
+.play{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;background:#fff;color:#0F1E2E;box-shadow:0 2px 6px rgba(0,0,0,.25);opacity:.82;transform:scale(.96);transition:background-color var(--t-card) var(--ease-out),opacity var(--t-card) var(--ease-out),transform var(--t-card) var(--ease-out)}
 .play .i{width:15px;height:15px;margin-left:2px}
-.card:hover .play{background:var(--lime)}
+.card:hover .play,.card:focus-visible .play{background:var(--lime);opacity:1;transform:none}
 
 /* ============ Mosaic — 3 rows, full width ============ */
 /* Rows 1–2: two featured cards — the first before a 2+1 block, the second before a pair of wide cards.
@@ -278,7 +288,7 @@ h1,h2,h3,p{margin:0}
   --peek:.4;display:grid;grid-auto-flow:column;grid-template-columns:none;
   grid-auto-columns:calc((100% - var(--n) * var(--gap)) / (var(--n) + var(--peek)));gap:var(--gap);
   overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;
-  margin:-6px 0 -10px;padding:6px 0 10px;
+  margin:-8px 0 -28px;padding:8px 0 28px;
 }
 .row-4::-webkit-scrollbar,.row-6::-webkit-scrollbar{display:none}
 .row-4>*,.row-6>*{scroll-snap-align:start}
@@ -364,7 +374,7 @@ h1,h2,h3,p{margin:0}
   .is-feat .cap{padding:48px 14px 14px}
   .sec{margin-top:28px}
   .sec-title{font-size:20px;margin-bottom:12px}
-  .row-4,.row-6{margin:-6px calc(var(--gutter) * -1) -10px;padding:6px var(--gutter) 10px;scroll-padding-inline:var(--gutter)}
+  .row-4,.row-6{margin:-8px calc(var(--gutter) * -1) -28px;padding:8px var(--gutter) 28px;scroll-padding-inline:var(--gutter)}
   .row-4{grid-auto-columns:76%}
   .row-6{grid-auto-columns:42%}
   .cats{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
@@ -376,6 +386,7 @@ h1,h2,h3,p{margin:0}
 
 @media (hover:none){
   .card:hover{transform:none}
+  .play{opacity:1;transform:none}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
