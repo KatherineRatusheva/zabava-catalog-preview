@@ -262,7 +262,7 @@ h1,h2,h3,p{margin:0}
 .card:hover .play,.card:focus-visible .play{background:var(--lime);color:var(--on-lime);transform:none}
 
 /* ============ Mosaic — squares and rectangles of mixed sizes ============ */
-/* A 10×4 grid of near-square cells (5% taller than wide). Tiles are 1×1 and 2×2 squares, 2×1 and 1×2 rectangles, interleaved so the
+/* A 10×4 grid of near-square cells (about 10% taller than wide). Tiles are 1×1 and 2×2 squares, 2×1 and 1×2 rectangles, interleaved so the
    composition keeps moving and no single game dominates. The height is capped to fit one screen. */
 .mosaic{
   container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap);
@@ -274,7 +274,7 @@ h1,h2,h3,p{margin:0}
   display:grid;gap:var(--gap);
   --col:calc((100cqw - 9 * var(--gap)) / 10);
   grid-template-columns:repeat(10,minmax(0,1fr));
-  grid-template-rows:repeat(4,min(calc(var(--col) * 1.05), calc((var(--room) - 3 * var(--gap)) / 4)));
+  grid-template-rows:repeat(4,min(calc(var(--col) * 1.1025), calc((var(--room) - 3 * var(--gap)) / 4)));
 }
 
 /* ============ Rows ============ */
@@ -1203,7 +1203,7 @@ const M_TILES = [
   ['rocket-rescue', 3, 1, 1, 2], ['farm-friends', 3, 2, 2, 1], ['paw-pals', 3, 4, 2, 2], ['gem-cascade', 3, 7, 1, 1], ['sky-pilot', 3, 8, 2, 1],
   ['swamp-zombies', 4, 2, 1, 1], ['cat-cafe', 4, 3, 1, 1], ['goal-rush', 4, 6, 2, 1], ['burger-tycoon', 4, 8, 2, 1], ['fruit-frenzy', 4, 10, 1, 1],
 ];
-const cellSpan = n => n * 125 + (n - 1) * 10, cellSpanV = n => n * 131 + (n - 1) * 10;
+const cellSpan = n => n * 125 + (n - 1) * 10, cellSpanV = n => n * 138 + (n - 1) * 10;
 const TRENDING = [['deep-sea-dash'], ['ghost-town'], ['balloon-voyage'], ['moto-canyon'],
   ['rope-swing'], ['galaxy-raid'], ['skate-star'], ['jungle-run'], ['disco-blob'], ['letter-drop']];
 const NEW = [['berry-merge'], ['mahjong-friends'], ['night-racer'], ['monster-mash'], ['castle-crafters'], ['cube-drop'],
