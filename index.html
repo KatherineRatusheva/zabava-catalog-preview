@@ -38,8 +38,9 @@
   --shadow-rail:14px 0 30px -18px rgba(15,30,46,.3);
   /* light-theme icon colour: steel blue (menu, category tiles); the active item is black on lime */
   --icon:#2D5682;
-  --logo-body:#000;
-  --logo-mark:#DAFD9A;
+  /* the logo takes each theme's own colours: body = the theme's icon colour, marks = the accent */
+  --logo-body:var(--icon);
+  --logo-mark:var(--lime);
   --nav-fg:var(--icon);
   --nav-active-bg:var(--lime);
   --nav-active-fg:#000;
@@ -106,8 +107,8 @@
     --nav-active-bg:rgba(180,240,60,.12);
     --nav-active-fg:#B4F03C;
     --cat-icon:var(--lime-ink);
-    --logo-body:#DAFD9A;
-    --logo-mark:#121413;
+    --logo-body:var(--lime);
+    --logo-mark:var(--bg);
     --cat-icon-o:.8;
     --nav-active-ring:none;
     --search-bg:rgba(255,255,255,.06);
@@ -144,8 +145,8 @@
   --nav-active-bg:rgba(180,240,60,.12);
   --nav-active-fg:#B4F03C;
   --cat-icon:var(--lime-ink);
-  --logo-body:#DAFD9A;
-  --logo-mark:#121413;
+  --logo-body:var(--lime);
+  --logo-mark:var(--bg);
   --cat-icon-o:.8;
   --nav-active-ring:none;
   --search-bg:rgba(255,255,255,.06);
