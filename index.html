@@ -91,7 +91,7 @@
   --t-art:400ms;
   /* card hover: a gentler ease-out cubic, so the lift, zoom, shadow and play colour glide together */
   --ease-card:cubic-bezier(.33,1,.68,1);
-  --t-reveal:320ms;
+  --t-reveal:480ms;
   --t-theme:260ms;
 }
 @media (prefers-color-scheme:dark){
@@ -379,10 +379,11 @@ h1,h2,h3,p{margin:0}
 
 /* ============ motion: section reveal ============ */
 /* Only sections that start below the fold are prepared; everything in the first screen is visible at once. */
-.will-reveal{opacity:0;transform:translateY(8px)}
-.will-reveal.is-in{opacity:1;transform:none;transition:opacity var(--t-reveal) var(--ease-out),transform var(--t-reveal) var(--ease-out)}
-.will-reveal .row-4>*,.will-reveal .row-6>*{opacity:0;transform:translateY(6px)}
-.will-reveal.is-in .row-4>*,.will-reveal.is-in .row-6>*{opacity:1;transform:none;transition:opacity var(--t-reveal) var(--ease-out),transform var(--t-reveal) var(--ease-out),box-shadow var(--t-card) var(--ease-out);transition-delay:calc(var(--i,0) * 30ms)}
+/* quiet on purpose: the section only brightens from 30%, the cards rise 4px one after another */
+.will-reveal{opacity:.3}
+.will-reveal.is-in{opacity:1;transition:opacity var(--t-reveal) var(--ease-card)}
+.will-reveal .row-4>*,.will-reveal .row-6>*{opacity:.6;transform:translateY(4px)}
+.will-reveal.is-in .row-4>*,.will-reveal.is-in .row-6>*{opacity:1;transform:none;transition:opacity var(--t-reveal) var(--ease-card),transform var(--t-reveal) var(--ease-card),box-shadow var(--t-card) var(--ease-card);transition-delay:calc(var(--i,0) * 25ms)}
 
 /* ============ motion: theme switch ============ */
 ::view-transition-old(root),::view-transition-new(root){animation-duration:var(--t-theme);animation-timing-function:var(--ease-out)}
@@ -1626,7 +1627,7 @@ if (!reduceMotion.matches && 'IntersectionObserver' in window) {
     sec.classList.add('is-in');
     reveal.unobserve(sec);
     // once revealed, hand the cards back to their normal hover transitions
-    setTimeout(() => sec.classList.remove('will-reveal', 'is-in'), 700);
+    setTimeout(() => sec.classList.remove('will-reveal', 'is-in'), 900);
   }), { rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('.sec').forEach(sec => {
     if (sec.getBoundingClientRect().top < innerHeight) return; // already on screen: show as is
