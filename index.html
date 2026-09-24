@@ -254,11 +254,10 @@ h1,h2,h3,p{margin:0}
 .card:hover .play{background:var(--lime)}
 
 /* ============ Mosaic — the reference composition, full width ============ */
-/* Card proportions are the reference's 1:1. On wide screens the same pattern continues to the right
-   (one more wide pair + 2+1 block, a row of 8) instead of the cards growing larger. */
+/* Card proportions are the reference's 1:1: featured + 2+1 block, a row of 5, a row of 6. */
 .mosaic{container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap)}
 .mosaic>.sec-title{margin-bottom:var(--s4)}
-.m-a,.m-r3{display:grid;gap:var(--gap)}
+.m-a,.m-r3,.m-r6{display:grid;gap:var(--gap)}
 .m-a{
   --u:calc((100cqw - 3 * var(--gap)) / 743);
   grid-template-columns:288fr 110fr 105fr 240fr;
@@ -266,14 +265,7 @@ h1,h2,h3,p{margin:0}
   grid-template-areas:"f t t w" "f b m p";
 }
 .m-r3{grid-template-columns:151fr 140fr 186fr 126fr 134fr;grid-auto-rows:calc((100cqw - 4 * var(--gap)) / 737 * 154)}
-.mosaic .is-ext{display:none}
-.mosaic.is-wide .is-ext{display:block}
-.mosaic.is-wide .m-a{
-  --u:calc((100cqw - 6 * var(--gap)) / 1198);
-  grid-template-columns:288fr 110fr 105fr 240fr 110fr 105fr 240fr;
-  grid-template-areas:"f t t w T T W" "f b m p B M P";
-}
-.mosaic.is-wide .m-r3{grid-template-columns:151fr 140fr 186fr 126fr 134fr 151fr 140fr 186fr;grid-auto-rows:calc((100cqw - 7 * var(--gap)) / 1214 * 154)}
+.m-r6{grid-template-columns:118fr 119fr 118fr 121fr 125fr 128fr;grid-auto-rows:calc((100cqw - 5 * var(--gap)) / 729 * 139)}
 
 /* ============ Rows ============ */
 .row-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
@@ -349,7 +341,7 @@ h1,h2,h3,p{margin:0}
   .main-in{max-width:none}
   /* mosaic becomes a 2-column masonry, every tile keeps its proportions */
   .mosaic{display:block;columns:2;column-gap:var(--gap)}
-  .m-a,.m-r3{display:contents}
+  .m-a,.m-r3,.m-r6{display:contents}
   .mosaic .card{aspect-ratio:var(--ar);margin-bottom:var(--gap);break-inside:avoid}
   .mosaic .card.is-feat{column-span:all}
   .is-feat .cap{padding:48px 14px 14px}
@@ -416,6 +408,7 @@ h1,h2,h3,p{margin:0}
         <h2 class="sec-title" id="h-top">Featured games</h2>
         <div class="m-a" id="m-a"></div>
         <div class="m-r3" id="m-r3"></div>
+        <div class="m-r6" id="m-r6"></div>
       </section>
 
       <section class="sec" id="trending" aria-labelledby="h-trending">
@@ -1013,6 +1006,7 @@ function cover(g,W,H,withLogo){
   return`<svg class="cover" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs>${c.defs.join('')}</defs>${body}</svg>`;
 }
 
+
 /* ================= new scenes ================= */
 SC.fish=(c,o)=>{
   const{W,H,S}=c,U=c.U,x=c.cx,y=c.cy-U*.02,R=U*.27,col=o.color||'#FF8A3D',dk=D(col,.22);
@@ -1171,9 +1165,9 @@ function Meta(id) {
   const r = rng(hash(id + '#stats')), plays = Math.round(Math.exp(Math.log(6e4) + r() * (Math.log(3e7) - Math.log(6e4)))), likes = plays * (.002 + r() * .004);
   return `<span class="meta" aria-hidden="true"><span class="m">${icon('thumbs-up')}${compact(likes)}</span></span>`;
 }
-function GameCard(id, { ar, area = '', badge = '', play = false, feat = false, ext = false, open = false }) {
+function GameCard(id, { ar, area = '', badge = '', play = false, feat = false, open = false }) {
   const style = `--ar:${ar.toFixed(3)}${area ? `;grid-area:${area}` : ''}`;
-  return `<a class="card${feat ? ' is-feat' : ''}${ext ? ' is-ext' : ''}${open ? ' is-open' : ''}" href="#${id}" style="${style}" aria-label="${G[id].t}">
+  return `<a class="card${feat ? ' is-feat' : ''}${open ? ' is-open' : ''}" href="#${id}" style="${style}" aria-label="${G[id].t}">
     ${art(id, ar)}${badge ? Badge(badge) : ''}
     <span class="cap">${open ? `<span class="cap-body"><span class="cap-icon" aria-hidden="true">${art(id, 1)}</span><span class="cap-text"><span class="cap-title">${G[id].t}</span>${Meta(id)}</span></span>` : `<span class="cap-title">${G[id].t}</span>`}${play ? `<span class="play">${icon('play')}</span>` : ''}</span></a>`;
 }
@@ -1189,11 +1183,9 @@ const m = (w, h) => w / (h * K);
 const A = [
   ['crown-chaos', 'f', m(284, 371), '', true], ['neon-drift', 't', m(221, 195), 'hot'], ['craft-valley', 'w', m(236, 195), 'new'],
   ['bubble-buddies', 'b', m(106, 161), 'hot'], ['mind-spark', 'm', m(101, 161)], ['goal-rush', 'p', m(236, 161), 'new'],
-  ['sky-pilot', 'T', m(221, 195), 'top', false, true], ['dino-dash', 'W', m(236, 195), '', false, true],
-  ['chick-flap', 'B', m(106, 161), 'new', false, true], ['ice-tiles', 'M', m(101, 161), '', false, true], ['farm-friends', 'P', m(236, 161), 'hot', false, true],
 ];
-const R3 = [['paw-pals', 147], ['swamp-zombies', 136, 'hot'], ['burger-tycoon', 182], ['gem-cascade', 122], ['ninja-roofs', 130],
-  ['rope-swing', 147, '', true], ['hide-and-peek', 136, 'new', true], ['knight-quest', 182, '', true]];
+const R3 = [['paw-pals', 147], ['swamp-zombies', 136, 'hot'], ['burger-tycoon', 182], ['gem-cascade', 122], ['ninja-roofs', 130]];
+const R6 = [['sunset-rally', 118], ['word-wood', 119], ['cloud-tower', 118], ['fruit-frenzy', 121], ['tube-sort', 125], ['galaxy-raid', 128]];
 const TRENDING = [['deep-sea-dash', 'hot'], ['ghost-town', 'hot'], ['balloon-voyage', 'top'], ['moto-canyon', 'new']];
 const NEW = [['berry-merge', 'hot'], ['mahjong-friends', 'new'], ['night-racer', 'top'], ['monster-mash', 'hot'], ['castle-crafters'], ['cube-drop']];
 const TOP = [['robo-arena', 'top'], ['island-life', 'hot'], ['hoop-kings'], ['reef-friends', 'new']];
@@ -1206,16 +1198,9 @@ const CATS = [
 const MORE_CATS = [{ name: 'Casual', ic: 'smiley' }, { name: 'Merge', ic: 'arrows-merge' }, { name: 'Shooting', ic: 'crosshair' }, { name: 'Word', ic: 'text-aa' }, { name: 'Cards', ic: 'cards' }, { name: 'Music', ic: 'music-notes' }];
 const $ = id => document.getElementById(id);
 const RA = 188 / 126, PA = 121 / 183;
-$('m-a').innerHTML = A.map(([id, area, ar, badge, feat, ext]) => GameCard(id, { ar, area, badge, feat, ext })).join('');
-$('m-r3').innerHTML = R3.map(([id, w, badge, ext]) => GameCard(id, { ar: m(w, 150), badge, ext })).join('');
-
-// wide screens continue the reference pattern to the right, so the cards keep their size and proportions
-const mosaic = $('top');
-const fitMosaic = () => {
-  const room = innerHeight - 72 - 40;
-  mosaic.classList.toggle('is-wide', innerWidth > 720 && mosaic.clientWidth / room >= 1.55);
-};
-addEventListener('resize', fitMosaic); fitMosaic();
+$('m-a').innerHTML = A.map(([id, area, ar, badge, feat]) => GameCard(id, { ar, area, badge, feat })).join('');
+$('m-r3').innerHTML = R3.map(([id, w, badge]) => GameCard(id, { ar: m(w, 150), badge })).join('');
+$('m-r6').innerHTML = R6.map(([id, w]) => GameCard(id, { ar: m(w, 139) })).join('');
 $('trend-row').innerHTML = TRENDING.map(([id, badge]) => GameCard(id, { ar: RA, badge, play: true })).join('');
 $('new-row').innerHTML = NEW.map(([id, badge]) => GameCard(id, { ar: PA, badge, open: true })).join('');
 $('top-row').innerHTML = TOP.map(([id, badge]) => GameCard(id, { ar: RA, badge, play: true })).join('');
