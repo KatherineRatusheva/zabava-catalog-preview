@@ -284,8 +284,8 @@ h1,h2,h3,p{margin:0}
 .row-4>*,.row-6>*,.cats>*{scroll-snap-align:start}
 .row-4{--n:4}
 .row-4 .card{aspect-ratio:188/126}
-.row-6{--n:6}
-.row-6 .card{aspect-ratio:121/183}
+.row-6{--n:5}
+.row-6 .card{aspect-ratio:3/5}
 .is-dragging{scroll-snap-type:none;cursor:grabbing;user-select:none}
 .is-dragging>*{pointer-events:none}
 
@@ -1215,7 +1215,7 @@ const CATS = [
 const MORE_CATS = [{ name: 'Casual', ic: 'smiley', count: 134 }, { name: 'Merge', ic: 'arrows-merge', count: 67 }, { name: 'Shooting', ic: 'crosshair', count: 88 },
   { name: 'Word', ic: 'text-aa', count: 54 }, { name: 'Cards', ic: 'cards', count: 41 }, { name: 'Music', ic: 'music-notes', count: 36 }];
 const $ = id => document.getElementById(id);
-const RA = 188 / 126, PA = 121 / 183;
+const RA = 188 / 126, PA = 3 / 5;
 $('m-a').innerHTML = A.map(([id, area, ar, badge, feat]) => GameCard(id, { ar, area, badge, feat })).join('');
 $('m-r3').innerHTML = R3.map(([id, w, badge]) => GameCard(id, { ar: m(w, 150), badge })).join('');
 $('m-r6').innerHTML = R6.map(([id, w]) => GameCard(id, { ar: m(w, 139) })).join('');
