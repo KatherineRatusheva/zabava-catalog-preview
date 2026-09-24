@@ -269,10 +269,11 @@ h1,h2,h3,p{margin:0}
 .mosaic>.sec-title{margin-bottom:var(--s4)}
 .m-cols{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--gap);align-items:start}
 .m-col{display:flex;flex-direction:column;gap:var(--gap);min-width:0}
-.m-col>.card{aspect-ratio:var(--ar)}
+/* slots are 8% taller than the row cards (the user's size call); shapes otherwise match the rows */
+.m-col>.card{aspect-ratio:calc(var(--ar) / 1.08)}
 .m-pair{display:grid;gap:var(--gap)}
-.m-pair--p{aspect-ratio:3/5;grid-template-rows:1fr 1fr}
-.m-pair--l{aspect-ratio:188/126;grid-template-columns:1fr 1fr}
+.m-pair--p{aspect-ratio:calc(3 / 5 / 1.08);grid-template-rows:1fr 1fr}
+.m-pair--l{aspect-ratio:calc(188 / 126 / 1.08);grid-template-columns:1fr 1fr}
 .m-pair .card{min-height:0}
 
 /* ============ Rows ============ */
@@ -1197,11 +1198,11 @@ const m = (w, h) => w / (h * K);
 const SHAPE = { L: 188 / 126, P: 3 / 5, P2: 1.18, L2: .7 };
 const M_COLS = [
   [['P', 'crown-chaos'], ['L', 'neon-drift']],
-  [['L2', 'ice-tiles', 'chick-flap'], ['P', 'ninja-roofs']],
+  [['L', 'ice-tiles'], ['P2', 'ninja-roofs', 'chick-flap']],
   [['L', 'sky-pilot'], ['P2', 'gem-cascade', 'bubble-buddies']],
   [['P2', 'mind-spark', 'paw-pals'], ['L', 'dino-dash']],
   [['L', 'craft-valley'], ['P', 'knight-quest']],
-  [['P', 'tube-sort'], ['L2', 'farm-friends', 'burger-tycoon']],
+  [['P2', 'tube-sort', 'burger-tycoon'], ['L', 'farm-friends']],
 ];
 const mosaicSlot = ([k, ...ids]) => ids.length > 1
   ? `<div class="m-pair m-pair--${k[0].toLowerCase()}">${ids.map(id => GameCard(id, { ar: SHAPE[k] })).join('')}</div>`
