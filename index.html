@@ -266,13 +266,10 @@ h1,h2,h3,p{margin:0}
 /* Sidebar — icon rail that opens with labels on hover */
 /* the menu opens and closes as one soft move: width, frosted glass, shadow and labels share a 360ms curve.
    The shadow is clipped at the top, so it falls only to the right and never onto the header */
-.rail{--t-rail:360ms;position:fixed;left:0;top:calc(env(safe-area-inset-top,0px) + var(--head-h));bottom:0;z-index:40;isolation:isolate;display:flex;flex-direction:column;width:var(--rail-w);clip-path:inset(0 -80px 0 0);transition:width var(--t-rail) var(--ease-card),box-shadow var(--t-rail) var(--ease-card)}
-.rail::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--head-glass);-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px);opacity:0;pointer-events:none;transition:opacity var(--t-rail) var(--ease-card)}
-.rail:hover,.rail:focus-within{width:var(--rail-open);box-shadow:var(--shadow-rail);transition-delay:90ms}
-.rail:hover::before,.rail:focus-within::before{opacity:1;transition-delay:90ms}
+.rail{--t-rail:360ms;position:fixed;left:0;top:calc(env(safe-area-inset-top,0px) + var(--head-h));bottom:0;z-index:40;isolation:isolate;display:flex;flex-direction:column;width:var(--rail-w);background-color:transparent;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);clip-path:inset(0 -80px 0 0);transition:width var(--t-rail) var(--ease-card),box-shadow var(--t-rail) var(--ease-card),background-color var(--t-rail) var(--ease-card),backdrop-filter var(--t-rail) var(--ease-card),-webkit-backdrop-filter var(--t-rail) var(--ease-card)}
+.rail:hover,.rail:focus-within{width:var(--rail-open);background-color:var(--head-glass);-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px);box-shadow:var(--shadow-rail);transition-delay:90ms}
 /* after a click the menu folds away and stays folded until the pointer leaves it */
-.rail.is-closing,.rail.is-closing:hover,.rail.is-closing:focus-within{width:var(--rail-w);box-shadow:none;transition-delay:0s}
-.rail.is-closing::before,.rail.is-closing:hover::before,.rail.is-closing:focus-within::before{opacity:0;transition-delay:0s}
+.rail.is-closing,.rail.is-closing:hover,.rail.is-closing:focus-within{width:var(--rail-w);background-color:transparent;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);box-shadow:none;transition-delay:0s}
 .rail-list{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;gap:2px;padding:8px calc((var(--rail-w) - 44px) / 2) 20px;overflow-x:hidden;overflow-y:auto;scrollbar-width:none}
 .rail-list::-webkit-scrollbar{display:none}
 .nav{display:flex;align-items:center;gap:10px;flex:none;height:40px;padding:0 9px;border-radius:var(--r-card);color:var(--st-rest);white-space:nowrap;overflow:hidden;transition:background-color var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
@@ -671,8 +668,7 @@ h1,h2,h3,p{margin:0}
   .brand .logo{width:31px}
   .brand-word{font-size:21px}
   .search{order:3;flex:1 1 100%;margin-left:0;left:0}
-  .rail,.rail:hover,.rail:focus-within,.rail.is-closing{position:sticky;top:env(safe-area-inset-top,0px);bottom:auto;width:auto;flex-direction:row;border-right:0;box-shadow:0 1px 0 var(--border);clip-path:none}
-  .rail::before,.rail.is-closing::before{opacity:1}
+  .rail,.rail:hover,.rail:focus-within,.rail.is-closing{position:sticky;top:env(safe-area-inset-top,0px);bottom:auto;width:auto;flex-direction:row;border-right:0;box-shadow:0 1px 0 var(--border);clip-path:none;background-color:var(--head-glass);-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px)}
   .rail.is-closing .nav-label{opacity:1;transform:none}
   .rail-h,.nav.is-cat{display:none}
   .rail-list{flex-direction:row;padding:var(--s3) var(--gutter);overflow-x:auto;overflow-y:hidden}
