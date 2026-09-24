@@ -217,15 +217,15 @@ h1,h2,h3,p{margin:0}
 
 /* ============ Badge ============ */
 /* round, icon only, sits over the card's top-left corner; a soft sheen sweeps across it now and then */
-.badge{position:absolute;top:-8px;left:-8px;z-index:4;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;overflow:hidden;isolation:isolate;background:var(--b-bg);color:#fff;box-shadow:0 8px 16px -8px var(--b-shadow),0 2px 4px rgba(0,0,0,.18)}
-.badge .i{position:relative;z-index:2;width:21px;height:21px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.18))}
-.badge::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;background:radial-gradient(circle at 32% 24%,rgba(255,255,255,.5),rgba(255,255,255,0) 58%)}
-.badge::after{content:"";position:absolute;inset:-20%;z-index:1;background:linear-gradient(115deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 62%);transform:translateX(-110%);will-change:transform;animation:badge-sheen 4.8s var(--ease-out) var(--b-delay,0s) infinite}
+.badge{position:absolute;top:-6px;left:-6px;z-index:4;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;overflow:hidden;isolation:isolate;background:var(--b-bg);color:#fff;box-shadow:0 8px 16px -8px var(--b-shadow),0 2px 4px rgba(0,0,0,.18)}
+.badge .i{position:relative;z-index:2;width:16px;height:16px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.18))}
+.badge::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;background:radial-gradient(circle at 32% 24%,rgba(255,255,255,.28),rgba(255,255,255,0) 58%)}
+.badge::after{content:"";position:absolute;inset:-20%;z-index:1;background:linear-gradient(115deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.35) 50%,rgba(255,255,255,0) 62%);transform:translateX(-110%);will-change:transform;animation:badge-sheen 4.8s var(--ease-out) var(--b-delay,0s) infinite}
 @keyframes badge-sheen{0%{transform:translateX(-110%)}34%,100%{transform:translateX(110%)}}
-.badge--hot{--b-bg:linear-gradient(145deg,#FF7AB8,#F2287E);--b-shadow:rgba(242,40,126,.75)}
-.badge--new{--b-bg:linear-gradient(145deg,#D6FF78,#9BE01F);--b-shadow:rgba(120,190,20,.7);color:var(--on-lime)}
+.badge--hot{--b-bg:linear-gradient(145deg,#EE86B0,#D65C8E);--b-shadow:rgba(150,40,90,.5)}
+.badge--new{--b-bg:linear-gradient(145deg,#CDEB86,#A5CF4E);--b-shadow:rgba(80,120,20,.5);color:var(--on-lime)}
 .badge--new .i{filter:none}
-.badge--top{--b-bg:linear-gradient(145deg,#B18CFF,#6A3BF0);--b-shadow:rgba(106,59,240,.75)}
+.badge--top{--b-bg:linear-gradient(145deg,#A594E6,#7A63CF);--b-shadow:rgba(70,50,150,.5)}
 
 /* ============ GameCard ============ */
 .card{position:relative;display:block;isolation:isolate;border-radius:var(--r-card);background:var(--card-bg);box-shadow:var(--shadow-rest);container-type:inline-size;transition:transform var(--t-card) var(--ease-out),box-shadow var(--t-card) var(--ease-out)}
