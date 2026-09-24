@@ -397,76 +397,80 @@ h1,h2,h3,p{margin:0}
 .btn-ghost .i{width:20px;height:20px}
 .btn-ghost:hover,.btn-ghost:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--tile-bg);color:var(--st-hover-fg)}
 .btn-ghost[aria-pressed="true"]{background:var(--st-active-bg);color:var(--st-active-fg);border-color:transparent}
-/* game page: a 12-column grid, two bands of equal height —
-   [player 8 | more games 4] and [about 8 | details 4]; every edge lines up */
-.gp{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap)}
+/* game page on the home mosaic's 12-column grid: [stage 8 | side 4] over [about 8 | side 4].
+   The stage carries the title like a cinematic hero; the side holds Play and a small wall of same-genre games
+   built from the mosaic's own square cells (1×1, 2×2, 3×2). */
+.gp{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto 1fr;gap:var(--gap);align-items:start}
 .gp-tile{min-width:0;padding:20px;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border)}
-.gp-h{margin:0 0 12px;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
-/* player: the stage and its toolbar are one unit */
-.gp-player{grid-column:span 8;display:flex;flex-direction:column;border-radius:var(--r-card);overflow:hidden;background:var(--tile-bg);border:1px solid var(--border)}
+.gp-h{margin:0 0 10px;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+.gp-player{grid-column:1 / 11;grid-row:1;min-width:0;border-radius:var(--r-card);overflow:hidden;background:var(--tile-bg);border:1px solid var(--border)}
 .gp-stage{position:relative;aspect-ratio:16/9;background:var(--card-bg);isolation:isolate}
 .gp-stage .cover{position:absolute;inset:0;width:100%;height:100%}
-.gp-stage::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 60% at 50% 50%,rgba(6,14,24,.28),rgba(6,14,24,0));pointer-events:none}
+.gp-stage::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,10,8,.72) 0%,rgba(6,10,8,.36) 36%,rgba(6,10,8,0) 64%),linear-gradient(0deg,rgba(6,10,8,.5),rgba(6,10,8,0) 50%);pointer-events:none}
+.gp-over{position:absolute;left:32px;bottom:28px;z-index:1;max-width:min(520px,60%);color:#fff}
+.gp-genre-l{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--lime);transition:color var(--t-ui) var(--ease-out)}
+.gp-genre-l:hover,.gp-genre-l:focus-visible{color:#fff}
+.gp-over .gp-name{margin:8px 0 0;font-size:44px;font-weight:800;letter-spacing:-.035em;line-height:1.02}
+.gp-over .gp-sub{display:flex;gap:18px;margin-top:12px;font-size:14px;font-weight:600;color:rgba(255,255,255,.82)}
+.gp-fs{position:absolute;right:24px;bottom:28px;z-index:1;display:flex;align-items:center;gap:10px;height:48px;padding:0 18px;border-radius:var(--r-ctl);background:rgba(255,255,255,.14);color:#fff;font-size:15px;font-weight:700;transition:background-color var(--t-ui) var(--ease-out)}
+.gp-fs .i{width:22px;height:22px}
+.gp-fs:hover,.gp-fs:focus-visible{background:rgba(255,255,255,.24)}
 .gp-launch{position:absolute;left:50%;top:50%;z-index:1;display:grid;place-items:center;width:88px;height:88px;margin:-44px 0 0 -44px;border-radius:50%;background:var(--lime);color:var(--on-lime);box-shadow:0 14px 30px -12px rgba(0,0,0,.55);transition:background-color var(--t-ui) var(--ease-out)}
 .gp-launch:hover,.gp-launch:focus-visible{background:color-mix(in srgb,var(--lime) 86%,#fff)}
 .gp-launch .i{width:42px;height:42px;margin-left:4px}
-.gp-bar{display:flex;align-items:center;gap:14px;padding:14px 16px;border-top:1px solid var(--border)}
-.gp-icon{position:relative;flex:none;width:52px;height:52px;border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--card-ring)}
+.gp-side{grid-column:11 / 13;grid-row:1;min-width:0}
+/* the bar under the stage: who the game is on the left, what you can do on the right */
+.gp-bar{display:flex;align-items:center;gap:16px;padding:16px 20px}
+.gp-bar .gp-stats{margin-top:5px;gap:6px 16px}
+.gp-bar .gp-stats .i{width:16px;height:16px}
+.gp-stats .gp-genre{font-size:inherit;font-weight:inherit}
+.gp-bar .gp-id{flex:1}
+.gp-bar .gp-actions{display:flex;gap:var(--s2);flex:none}
+.gp-bar .btn-ghost{height:48px}
+.gp-bar .btn-primary{padding:0 26px}
+.gp-id{display:flex;align-items:center;gap:14px;min-width:0}
+.gp-icon{position:relative;flex:none;width:56px;height:56px;border-radius:13px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--card-ring)}
 .gp-icon svg{position:absolute;inset:0;width:100%;height:100%}
-.gp-name{flex:1;min-width:0}
 .gp-title{margin:0;font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gp-meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin-top:4px;font-size:13px;font-weight:600;color:var(--text-2);font-variant-numeric:tabular-nums}
-.gp-meta span,.gp-meta a{display:inline-flex;align-items:center;gap:5px}
-.gp-meta a{transition:color var(--t-ui) var(--ease-out)}
-.gp-meta a:hover,.gp-meta a:focus-visible{color:var(--link-hover)}
-.gp-meta .i{width:15px;height:15px;color:var(--st-rest)}
-.gp-tools{display:flex;align-items:center;gap:var(--s2);flex:none}
+.gp-genre{display:inline-block;font-size:14px;font-weight:600;color:var(--text-2);transition:color var(--t-ui) var(--ease-out)}
+.gp-genre:hover,.gp-genre:focus-visible{color:var(--link-hover)}
+.gp-stats{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;font-weight:700;color:var(--text-2);font-variant-numeric:tabular-nums}
+.gp-stats span{display:inline-flex;align-items:center;gap:6px}
+.gp-stats .i{width:18px;height:18px;color:var(--st-rest)}
 .btn-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:var(--r-ctl);border:1px solid var(--border);background:var(--tile-bg);color:var(--st-rest);transition:background var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out),border-color var(--t-ui) var(--ease-out)}
 .btn-icon .i{width:20px;height:20px}
 .btn-icon:hover,.btn-icon:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--tile-bg);color:var(--st-hover-fg)}
 .btn-icon[aria-pressed="true"]{background:var(--st-active-bg);color:var(--st-active-fg);border-color:transparent}
-.gp-tools .btn-primary{height:44px;padding:0 22px}
-/* more games: a tidy list beside the player */
-.gp-similar{grid-column:span 4;display:flex;flex-direction:column}
-.gp-similar .sec-head{margin-bottom:8px}
-.gp-list{display:flex;flex-direction:column;gap:2px;margin:0 -8px}
-.gp-item{display:flex;align-items:center;gap:12px;padding:6px 8px;border-radius:var(--r-ctl);transition:background-color var(--t-ui) var(--ease-out)}
-.gp-item:hover,.gp-item:focus-visible{background:var(--st-hover-bg)}
-.gp-thumb{position:relative;flex:none;width:92px;aspect-ratio:188/126;border-radius:8px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--card-ring)}
-.gp-thumb svg{position:absolute;inset:0;width:100%;height:100%}
-.gp-item b{display:block;font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gp-item small{display:flex;align-items:center;gap:4px;margin-top:2px;font-size:12px;font-weight:600;color:var(--text-2)}
-.gp-item small .i{width:13px;height:13px;color:var(--st-rest)}
-/* about: copy, controls, tags */
-.gp-about{grid-column:span 8}
-.gp-about>section+section{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
-.gp-desc{max-width:760px;font-size:14px;line-height:1.65;color:var(--text-2)}
+/* same-genre wall beside the player: 2 cells across (the home mosaic's small squares), ending with the player */
+.gp-similar{container-type:inline-size}
+.gp-similar .sec-head{min-height:0}
+.gp-similar .sec-head{margin-bottom:12px}
+.gp-wall{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:calc((100cqw - var(--gap)) / 2);gap:var(--gap)}
+.gp-wall .card{min-height:0}
+/* about tile: long copy is clamped with a soft fade and opens in place */
+.gp-about{grid-column:1 / -1;grid-row:2;display:flex;flex-direction:column;gap:20px}
+.gp-about>*+section{padding-top:20px;border-top:1px solid var(--border)}
+.gp-desc{font-size:14px;line-height:1.65;color:var(--text-2)}
 .gp-desc p{margin:0 0 10px}
 .gp-desc p:last-child{margin-bottom:0}
 .gp-desc.is-clamped{max-height:calc(1.65em * 4);overflow:hidden;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
 .gp-more{margin-top:8px;font-size:14px;font-weight:700;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
 .gp-more:hover,.gp-more:focus-visible{color:var(--link-hover)}
-.gp-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin:0;padding:0;list-style:none}
-.gp-controls li{display:flex;flex-direction:column;gap:10px;padding:12px 14px;border-radius:var(--r-ctl);background:var(--search-bg);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--text-2)}
-.gp-keys{display:flex;gap:6px}
-.key{display:grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:7px;font-family:inherit;border:1px solid var(--border-strong);background:var(--tile-bg);color:var(--text);font-size:12px;font-weight:800;line-height:1}
+/* key facts as four equal cells: label over value */
+.gp-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);margin:0}
+.gp-facts div{padding:12px 14px;border-radius:var(--r-ctl);background:var(--search-bg);border:1px solid var(--border)}
+.gp-facts dt{font-size:12px;font-weight:600;color:var(--text-2)}
+.gp-facts dd{margin:4px 0 0;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+.gp-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 24px;margin:0;padding:0;list-style:none;font-size:14px;color:var(--text-2)}
+.gp-controls li{display:flex;align-items:center;gap:12px}
+.gp-keys{display:flex;gap:6px;flex:none;width:76px}
+.key{display:grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:7px;font-family:inherit;border:1px solid var(--border-strong);background:var(--search-bg);color:var(--text);font-size:12px;font-weight:800;line-height:1}
 .key .i{width:16px;height:16px}
 .key--up .i{transform:rotate(-90deg)}
 .key--down .i{transform:rotate(90deg)}
 .key--left .i{transform:rotate(180deg)}
 .gp-tags{display:flex;flex-wrap:wrap;gap:var(--s2)}
 .gp-tags .chip{display:inline-flex;align-items:center;height:32px;padding:0 14px;font-size:13px}
-/* details: a plain key–value list */
-.gp-details{grid-column:span 4}
-.gp-dl{margin:0}
-.gp-dl div{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px}
-.gp-dl div:first-child{padding-top:0}
-.gp-dl div:last-child{border-bottom:0;padding-bottom:0}
-.gp-dl dt{display:flex;align-items:center;gap:8px;color:var(--text-2);font-weight:600}
-.gp-dl dt .i{width:16px;height:16px;color:var(--st-rest)}
-.gp-dl dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-align:right}
-.gp-dl a{transition:color var(--t-ui) var(--ease-out)}
-.gp-dl a:hover,.gp-dl a:focus-visible{color:var(--link-hover)}
 /* category page: header, sort chips, a grid of the same landscape cards, other categories */
 /* page titles sit one step above section titles (24px); body copy is the site's 14px */
 .cp-head{margin-bottom:var(--s4)}
@@ -479,15 +483,22 @@ h1,h2,h3,p{margin:0}
 .cp-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--gap)}
 .cp-grid .card{aspect-ratio:188/126}
 @media (max-width:1100px){
-  .gp-player,.gp-similar,.gp-about,.gp-details{grid-column:1 / -1}
+  .gp-player,.gp-about,.gp-side{grid-column:1 / -1;grid-row:auto}
+  .gp-wall{grid-template-columns:repeat(8,minmax(0,1fr));grid-auto-rows:calc((100cqw - 7 * var(--gap)) / 8)}
   .cp-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (max-width:720px){
-  .gp-title{font-size:18px}
   .gp-controls{grid-template-columns:1fr}
-  .gp-bar{flex-wrap:wrap}
-  .gp-tools{width:100%}
-  .gp-tools .btn-primary{flex:1}
+  .gp-bar{flex-wrap:wrap;padding:14px}
+  .gp-bar .gp-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}
+  .gp-bar .btn-primary{grid-column:1 / -1;grid-row:1}
+  .gp-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gp-stage{aspect-ratio:4/5}
+  .gp-over{left:20px;right:20px;bottom:22px;max-width:none}
+  .gp-over .gp-name{font-size:32px}
+  .gp-fs{top:16px;right:16px;bottom:auto;width:44px;height:44px;padding:0;justify-content:center}
+  .gp-fs span{display:none}
+  .gp-wall{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:calc((100cqw - 3 * var(--gap)) / 4)}
   .gp-launch{width:68px;height:68px;margin:-34px 0 0 -34px}
   .gp-launch .i{width:32px;height:32px}
   .cp-title{font-size:22px}
@@ -1485,14 +1496,14 @@ $('m-a').innerHTML = M_TILES.map(([id, r, c, w, h]) =>
   GameCard(id, { ar: span(w) / span(h), area: `${r} / ${c} / ${r + h} / ${c + w}` })).join('');
 
 // the rows follow the screen height, so redraw each cover for the tile's real shape instead of cropping it
-const fitCovers = () => document.querySelectorAll('.mosaic .card').forEach(c => {
+const fitCovers = () => document.querySelectorAll('.mosaic .card, .gp-wall .card').forEach(c => {
   const { width: w, height: h } = c.getBoundingClientRect(), ar = w / h, was = +c.dataset.ar || parseFloat(c.style.getPropertyValue('--ar'));
   if (!h || Math.abs(ar / was - 1) < .06) return;
   c.dataset.ar = ar;
-  c.querySelector('.cover').outerHTML = art(c.getAttribute('href').slice(1), ar);
+  c.querySelector('.cover').outerHTML = art(c.getAttribute('href').replace('#/game/', ''), ar);
 });
 let coverRaf = 0;
-addEventListener('resize', () => { cancelAnimationFrame(coverRaf); coverRaf = requestAnimationFrame(fitCovers); });
+addEventListener('resize', () => { cancelAnimationFrame(coverRaf); coverRaf = requestAnimationFrame(() => { placeWall(); fitCovers(); }); });
 fitCovers();
 $('trend-row').innerHTML = TRENDING.map(([id]) => GameCard(id, { ar: RA, play: true })).join('');
 $('new-row').innerHTML = NEW.map(([id]) => GameCard(id, { ar: PA, open: true })).join('');
@@ -1724,9 +1735,33 @@ const CONTROLS = {
 };
 const CONTROL_OF = { Action: 'move', Arcade: 'move', Adventure: 'move', Kids: 'move', Multiplayer: 'move', Racing: 'race', Shooting: 'aim', Sports: 'aim', Music: 'beat' };
 
+// same-genre wall beside the player, 2 square cells wide: a big square (2×2) or a pair of small ones (1×1).
+// Each game gets its own order, so the pages don't share one layout
+function wallFor(id) {
+  const r = rng(hash(id + '#wall')), tiles = [], ends = [];
+  let row = 1, pairs = r() < .5 ? 1 : 0;
+  while (row <= 12) {
+    const big = pairs > 0 && (pairs === 2 || r() < .55);
+    if (big) { tiles.push([row, 1, 2, 2]); row += 2; pairs = 0; }
+    else { tiles.push([row, 1, 1, 1], [row, 2, 1, 1]); row += 1; pairs++; }
+    ends.push(row - 1);
+  }
+  return { tiles, ends };
+}
+let WALL = wallFor('');
+// on a phone they run 4 cells wide
+const WALL_M4 = [[1, 1, 2, 2], [1, 3, 1, 1], [1, 4, 1, 1], [2, 3, 1, 1], [2, 4, 1, 1], [3, 1, 1, 1], [4, 1, 1, 1], [3, 2, 3, 2],
+  [5, 1, 3, 2], [5, 4, 1, 1], [6, 4, 1, 1]];
+// on a tablet, 8 cells wide in bands
+const WALL_WIDE = [[1, 1, 2, 2], [1, 3, 1, 1], [1, 4, 1, 1], [2, 3, 1, 1], [2, 4, 1, 1], [1, 5, 3, 2], [1, 8, 1, 1], [2, 8, 1, 1],
+  [3, 1, 1, 1], [4, 1, 1, 1], [3, 2, 3, 2], [3, 5, 2, 2], [3, 7, 2, 2],
+  [5, 1, 3, 2], [5, 4, 1, 1], [6, 4, 1, 1], [5, 5, 2, 2], [5, 7, 1, 1], [5, 8, 1, 1], [6, 7, 1, 1], [6, 8, 1, 1],
+  [7, 1, 1, 1], [8, 1, 1, 1], [7, 2, 3, 2]];
 function GamePage(id) {
   const g = G[id], st = statsOf(id), catHref = `#/category/${g.g}`;
-  const more = gamesFor(g.g, 11).filter(x => x !== id).slice(0, 10);
+  WALL = wallFor(id);
+  const n = Math.max(WALL.tiles.length, 16);
+  const more = gamesFor(g.g, n + 1).filter(x => x !== id).slice(0, n);
   const also = ALL_IDS.filter(x => x !== id && !more.includes(x)).sort((a, b) => hash(id + a) - hash(id + b)).slice(0, 10);
   const subs = (CAT_INFO[g.g] || ['', []])[1].slice().sort((a, b) => hash(id + a) - hash(id + b)).slice(0, 3);
   const controls = CONTROLS[CONTROL_OF[g.g] || 'point'];
@@ -1737,34 +1772,47 @@ function GamePage(id) {
   ];
   const KEY = { '←': 'left', '→': 'right', '↑': 'up', '↓': 'down' };
   const keycap = k => KEY[k] ? `<kbd class="key key--${KEY[k]}" aria-label="${KEY[k]} arrow">${icon('caret-right')}</kbd>` : `<kbd class="key">${k}</kbd>`;
-  const similar = more.slice(0, 7).map(x => `<a class="gp-item" href="#/game/${x}"><span class="gp-thumb">${art(x, RA)}</span><span style="min-width:0"><b>${G[x].t}</b><small>${G[x].g} · ${icon('star')}${statsOf(x).rating}</small></span></a>`).join('');
+  const wall = more.map((x, i) => { const [r, c, w, h] = WALL.tiles[i] || [1, 1, 1, 1]; return GameCard(x, { ar: span(w) / span(h), area: `${r} / ${c} / ${r + h} / ${c + w}` }); }).join('');
   return crumbs([[g.g, catHref], [g.t]]) + `
     <div class="gp">
       <div class="gp-player">
-        <div class="gp-stage">${art(id, 16 / 9)}<button class="gp-launch" type="button" aria-label="Play ${g.t}">${icon('play')}</button></div>
-        <div class="gp-bar">
-          <span class="gp-icon">${art(id, 1)}</span>
-          <div class="gp-name">
-            <h1 class="gp-title">${g.t}</h1>
-            <div class="gp-meta"><a href="${catHref}">${g.g}</a><span>${icon('star')}${st.rating}</span><span>${icon('play')}${compact(st.plays)} plays</span></div>
+        <div class="gp-stage">${art(id, 16 / 9)}
+          <div class="gp-over">
+            <a class="gp-genre-l" href="${catHref}">${g.g}</a>
+            <div class="gp-name" aria-hidden="true">${g.t}</div>
+            <div class="gp-sub"><span>★ ${st.rating}</span><span>${compact(st.plays)} plays</span><span>${compact(st.likes)} likes</span></div>
           </div>
-          <div class="gp-tools">
-            <button class="btn-icon" type="button" aria-pressed="false" aria-label="Add to favorites" title="Add to favorites" data-toggle>${icon('heart')}</button>
-            <button class="btn-icon" type="button" aria-label="Share" title="Share">${icon('share')}</button>
+          <button class="gp-launch" type="button" aria-label="Play ${g.t}">${icon('play')}</button>
+          <button class="gp-fs" type="button" aria-label="Play in full screen">${icon('fullscreen')}<span>Full screen</span></button>
+        </div>
+        <div class="gp-bar">
+          <div class="gp-id"><span class="gp-icon">${art(id, 1)}</span><div style="min-width:0"><h1 class="gp-title">${g.t}</h1>
+            <div class="gp-stats"><a class="gp-genre" href="${catHref}">${g.g}</a><span>${icon('star')}${st.rating}</span><span>${icon('thumbs-up')}${compact(st.likes)}</span><span>${icon('play')}${compact(st.plays)} plays</span></div></div></div>
+          <div class="gp-actions">
+            <button class="btn-ghost" type="button" aria-pressed="false" data-toggle>${icon('heart')}Favorite</button>
+            <button class="btn-ghost" type="button">${icon('share')}Share</button>
             <button class="btn-primary" type="button">${icon('play')}Play now</button>
           </div>
         </div>
       </div>
-      <section class="gp-similar gp-tile">
-        <div class="sec-head"><a class="see-all" href="${catHref}"><h2 class="sec-title" style="font-size:18px">More ${g.g} games</h2>${icon('caret-right')}</a></div>
-        <div class="gp-list">${similar}</div>
-      </section>
+      <aside class="gp-side">
+        <section class="gp-similar">
+          <div class="sec-head"><a class="see-all" href="${catHref}"><h2 class="sec-title" style="font-size:18px">More ${g.g} games</h2>${icon('caret-right')}</a></div>
+          <div class="gp-wall">${wall}</div>
+        </section>
+      </aside>
       <div class="gp-about gp-tile">
         <section>
           <h2 class="gp-h">About ${g.t}</h2>
           <div class="gp-desc is-clamped" id="gp-desc">${desc.map(t => `<p>${t}</p>`).join('')}</div>
           <button class="gp-more" type="button" aria-controls="gp-desc" aria-expanded="false" hidden>Show more</button>
         </section>
+        <dl class="gp-facts">
+          <div><dt>Rating</dt><dd>${st.rating} / 5</dd></div>
+          <div><dt>Plays</dt><dd>${compact(st.plays)}</dd></div>
+          <div><dt>Released</dt><dd>${st.released}</dd></div>
+          <div><dt>Works on</dt><dd>Desktop, mobile</dd></div>
+        </dl>
         <section>
           <h2 class="gp-h">How to play</h2>
           <ul class="gp-controls">${controls.map(([keys, what]) => `<li><span class="gp-keys">${keys.map(keycap).join('')}</span>${what}</li>`).join('')}</ul>
@@ -1774,19 +1822,31 @@ function GamePage(id) {
           <div class="gp-tags"><a class="chip" href="${catHref}">${g.g}</a>${subs.map(t => `<a class="chip" href="${catHref}">${t}</a>`).join('')}</div>
         </section>
       </div>
-      <section class="gp-details gp-tile">
-        <h2 class="gp-h">Details</h2>
-        <dl class="gp-dl">
-          <div><dt>${icon('star')}Rating</dt><dd>${st.rating} / 5</dd></div>
-          <div><dt>${icon('thumbs-up')}Likes</dt><dd>${compact(st.likes)}</dd></div>
-          <div><dt>${icon('play')}Plays</dt><dd>${compact(st.plays)}</dd></div>
-          <div><dt>${icon('clock-counter-clockwise')}Released</dt><dd>${st.released}</dd></div>
-          <div><dt>${icon('game-controller')}Genre</dt><dd><a href="${catHref}">${g.g}</a></dd></div>
-          <div><dt>${icon('users-three')}Works on</dt><dd>Desktop, mobile</dd></div>
-        </dl>
-      </section>
     </div>` + cardRow('You may also like', also);
 }
+// the wall switches between its 4-wide and 8-wide layouts with the page width. Beside the player it shows
+// as many two-row bands as fit next to the left column and evens the row height out, so both columns end together
+const placeWall = () => {
+  const wall = document.querySelector('.gp-wall');
+  if (!wall) return;
+  const wide = matchMedia('(max-width:1100px) and (min-width:721px)').matches, side = matchMedia('(min-width:1101px)').matches;
+  let rows = wide ? 4 : Infinity;
+  wall.style.gridAutoRows = '';
+  if (side) {
+    const avail = document.querySelector('.gp-player').getBoundingClientRect().bottom - wall.getBoundingClientRect().top;
+    const gap = parseFloat(getComputedStyle(wall).rowGap), cell = (wall.clientWidth - gap) / 2;
+    const fit = (avail + gap) / (cell + gap); // the band edge closest to the left column's end
+    rows = WALL.ends.reduce((best, e) => Math.abs(e - fit) < Math.abs(best - fit) ? e : best);
+    wall.style.gridAutoRows = `${(avail - (rows - 1) * gap) / rows}px`;
+  }
+  wall.querySelectorAll('.card').forEach((c, i) => {
+    const slot = (side ? WALL.tiles : wide ? WALL_WIDE : WALL_M4)[i];
+    if (!slot) { c.style.display = 'none'; return; }
+    const [r, col, w, h] = slot;
+    c.style.gridArea = `${r} / ${col} / ${r + h} / ${col + w}`;
+    c.style.display = r + h - 1 > rows ? 'none' : '';
+  });
+};
 
 // category page header copy and sub-genre filters
 const CAT_INFO = {
@@ -1926,6 +1986,8 @@ function route() {
   pageView.querySelectorAll('.row-4').forEach(wireRow);
   const desc = $('gp-desc'), more = pageView.querySelector('.gp-more');
   if (desc && desc.scrollHeight > desc.clientHeight + 4) more.hidden = false; // only offer it when the copy is actually cut
+  placeWall(); fitCovers();
+  document.fonts.ready.then(() => { placeWall(); fitCovers(); });
   markRail(cm ? cm[1] : '');
   scrollTo({ top: 0, behavior: 'instant' });
 }
@@ -1936,6 +1998,7 @@ pageView.addEventListener('click', e => {
     $('gp-desc').classList.toggle('is-clamped', !open);
     more.setAttribute('aria-expanded', String(open));
     more.textContent = open ? 'Show less' : 'Show more';
+    placeWall(); fitCovers();
   }
   const t = e.target.closest('[data-toggle]');
   if (t) t.setAttribute('aria-pressed', String(t.getAttribute('aria-pressed') !== 'true'));
