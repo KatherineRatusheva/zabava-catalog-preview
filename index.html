@@ -262,7 +262,7 @@ h1,h2,h3,p{margin:0}
 .card:hover .play,.card:focus-visible .play{background:var(--lime);color:var(--on-lime);transform:none}
 
 /* ============ Mosaic — 3 rows, full width ============ */
-/* Rows 1–2: two featured cards — the first before a 2+1 block, the second before a pair of wide cards.
+/* Rows 1–2: a pair of wide cards, the first featured card, a 2+1 block, the second featured card at the far edge.
    Row 3: 8 cards. Sizes in reference px;
    the height is capped so the whole grid fits one screen under the header. */
 .mosaic{
@@ -274,11 +274,11 @@ h1,h2,h3,p{margin:0}
 .m-a,.m-r3{display:grid;gap:var(--gap)}
 .m-a{
   --u:min(calc((100cqw - 5 * var(--gap)) / 1243), var(--fit));
-  grid-template-columns:288fr 110fr 105fr 240fr 260fr 240fr;
+  grid-template-columns:240fr 288fr 110fr 105fr 240fr 260fr;
   grid-template-rows:calc(var(--u) * 199) calc(var(--u) * 165);
-  grid-template-areas:"f t t w g W" "f b m p g P";
+  grid-template-areas:"W f t t w g" "P f b m p g";
 }
-.m-r3{grid-template-columns:151fr 140fr 186fr 126fr 134fr 151fr 140fr 186fr;grid-auto-rows:min(calc((100cqw - 7 * var(--gap)) / 1214 * 154), calc(var(--fit) * 154))}
+.m-r3{grid-template-columns:186fr 126fr 151fr 140fr 134fr 186fr 140fr 151fr;grid-auto-rows:min(calc((100cqw - 7 * var(--gap)) / 1214 * 154), calc(var(--fit) * 154))}
 
 /* ============ Rows ============ */
 /* every row below the mosaic scrolls sideways (trackpad, shift+wheel, mouse drag, swipe):
@@ -1200,12 +1200,14 @@ const K = 1; // mosaic keeps the reference proportions
 const m = (w, h) => w / (h * K);
 // [id, grid-area, reference w, h, featured]
 const A = [
-  ['crown-chaos', 'f', 288, 374, true], ['craft-valley', 't', 225, 199], ['neon-drift', 'w', 240, 199],
+  ['sky-pilot', 'W', 240, 199], ['farm-friends', 'P', 240, 165],
+  ['crown-chaos', 'f', 288, 374, true],
+  ['craft-valley', 't', 225, 199], ['neon-drift', 'w', 240, 199],
   ['chick-flap', 'b', 110, 165], ['ice-tiles', 'm', 105, 165], ['goal-rush', 'p', 240, 165],
-  ['dino-dash', 'g', 260, 374, true], ['sky-pilot', 'W', 240, 199], ['farm-friends', 'P', 240, 165],
+  ['dino-dash', 'g', 260, 374, true],
 ];
-const R3 = [['paw-pals', 147], ['bubble-buddies', 136], ['burger-tycoon', 182], ['gem-cascade', 122], ['swamp-zombies', 130],
-  ['ninja-roofs', 147], ['hide-and-peek', 136], ['knight-quest', 182]];
+const R3 = [['knight-quest', 186], ['gem-cascade', 126], ['paw-pals', 151], ['ninja-roofs', 140], ['swamp-zombies', 134],
+  ['burger-tycoon', 186], ['hide-and-peek', 140], ['bubble-buddies', 151]];
 const TRENDING = [['deep-sea-dash'], ['ghost-town'], ['balloon-voyage'], ['moto-canyon'],
   ['rope-swing'], ['galaxy-raid'], ['skate-star'], ['jungle-run'], ['disco-blob'], ['letter-drop']];
 const NEW = [['berry-merge'], ['mahjong-friends'], ['night-racer'], ['monster-mash'], ['castle-crafters'], ['cube-drop'],
