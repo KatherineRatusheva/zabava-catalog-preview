@@ -280,8 +280,6 @@ h1,h2,h3,p{margin:0}
 .nav.is-cat .i{width:24px;height:24px;margin-inline:1px}
 .nav-label{font-size:14px;font-weight:600;opacity:0;transform:translateX(-6px);transition:opacity 160ms var(--ease-card),transform var(--t-rail) var(--ease-card)}
 .rail:hover .nav-label,.rail:focus-within .nav-label{opacity:1;transform:none;transition-delay:100ms}
-.rail.is-closing .nav-label,.rail.is-closing .rail-h span{opacity:0;transform:translateX(-6px);transition-delay:0s}
-.rail.is-closing .rail-h::before{opacity:1}
 .nav:hover,.nav:focus-visible{background:var(--st-hover-bg);color:var(--st-hover-fg)}
 .nav[aria-current="true"]{background:var(--st-active-bg);color:var(--st-active-fg)}
 .rail-h{position:relative;display:flex;align-items:center;flex:none;height:13px;margin:6px 11px;padding:0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);white-space:nowrap}
@@ -289,6 +287,9 @@ h1,h2,h3,p{margin:0}
 .rail:hover .rail-h::before,.rail:focus-within .rail-h::before{opacity:0}
 .rail-h span{opacity:0;transition:opacity 220ms var(--ease-card)}
 .rail:hover .rail-h span,.rail:focus-within .rail-h span{opacity:1;transition-delay:100ms}
+/* folding after a click beats the hover state for every label, the section title and its divider */
+.rail.is-closing.is-closing .nav-label,.rail.is-closing.is-closing .rail-h span{opacity:0;transform:translateX(-6px);transition-delay:0s}
+.rail.is-closing.is-closing .rail-h::before{opacity:1}
 
 /* Main */
 .main{min-width:0;padding:var(--s1) var(--gutter) 0 var(--content-gap)}
