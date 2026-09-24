@@ -279,7 +279,8 @@ h1,h2,h3,p{margin:0}
    the height is capped so the whole grid fits one screen under the header. */
 .mosaic{
   container-type:inline-size;display:flex;flex-direction:column;gap:var(--gap);
-  --fit:max(.5px, calc((100svh - var(--head-h) - 83px - 2 * var(--gap)) / 518));
+  --fit:max(.5px, calc((100svh - var(--head-h) - 40px - 2 * var(--gap)) / 518));
+  padding-top:12px; /* room for the corner badge and the hover lift under the sticky header */
 }
 .mosaic>.sec-title{margin-bottom:var(--s4)}
 .m-a,.m-r3{display:grid;gap:var(--gap)}
@@ -441,7 +442,7 @@ h1,h2,h3,p{margin:0}
       <h1 class="sr-only">Zabava — free games in your browser</h1>
 
       <section class="mosaic" id="top" aria-labelledby="h-top">
-        <h2 class="sec-title" id="h-top">Featured games</h2>
+        <h2 class="sr-only" id="h-top">Featured games</h2>
         <div class="m-a" id="m-a"></div>
         <div class="m-r3" id="m-r3"></div>
       </section>
