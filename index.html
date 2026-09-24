@@ -190,10 +190,9 @@ h1,h2,h3,p{margin:0}
 
 
 /* Sidebar — icon rail that opens with labels on hover */
-.rail{position:fixed;left:0;top:calc(env(safe-area-inset-top,0px) + var(--head-h));bottom:0;z-index:40;display:flex;flex-direction:column;width:var(--rail-w);border-top-right-radius:var(--r-card);background:transparent;transition:width 220ms var(--ease-out),box-shadow 220ms var(--ease-out)}
+.rail{position:fixed;left:0;top:calc(env(safe-area-inset-top,0px) + var(--head-h));bottom:0;z-index:40;display:flex;flex-direction:column;width:var(--rail-w);border-top-right-radius:var(--r-card);border-right:1px solid var(--border);background:transparent;transition:width 220ms var(--ease-out),box-shadow 220ms var(--ease-out)}
 .rail:hover,.rail:focus-within{width:var(--rail-open);background-color:var(--bg);background-image:var(--page-bg);background-attachment:fixed;box-shadow:var(--shadow-rail);transition-delay:90ms}
 .rail-list{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;gap:2px;padding:8px 20px 20px 8px;overflow-x:hidden;overflow-y:auto;scrollbar-width:none}
-.rail-pill{position:absolute;right:0;top:0;width:3px;border-radius:2px 0 0 2px;background:var(--lime-ink);opacity:0;transition:transform 220ms var(--ease-out),height 220ms var(--ease-out),opacity 160ms var(--ease-out);pointer-events:none}
 .rail-list::-webkit-scrollbar{display:none}
 .nav{display:flex;align-items:center;gap:10px;flex:none;height:40px;padding:0 11px;border-radius:var(--r-card);color:var(--nav-fg);white-space:nowrap;overflow:hidden;transition:background-color var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
 .nav .i{width:26px;height:26px}
@@ -341,7 +340,7 @@ h1,h2,h3,p{margin:0}
   .brand-word{font-size:21px}
   .search{order:3;flex:1 1 100%;margin-left:0}
   .rail,.rail:hover,.rail:focus-within{position:sticky;top:env(safe-area-inset-top,0px);bottom:auto;width:auto;flex-direction:row;border-right:0;box-shadow:0 1px 0 var(--border);background-color:var(--bg);background-image:var(--page-bg);background-attachment:fixed}
-  .rail-h,.nav.is-cat,.rail-pill{display:none}
+  .rail-h,.nav.is-cat{display:none}
   .rail-list{flex-direction:row;padding:var(--s3) var(--gutter);overflow-x:auto;overflow-y:hidden}
   .nav{height:36px;gap:6px;padding:0 12px 0 10px;border-radius:var(--r-ctl)}
   .nav .i{width:18px;height:18px}
@@ -399,7 +398,6 @@ h1,h2,h3,p{margin:0}
 
   <nav class="rail" aria-label="Main">
     <div class="rail-list" id="rail-list">
-      <div class="rail-pill" id="rail-pill" aria-hidden="true"></div>
       <a class="nav" href="#top" data-spy="top" aria-current="true"><span data-i="house"></span><span class="nav-label">Home</span></a>
       <a class="nav" href="#trending" data-spy="trending"><span data-i="fire"></span><span class="nav-label">Trending now</span></a>
       <a class="nav" href="#new" data-spy="new"><span data-i="sparkle"></span><span class="nav-label">New &amp; popular</span></a>
@@ -1315,19 +1313,6 @@ const spy = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-45% 0px -50% 0px' });
 spyLinks.forEach(l => { const s = $(l.dataset.spy); if (s) spy.observe(s); });
-
-/* ---------- rail active-item indicator ---------- */
-const railPill = $('rail-pill');
-function movePill() {
-  const active = document.querySelector('#rail-list .nav[aria-current="true"]');
-  if (!active) { railPill.style.opacity = '0'; return; }
-  railPill.style.transform = `translateY(${active.offsetTop}px)`;
-  railPill.style.height = active.offsetHeight + 'px';
-  railPill.style.opacity = '1';
-}
-movePill();
-new MutationObserver(movePill).observe($('rail-list'), { attributes: true, attributeFilter: ['aria-current'], subtree: true });
-addEventListener('resize', movePill);
 
 /* ---------- search ---------- */
 const q = $('q');
