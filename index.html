@@ -496,6 +496,69 @@ h1,h2,h3,p{margin:0}
   .cp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
+/* ---- game page variants A (cinematic) and B (store) ---- */
+.v-h{margin:0 0 14px;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
+.v-lead{font-size:16px;line-height:1.7;color:var(--text)}
+.v-copy{font-size:15px;line-height:1.75;color:var(--text-2)}
+.v-copy p{margin:0 0 14px}.v-copy p:last-child{margin:0}
+.v-dl{margin:0}
+.v-dl div{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-top:1px solid var(--border);font-size:14px}
+.v-dl div:last-child{border-bottom:1px solid var(--border)}
+.v-dl dt{color:var(--text-2);font-weight:600}
+.v-dl dd{margin:0;font-weight:700;text-align:right}
+.v-dl a:hover,.v-dl a:focus-visible{color:var(--link-hover)}
+.v-ctl{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.v-ctl li{display:flex;align-items:center;gap:14px;font-size:15px;color:var(--text-2)}
+.v-ctl .gp-keys{width:84px;flex:none}
+.v-tags{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:14px;font-weight:700}
+.v-tags a{color:var(--text-2);transition:color var(--t-ui) var(--ease-out)}
+.v-tags a:hover,.v-tags a:focus-visible{color:var(--link-hover)}
+.btn-xl{height:54px;padding:0 30px;font-size:16px;border-radius:var(--r-card)}
+.btn-glass{display:grid;place-items:center;width:54px;height:54px;border-radius:var(--r-card);background:rgba(255,255,255,.14);color:#fff;transition:background-color var(--t-ui) var(--ease-out)}
+.btn-glass .i{width:22px;height:22px}
+.btn-glass:hover,.btn-glass:focus-visible{background:rgba(255,255,255,.24)}
+.btn-glass[aria-pressed="true"]{background:var(--lime);color:var(--on-lime)}
+/* A: a wide cinematic hero with the title on the art, then editorial text */
+.ga-hero{position:relative;aspect-ratio:21/8;min-height:320px;border-radius:var(--r-card);overflow:hidden;background:var(--card-bg);isolation:isolate}
+.ga-hero .cover{position:absolute;inset:0;width:100%;height:100%}
+.ga-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,10,8,.78) 0%,rgba(6,10,8,.45) 38%,rgba(6,10,8,0) 70%),linear-gradient(0deg,rgba(6,10,8,.55),rgba(6,10,8,0) 55%)}
+.ga-over{position:absolute;left:44px;bottom:40px;z-index:1;max-width:520px;color:#fff}
+.ga-genre{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.ga-title{margin:10px 0 0;font-size:52px;font-weight:800;letter-spacing:-.035em;line-height:1}
+.ga-meta{display:flex;gap:18px;margin-top:14px;font-size:14px;font-weight:600;color:rgba(255,255,255,.82)}
+.ga-cta{display:flex;gap:10px;margin-top:26px}
+.ga-body{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:64px;margin-top:40px}
+.ga-body section+section{margin-top:36px}
+/* B: store layout — media left, a calm purchase-style column right, then three editorial columns */
+.gb-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px;align-items:center}
+.gb-stage{position:relative;aspect-ratio:16/10;border-radius:var(--r-card);overflow:hidden;background:var(--card-bg)}
+.gb-stage .cover{position:absolute;inset:0;width:100%;height:100%}
+.gb-side{display:flex;flex-direction:column}
+.gb-id{display:flex;align-items:center;gap:14px}
+.gb-id .gp-icon{width:56px;height:56px;border-radius:14px}
+.gb-title{margin:22px 0 0;font-size:44px;font-weight:800;letter-spacing:-.035em;line-height:1.02}
+.gb-score{display:flex;align-items:baseline;gap:14px;margin-top:22px;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.gb-score b{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.gb-stars{display:flex;gap:2px;color:var(--text)}
+.gb-stars .i{width:18px;height:18px}
+.gb-stars .off{opacity:.25}
+.gb-score small{margin-left:auto;font-size:13px;font-weight:600;color:var(--text-2);text-align:right;line-height:1.4}
+.gb-cta{display:flex;gap:10px;margin-top:22px}
+.gb-cta .btn-primary{flex:1}
+.gb-cta .btn-icon{width:54px;height:54px;border-radius:var(--r-card)}
+.gb-note{margin-top:14px;font-size:13px;font-weight:600;color:var(--text-2)}
+.gb-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px;margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+@media (max-width:1100px){
+  .ga-body,.gb-top{grid-template-columns:minmax(0,1fr);gap:32px}
+  .gb-cols{grid-template-columns:minmax(0,1fr);gap:32px}
+}
+@media (max-width:720px){
+  .ga-hero{aspect-ratio:4/5;min-height:0}
+  .ga-over{left:20px;right:20px;bottom:22px}
+  .ga-title{font-size:34px}
+  .gb-title{font-size:32px}
+}
+
 /* ============ tablet ============ */
 @media (max-width:1100px){
   :root{--gutter:20px}
@@ -1723,12 +1786,77 @@ function CategoryPage(name) {
     <div class="cp-grid" data-cat="${name}">${filterGames(name, '').map(g => GameCard(g, { ar: RA, play: true })).join('')}</div>`;
 }
 
+
+// --- variants of the game page for the user to compare (#/game/<id>?v=a|b) ---
+const stars = r => [1, 2, 3, 4, 5].map(n => `<span class="${n <= Math.round(r) ? '' : 'off'}">${icon('star')}</span>`).join('');
+function gameCopy(id) {
+  const g = G[id];
+  return [
+    `${g.t} is a free ${g.g.toLowerCase()} game you can play right in your browser — no downloads, no sign-up. ${ABOUT[g.g] || ''}`,
+    PLAY[g.g] || '',
+    'It works on desktop and mobile, and your progress is saved in the browser, so you can come back any time and pick up where you left off.',
+  ];
+}
+const ctlList = g => `<ul class="v-ctl">${CONTROLS[CONTROL_OF[g.g] || 'point'].map(([keys, what]) => `<li><span class="gp-keys">${keys.map(k => ({ '←': 'left', '→': 'right', '↑': 'up', '↓': 'down' })[k] ? `<kbd class="key key--${({ '←': 'left', '→': 'right', '↑': 'up', '↓': 'down' })[k]}">${icon('caret-right')}</kbd>` : `<kbd class="key">${k}</kbd>`).join('')}</span>${what}</li>`).join('')}</ul>`;
+const factList = (id, st, catHref) => `<dl class="v-dl">
+  <div><dt>Rating</dt><dd>${st.rating} / 5</dd></div><div><dt>Plays</dt><dd>${compact(st.plays)}</dd></div>
+  <div><dt>Likes</dt><dd>${compact(st.likes)}</dd></div><div><dt>Released</dt><dd>${st.released}</dd></div>
+  <div><dt>Genre</dt><dd><a href="${catHref}">${G[id].g}</a></dd></div><div><dt>Works on</dt><dd>Desktop and mobile</dd></div></dl>`;
+const tagLinks = (id, catHref) => `<div class="v-tags">${[G[id].g, ...(CAT_INFO[G[id].g] || ['', []])[1].slice(0, 3)].map(t => `<a href="${catHref}">#${t.toLowerCase().replace(/\s+/g, '-')}</a>`).join('')}</div>`;
+const moreRows = (id, g, catHref) => {
+  const more = gamesFor(g.g, 11).filter(x => x !== id).slice(0, 10);
+  const also = ALL_IDS.filter(x => x !== id && !more.includes(x)).sort((a, b) => hash(id + a) - hash(id + b)).slice(0, 10);
+  return cardRow(`More ${g.g} games`, more, catHref) + cardRow('You may also like', also);
+};
+function GamePageA(id) {
+  const g = G[id], st = statsOf(id), catHref = `#/category/${g.g}`, copy = gameCopy(id);
+  return crumbs([[g.g, catHref], [g.t]]) + `
+    <div class="ga-hero">${art(id, 21 / 8)}
+      <div class="ga-over">
+        <div class="ga-genre">${g.g}</div>
+        <h1 class="ga-title">${g.t}</h1>
+        <div class="ga-meta"><span>★ ${st.rating}</span><span>${compact(st.plays)} plays</span><span>${compact(st.likes)} likes</span></div>
+        <div class="ga-cta"><button class="btn-primary btn-xl" type="button">${icon('play')}Play now</button>
+          <button class="btn-glass" type="button" aria-pressed="false" aria-label="Add to favorites" data-toggle>${icon('heart')}</button>
+          <button class="btn-glass" type="button" aria-label="Share">${icon('share')}</button></div>
+      </div>
+    </div>
+    <div class="ga-body">
+      <div>
+        <section><h2 class="v-h">About the game</h2><div class="v-copy"><p class="v-lead">${copy[0]}</p>${copy.slice(1).map(t => `<p>${t}</p>`).join('')}</div></section>
+        <section><h2 class="v-h">How to play</h2>${ctlList(g)}</section>
+      </div>
+      <aside><h2 class="v-h">Details</h2>${factList(id, st, catHref)}${tagLinks(id, catHref)}</aside>
+    </div>` + moreRows(id, g, catHref);
+}
+function GamePageB(id) {
+  const g = G[id], st = statsOf(id), catHref = `#/category/${g.g}`, copy = gameCopy(id);
+  return crumbs([[g.g, catHref], [g.t]]) + `
+    <div class="gb-top">
+      <div class="gb-stage">${art(id, 16 / 10)}<button class="gp-launch" type="button" aria-label="Play ${g.t}">${icon('play')}</button></div>
+      <div class="gb-side">
+        <div class="gb-id"><span class="gp-icon">${art(id, 1)}</span><div><div class="v-h" style="margin:0">${g.g}</div><div style="font-size:13px;font-weight:600;color:var(--text-2);margin-top:4px">Free · Browser game</div></div></div>
+        <h1 class="gb-title">${g.t}</h1>
+        <div class="gb-score"><b>${st.rating}</b><span class="gb-stars">${stars(st.rating)}</span><small>${compact(st.likes)} likes<br>${compact(st.plays)} plays</small></div>
+        <div class="gb-cta"><button class="btn-primary btn-xl" type="button">${icon('play')}Play now</button>
+          <button class="btn-icon" type="button" aria-pressed="false" aria-label="Add to favorites" data-toggle>${icon('heart')}</button>
+          <button class="btn-icon" type="button" aria-label="Share">${icon('share')}</button></div>
+        <div class="gb-note">No download · Works on desktop and mobile · Released ${st.released}</div>
+      </div>
+    </div>
+    <div class="gb-cols">
+      <section><h2 class="v-h">About the game</h2><div class="v-copy">${copy.map(t => `<p>${t}</p>`).join('')}</div></section>
+      <section><h2 class="v-h">How to play</h2>${ctlList(g)}${tagLinks(id, catHref)}</section>
+      <section><h2 class="v-h">Details</h2>${factList(id, st, catHref)}</section>
+    </div>` + moreRows(id, g, catHref);
+}
 const homeView = $('view-home'), pageView = $('view-page');
 const markRail = name => document.querySelectorAll('.rail .nav').forEach(n =>
   (name !== null && n.getAttribute('href') === `#/category/${name}`) ? n.setAttribute('aria-current', 'true') : name !== null && n.removeAttribute('aria-current'));
 function route() {
-  const h = decodeURIComponent(location.hash), gm = h.match(/^#\/game\/(.+)$/), cm = h.match(/^#\/category\/(.+)$/);
-  const html = gm && G[gm[1]] ? GamePage(gm[1]) : cm && ALL_CATS.some(x => x.name === cm[1]) ? CategoryPage(cm[1]) : null;
+  const h = decodeURIComponent(location.hash), gm = h.match(/^#\/game\/([^?]+)(?:\?v=(\w))?$/), cm = h.match(/^#\/category\/(.+)$/);
+  const GP = gm && ({ a: GamePageA, b: GamePageB })[gm[2]] || GamePage;
+  const html = gm && G[gm[1]] ? GP(gm[1]) : cm && ALL_CATS.some(x => x.name === cm[1]) ? CategoryPage(cm[1]) : null;
   if (html === null) {
     if (!pageView.hidden) {
       pageView.hidden = true; pageView.innerHTML = ''; homeView.hidden = false;
