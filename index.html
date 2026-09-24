@@ -394,61 +394,62 @@ h1,h2,h3,p{margin:0}
 .btn-ghost .i{width:20px;height:20px}
 .btn-ghost:hover,.btn-ghost:focus-visible{background:linear-gradient(var(--st-hover-bg),var(--st-hover-bg)),var(--tile-bg);color:var(--st-hover-fg)}
 .btn-ghost[aria-pressed="true"]{background:var(--st-active-bg);color:var(--st-active-fg);border-color:transparent}
-/* game page: stage + "about" on the left, a sticky side tile on the right so Play stays in reach
-   however long the description gets */
-.gp{display:grid;grid-template-columns:minmax(0,1fr) 340px;grid-template-areas:"stage side" "about side";gap:var(--gap) 16px;align-items:start}
-.gp-stage{grid-area:stage;position:relative;aspect-ratio:16/9;border-radius:var(--r-card);overflow:hidden;background:var(--card-bg);isolation:isolate}
+/* game page: a 12-column grid with two bands of equal height —
+   [stage 8 | info 4] and [about 8 | similar 4] — so every edge lines up */
+.gp{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap)}
+.gp-stage{grid-column:span 8;position:relative;aspect-ratio:16/9;border-radius:var(--r-card);overflow:hidden;background:var(--card-bg);isolation:isolate}
 .gp-stage .cover{position:absolute;inset:0;width:100%;height:100%}
 .gp-stage::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--card-ring);background:radial-gradient(60% 60% at 50% 50%,rgba(6,14,24,.28),rgba(6,14,24,0));pointer-events:none}
 .gp-launch{position:absolute;left:50%;top:50%;z-index:1;display:grid;place-items:center;width:88px;height:88px;margin:-44px 0 0 -44px;border-radius:50%;background:var(--lime);color:var(--on-lime);box-shadow:0 14px 30px -12px rgba(0,0,0,.55);transition:background-color var(--t-ui) var(--ease-out)}
 .gp-launch:hover,.gp-launch:focus-visible{background:color-mix(in srgb,var(--lime) 86%,#fff)}
 .gp-launch .i{width:42px;height:42px;margin-left:4px}
-.gp-tile{padding:20px;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border)}
-.gp-side{grid-area:side;display:flex;flex-direction:column;gap:var(--s4)}
-.gp-info{display:flex;flex-direction:column;gap:var(--s4)}
-/* same-genre games fill the side column next to the About tile */
-.gp-similar .gp-h{margin-bottom:12px}
-.gp-mini{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
-.gp-mini .card{aspect-ratio:188/126}
-.gp-mini .cap{padding:24px 8px 8px}
-.gp-mini .cap-title{font-size:12px}
+.gp-tile{min-width:0;padding:20px;border-radius:var(--r-card);background:var(--tile-bg);border:1px solid var(--border)}
+.gp-h{margin:0 0 12px;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+/* info: identity at the top, facts in a 2×2 grid, actions pinned to the bottom edge of the stage */
+.gp-info{grid-column:span 4;display:flex;flex-direction:column;gap:var(--s4)}
 .gp-id{display:flex;align-items:center;gap:14px;min-width:0}
 .gp-icon{position:relative;flex:none;width:64px;height:64px;border-radius:14px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--card-ring)}
 .gp-icon svg{position:absolute;inset:0;width:100%;height:100%}
 .gp-title{margin:0;font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
 .gp-genre{display:inline-block;margin-top:4px;font-size:14px;font-weight:600;color:var(--text-2);transition:color var(--t-ui) var(--ease-out)}
 .gp-genre:hover,.gp-genre:focus-visible{color:var(--link-hover)}
-.gp-stats{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;font-weight:700;color:var(--text-2);font-variant-numeric:tabular-nums}
-.gp-stats span{display:inline-flex;align-items:center;gap:6px}
-.gp-stats .i{width:18px;height:18px;color:var(--st-rest)}
-.gp-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
-/* key facts as four equal cells: label over value */
-.gp-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);margin:0}
+.gp-facts{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin:0}
 .gp-facts div{padding:12px 14px;border-radius:var(--r-ctl);background:var(--search-bg);border:1px solid var(--border)}
-.gp-facts dt{font-size:12px;font-weight:600;color:var(--text-2)}
-.gp-facts dd{margin:4px 0 0;font-size:15px;font-weight:800}
-.gp-facts a{transition:color var(--t-ui) var(--ease-out)}
-.gp-facts a:hover,.gp-facts a:focus-visible{color:var(--link-hover)}
-/* about tile: long copy is clamped with a soft fade and opens in place */
-.gp-about{grid-area:about;display:flex;flex-direction:column;gap:20px}
-.gp-about>*+section{padding-top:20px;border-top:1px solid var(--border)}
-.gp-h{margin:0 0 10px;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+.gp-facts dt{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text-2)}
+.gp-facts dt .i{width:14px;height:14px;color:var(--st-rest)}
+.gp-facts dd{margin:4px 0 0;font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
+.gp-cta{display:flex;flex-direction:column;gap:var(--s2);margin-top:auto}
+.gp-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
+/* about: copy, controls and tags, each on its own row */
+.gp-about{grid-column:span 8;display:flex;flex-direction:column}
+.gp-about>section+section{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
 .gp-desc{font-size:14px;line-height:1.65;color:var(--text-2)}
 .gp-desc p{margin:0 0 10px}
 .gp-desc p:last-child{margin-bottom:0}
 .gp-desc.is-clamped{max-height:calc(1.65em * 4);overflow:hidden;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
 .gp-more{margin-top:8px;font-size:14px;font-weight:700;color:var(--text);transition:color var(--t-ui) var(--ease-out)}
 .gp-more:hover,.gp-more:focus-visible{color:var(--link-hover)}
-.gp-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 24px;margin:0;padding:0;list-style:none;font-size:14px;color:var(--text-2)}
-.gp-controls li{display:flex;align-items:center;gap:12px}
-.gp-keys{display:flex;gap:6px;flex:none;width:76px}
-.key{display:grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:7px;border:1px solid var(--border-strong);background:var(--search-bg);color:var(--text);font-size:12px;font-weight:800;line-height:1}
+.gp-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin:0;padding:0;list-style:none}
+.gp-controls li{display:flex;flex-direction:column;gap:10px;padding:12px 14px;border-radius:var(--r-ctl);background:var(--search-bg);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--text-2)}
+.gp-keys{display:flex;gap:6px}
+.key{display:grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:7px;border:1px solid var(--border-strong);background:var(--tile-bg);color:var(--text);font-size:12px;font-weight:800;line-height:1}
 .key .i{width:16px;height:16px}
 .key--up .i{transform:rotate(-90deg)}
 .key--down .i{transform:rotate(90deg)}
 .key--left .i{transform:rotate(180deg)}
 .gp-tags{display:flex;flex-wrap:wrap;gap:var(--s2)}
 .gp-tags .chip{display:inline-flex;align-items:center;height:32px;padding:0 14px;font-size:13px}
+/* similar: a tidy list — thumbnail, title, genre and rating */
+.gp-similar{grid-column:span 4;display:flex;flex-direction:column}
+.gp-similar .sec-head{margin-bottom:8px}
+.gp-list{display:flex;flex-direction:column;gap:2px;margin:0 -8px}
+.gp-item{display:flex;align-items:center;gap:12px;padding:6px 8px;border-radius:var(--r-ctl);transition:background-color var(--t-ui) var(--ease-out)}
+.gp-item:hover,.gp-item:focus-visible{background:var(--st-hover-bg)}
+.gp-thumb{position:relative;flex:none;width:92px;aspect-ratio:188/126;border-radius:8px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--card-ring)}
+.gp-thumb svg{position:absolute;inset:0;width:100%;height:100%}
+.gp-item b{display:block;font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gp-item small{display:flex;align-items:center;gap:4px;margin-top:2px;font-size:12px;font-weight:600;color:var(--text-2)}
+.gp-item small .i{width:13px;height:13px;color:var(--st-rest)}
 /* category page: header, sort chips, a grid of the same landscape cards, other categories */
 /* page titles sit one step above section titles (24px); body copy is the site's 14px */
 .cp-head{margin-bottom:var(--s4)}
@@ -461,13 +462,12 @@ h1,h2,h3,p{margin:0}
 .cp-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--gap)}
 .cp-grid .card{aspect-ratio:188/126}
 @media (max-width:1100px){
-  .gp{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "side" "about"}
-  .gp-similar{display:none} /* on narrow screens the row below carries the recommendations */
+  .gp-stage,.gp-info,.gp-about,.gp-similar{grid-column:1 / -1}
   .cp-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (max-width:720px){
   .gp-title{font-size:22px}
-  .gp-facts{grid-template-columns:1fr 1fr}
+  .gp-controls{grid-template-columns:1fr}
   .gp-launch{width:68px;height:68px;margin:-34px 0 0 -34px}
   .gp-launch .i{width:32px;height:32px}
   .cp-title{font-size:22px}
@@ -1619,23 +1619,25 @@ function GamePage(id) {
   ];
   const KEY = { '←': 'left', '→': 'right', '↑': 'up', '↓': 'down' };
   const keycap = k => KEY[k] ? `<kbd class="key key--${KEY[k]}" aria-label="${KEY[k]} arrow">${icon('caret-right')}</kbd>` : `<kbd class="key">${k}</kbd>`;
+  const similar = more.slice(0, 6).map(x => `<a class="gp-item" href="#/game/${x}"><span class="gp-thumb">${art(x, RA)}</span><span style="min-width:0"><b>${G[x].t}</b><small>${G[x].g} · ${icon('star')}${statsOf(x).rating}</small></span></a>`).join('');
   return crumbs([[g.g, catHref], [g.t]]) + `
     <div class="gp">
       <div class="gp-stage">${art(id, 16 / 9)}<button class="gp-launch" type="button" aria-label="Play ${g.t}">${icon('play')}</button></div>
-      <aside class="gp-side">
-        <div class="gp-info gp-tile">
-          <div class="gp-id"><span class="gp-icon">${art(id, 1)}</span><div><h1 class="gp-title">${g.t}</h1><a class="gp-genre" href="${catHref}">${g.g}</a></div></div>
-          <div class="gp-stats"><span>${icon('star')}${st.rating}</span><span>${icon('thumbs-up')}${compact(st.likes)}</span><span>${icon('play')}${compact(st.plays)} plays</span></div>
+      <aside class="gp-info gp-tile">
+        <div class="gp-id"><span class="gp-icon">${art(id, 1)}</span><div style="min-width:0"><h1 class="gp-title">${g.t}</h1><a class="gp-genre" href="${catHref}">${g.g}</a></div></div>
+        <dl class="gp-facts">
+          <div><dt>${icon('star')}Rating</dt><dd>${st.rating}</dd></div>
+          <div><dt>${icon('thumbs-up')}Likes</dt><dd>${compact(st.likes)}</dd></div>
+          <div><dt>${icon('play')}Plays</dt><dd>${compact(st.plays)}</dd></div>
+          <div><dt>Released</dt><dd>${st.released}</dd></div>
+        </dl>
+        <div class="gp-cta">
           <button class="btn-primary" type="button">${icon('play')}Play now</button>
           <div class="gp-actions">
             <button class="btn-ghost" type="button" aria-pressed="false" data-toggle>${icon('heart')}Favorite</button>
             <button class="btn-ghost" type="button">${icon('share')}Share</button>
           </div>
         </div>
-        <section class="gp-similar">
-          <div class="sec-head gp-h"><a class="see-all" href="${catHref}"><h2 class="sec-title" style="font-size:18px">More ${g.g} games</h2>${icon('caret-right')}</a></div>
-          <div class="gp-mini">${more.slice(0, 8).map(x => GameCard(x, { ar: RA })).join('')}</div>
-        </section>
       </aside>
       <div class="gp-about gp-tile">
         <section>
@@ -1643,21 +1645,19 @@ function GamePage(id) {
           <div class="gp-desc is-clamped" id="gp-desc">${desc.map(t => `<p>${t}</p>`).join('')}</div>
           <button class="gp-more" type="button" aria-controls="gp-desc" aria-expanded="false" hidden>Show more</button>
         </section>
-        <dl class="gp-facts">
-          <div><dt>Rating</dt><dd>${st.rating} / 5</dd></div>
-          <div><dt>Plays</dt><dd>${compact(st.plays)}</dd></div>
-          <div><dt>Released</dt><dd>${st.released}</dd></div>
-          <div><dt>Works on</dt><dd>Desktop, mobile</dd></div>
-        </dl>
         <section>
           <h2 class="gp-h">How to play</h2>
           <ul class="gp-controls">${controls.map(([keys, what]) => `<li><span class="gp-keys">${keys.map(keycap).join('')}</span>${what}</li>`).join('')}</ul>
         </section>
         <section>
           <h2 class="gp-h">Tags</h2>
-          <div class="gp-tags"><a class="chip" href="${catHref}">${g.g}</a>${subs.map(t => `<a class="chip" href="${catHref}">${t}</a>`).join('')}</div>
+          <div class="gp-tags"><a class="chip" href="${catHref}">${g.g}</a>${subs.map(t => `<a class="chip" href="${catHref}">${t}</a>`).join('')}<span class="chip" style="pointer-events:none">Desktop and mobile</span></div>
         </section>
       </div>
+      <section class="gp-similar gp-tile">
+        <div class="sec-head"><a class="see-all" href="${catHref}"><h2 class="sec-title" style="font-size:18px">More ${g.g} games</h2>${icon('caret-right')}</a></div>
+        <div class="gp-list">${similar}</div>
+      </section>
     </div>` + cardRow('You may also like', also);
 }
 
