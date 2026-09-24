@@ -227,11 +227,14 @@ h1,h2,h3,p{margin:0}
 .card:active{transform:translateY(-2px);transition-duration:120ms}
 .card::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--card-ring);pointer-events:none;transition:box-shadow var(--t-card) var(--ease-out)}
 .card:hover::after,.card:focus-visible::after{box-shadow:inset 0 0 0 1px var(--card-ring-hover)}
-.card .cover{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform var(--t-art) var(--ease-out),filter var(--t-art) var(--ease-out)}
+/* the art sits on its own GPU layer, so hover scales a ready texture instead of redrawing the SVG every frame */
+.card .cover{position:absolute;inset:0;width:100%;height:100%;display:block;will-change:transform;backface-visibility:hidden;transition:transform var(--t-art) var(--ease-out)}
+.card::before{content:"";position:absolute;inset:0;z-index:1;background:rgba(255,255,255,.04);opacity:0;pointer-events:none;transition:opacity var(--t-art) var(--ease-out)}
+.card:hover::before,.card:focus-visible::before{opacity:1}
 .cover text{font-family:"Lilita One","Arial Black",Impact,sans-serif}
 /* hover: the card lifts (220ms), the art inside comes alive a beat slower (320ms) */
 .card:hover,.card:focus-visible{transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
-.card:hover .cover,.card:focus-visible .cover{transform:scale(1.035);filter:brightness(1.03) saturate(1.02)}
+.card:hover .cover,.card:focus-visible .cover{transform:scale(1.035)}
 .card:active .cover{transform:scale(1.025)}
 .card .badge{transition:filter var(--t-card) var(--ease-out)}
 .card:hover .badge,.card:focus-visible .badge{filter:brightness(1.06)}
@@ -244,7 +247,7 @@ h1,h2,h3,p{margin:0}
 .cap-icon{position:relative;width:var(--icon);height:var(--icon);border-radius:var(--r-card);overflow:hidden;opacity:0;background:rgba(255,255,255,.12);box-shadow:0 0 0 1px rgba(255,255,255,.22),0 4px 10px rgba(0,0,0,.3);transition:opacity var(--t-card) var(--ease-out)}
 .cap-icon svg{position:absolute;inset:0;width:100%;height:100%}
 .cap-text{display:grid;grid-template-rows:auto 0fr;min-width:0;transition:grid-template-rows var(--t-card) var(--ease-out)}
-.cap-title,.cap-body{transition:transform var(--t-card) var(--ease-out)}
+.cap-title,.cap-body{will-change:transform;transition:transform var(--t-card) var(--ease-out)}
 .card:not(.is-open):hover .cap-title,.card:not(.is-open):focus-visible .cap-title,.card.is-open:hover .cap-body,.card.is-open:focus-visible .cap-body{transform:translateY(-2px)}
 .cap-title{font-size:clamp(13px,4.6cqw,17px);font-weight:700;letter-spacing:-.01em;line-height:1.2;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.35);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .is-feat .cap-title{font-size:clamp(16px,5.4cqw,24px);font-weight:800}
@@ -302,16 +305,14 @@ h1,h2,h3,p{margin:0}
 /* ============ CategoryButton ============ */
 /* categories stay a plain grid, no sideways scroll */
 .cats{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:var(--gap)}
-.cat{position:relative;display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-rest);color:var(--text);transition:border-color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
-.cat-badge{display:grid;place-items:center;width:32px;height:32px;flex:none}
-.cat-badge .i{width:32px;height:32px;color:var(--lime-ink);opacity:.8;transition:opacity var(--t-ui) var(--ease-out)}
+.cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 12px 16px;text-align:center;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-rest);color:var(--text);transition:border-color var(--t-ui) var(--ease-out),box-shadow var(--t-ui) var(--ease-out)}
+.cat-badge{display:grid;place-items:center;width:48px;height:48px;flex:none}
+.cat-badge .i{width:48px;height:48px;color:var(--lime-ink);opacity:.8;transition:opacity var(--t-ui) var(--ease-out)}
 .cat:hover .cat-badge .i,.cat:focus-visible .cat-badge .i{opacity:1}
-.cat-text{min-width:0;display:flex;flex-direction:column;gap:1px}
+.cat-text{min-width:0;max-width:100%;display:flex;flex-direction:column;gap:1px}
 .cat-name{font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cat .chev{position:absolute;top:12px;right:12px;width:14px;height:14px;color:var(--text-3);transition:color var(--t-ui) var(--ease-out)}
 .cat-name{font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cat:hover,.cat:focus-visible{border-color:var(--border-strong);box-shadow:var(--shadow-hover)}
-.cat:hover .chev,.cat:focus-visible .chev{color:var(--text)}
 
 /* ============ Section ============ */
 .sec{margin-top:36px}
@@ -378,9 +379,9 @@ h1,h2,h3,p{margin:0}
   .row-4{grid-auto-columns:76%}
   .row-6{grid-auto-columns:42%}
   .cats{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
-  .cat{padding:12px}
-  .cat-badge{width:28px;height:28px}
-  .cat-badge .i{width:28px;height:28px}
+  .cat{padding:14px 10px 12px}
+  .cat-badge{width:40px;height:40px}
+  .cat-badge .i{width:40px;height:40px}
   .foot{flex-direction:column;align-items:flex-start}
 }
 
@@ -1195,7 +1196,7 @@ function GameCard(id, { ar, area = '', badge = '', play = false, feat = false, o
     <span class="cap">${open ? `<span class="cap-body"><span class="cap-icon" aria-hidden="true">${art(id, 1)}</span><span class="cap-text"><span class="cap-title">${G[id].t}</span>${Meta(id)}</span></span>` : `<span class="cap-title">${G[id].t}</span>`}${play ? `<span class="play">${icon('play')}</span>` : ''}</span></a>`;
 }
 const CategoryButton = ({ name, ic }) =>
-  `<a class="cat" href="#${catId(name)}"><span class="cat-badge">${icon(ic)}</span><span class="cat-text"><span class="cat-name">${name}</span></span>${icon('caret-right', 'chev')}</a>`;
+  `<a class="cat" href="#${catId(name)}"><span class="cat-badge">${icon(ic)}</span><span class="cat-text"><span class="cat-name">${name}</span></span></a>`;
 const catId = name => 'cat-' + name.toLowerCase();
 const NavCategory = ({ name, ic }) =>
   `<a class="nav is-cat" href="#${catId(name)}">${icon(ic)}<span class="nav-label">${name}</span></a>`;
